@@ -12,5 +12,5 @@ app.use(express.json())
 
 
 app.listen(port, () => {
-    console.log('aguante la merca')
+    console.log('aguante diseño grafico')
 })

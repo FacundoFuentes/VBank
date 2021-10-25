@@ -1,9 +1,15 @@
+import React from "react";
+import { BrowserRouter, Route} from "react-router-dom"
+import LandingPage from "./pages/LandingPage/LandingPage";
+
+
+
 
 function App() {
   return (
-    <div>
-      Hola mundo
-    </div>
+    <BrowserRouter>
+        <Route exact path="/" component={LandingPage} />
+    </BrowserRouter>    
   );
 }
 

@@ -6,6 +6,7 @@ import { CssBaseline } from '@nextui-org/react';
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline/>
+    
     <App />
   </React.StrictMode>,
   document.getElementById('root')

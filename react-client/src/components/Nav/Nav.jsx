@@ -1,6 +1,6 @@
 import React from 'react'
 import img from "../../img/logo.png"
-import { Button, Container, Row, Text, Spacer, Link} from '@nextui-org/react';
+import { Button, Container, Row, Spacer, Link} from '@nextui-org/react';
 
 
 export default function Nav() {

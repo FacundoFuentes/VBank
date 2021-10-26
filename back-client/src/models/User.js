@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require('validator')
 
 // Agregar ADDRESS;
 
@@ -26,6 +27,12 @@ const userSchema = new mongoose.Schema(
           throw new Error("Email invalid");
         }
       },
+    },
+    
+    username: {
+      type: String,
+      required: true,
+      trim: true
     },
 
     password: {

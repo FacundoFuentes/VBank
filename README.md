@@ -14,4 +14,16 @@ password: String, se hashea en el back, debe contener mínimamente 6 caracteres,
 dni: Number<br>
 
 Devuelve: <br>
-Status 200, 400
+Status: 'ok' o 'failed'<br>
+Data: ej 'User created'<br>
+
+<h2>/user/login:</h2>
+
+Recibirá por body:<br>
+dni: Number <br>
+password: String <br>
+username: String <br>
+
+Devuelve: <br>
+Status 'ok' o 'failed'<br>
+Data: ej 'User Loged In'<br>

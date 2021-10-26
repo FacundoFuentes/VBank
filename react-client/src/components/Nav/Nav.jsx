@@ -7,11 +7,11 @@ export default function Nav() {
 
 
   return (
-    <Container>
+    <Container >
       <Spacer y={2}/>
       <Row justify="space-between" align="center">
         <img width="80px" src={img} alt="" />
-        <div>
+        <div >
           <Row justify="center" align="center">
           <Link>About</Link>
           <Spacer x={1}/> 

@@ -28,3 +28,7 @@ const transactionSchema = new mongoose.Schema({
         enum: ['PROCESSING', 'CONFIRMED', 'CANCELLED']
     }
 })
+
+const Transaction = mongoose.model("Transaction", transactionSchema);
+
+module.exports = Transaction;

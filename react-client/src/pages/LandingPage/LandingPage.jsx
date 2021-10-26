@@ -5,8 +5,6 @@ export default function LandingPage() {
   return (
     <div>
       <Nav/>
-     
-      <hr />
     </div>
   )
 }

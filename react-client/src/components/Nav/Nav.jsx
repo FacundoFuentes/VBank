@@ -6,7 +6,6 @@ import { Button, Container, Row, Spacer, Link} from '@nextui-org/react';
 export default function Nav() {
 
 
-
   return (
     <Container>
       <Spacer y={2}/>

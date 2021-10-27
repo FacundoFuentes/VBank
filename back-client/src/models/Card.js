@@ -7,7 +7,7 @@ function calculateDueDate(){
 
 const cardSchema = new mongoose.Schema({
     cardNumber: {
-        type: Number,
+        type: String,
         required: true,
         validate: (value) => {
             value.toString().length === 16
@@ -27,7 +27,8 @@ const cardSchema = new mongoose.Schema({
         type: String,
         enum: ['Active', 'Expired', 'Blocked',]
     },
-    CVV: {
+
+    cvv: {
         type: Number,
         required: true,
         validate: (value) => {

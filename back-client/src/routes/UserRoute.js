@@ -4,6 +4,8 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Account = require('../models/Account')
+const Card = require('../models/Card')
+
 const user = express.Router()
 require('dotenv').config()
 
@@ -16,16 +18,25 @@ user.post('/register', async (req, res) => {
     const HashedPassword = await bcrypt.hash(password, 10)
 
     try {
+
+        const cardCreated = await Card.create({
+            cardNumber: utils.generarCard(),
+            startDate: new Date(2021, 10, 27),
+            dueDate: new Date(2026,10,27),
+            status: 'Blocked',
+            cvv: 123,
+        })
+
+
         const accountCreated = await Account.create({
             cbu: utils.generarCbu(),
             state: true,
             balance: 10000,
-            type: 'Caja de ahorro en pesos'
+            type: 'Caja de ahorro en pesos',
+            card: cardCreated._id
         })
 
         
-
-
         const userCreated = await User.create({
             lastName,
             firstName,
@@ -35,6 +46,12 @@ user.post('/register', async (req, res) => {
             dni,
             accounts: accountCreated._id
         })
+
+        cardCreated.account = accountCreated._id
+        await cardCreated.save()
+
+        accountCreated.user = userCreated._id
+        await accountCreated.save()
 
         res.json({status: 'ok', data: userCreated})
     } catch (error) {

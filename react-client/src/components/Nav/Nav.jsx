@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import img from "../../img/logo.png"
-import { Button, Container, Row, Spacer, Link} from '@nextui-org/react';
+import { Button, Container, Row, Spacer, Link as Links} from '@nextui-org/react';
+import LoginModal from './Login/LoginModal';
 
 
 export default function Nav() {
-
-
+  
   return (
     <Container>
       <Spacer y={2}/>
@@ -13,11 +13,10 @@ export default function Nav() {
         <img width="80px" src={img} alt="" />
         <div>
           <Row justify="center" align="center">
-          <Link>About</Link>
+          <Links>About</Links>
           <Spacer x={1}/> 
-        <Button color="#2CA1DE" auto >
-                Login
-        </Button>
+       
+        <LoginModal />
           </Row>
         </div>  
     </Row>

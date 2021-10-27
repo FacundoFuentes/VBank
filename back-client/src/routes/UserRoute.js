@@ -42,11 +42,11 @@ user.post('/login', async (req, res) => {
 
     if(await bcrypt.compare(password, user.password)) {
         const token = jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '60000'})
-        localStorage.setItem('token', token)
+        
         console.log(token)
 
-        //Falta agregar el TOKEN
-        res.json({status: 'ok', data: 'User logged in'})
+        //token agregado
+        res.json({status: 'ok', data: 'User logged in',token: token})
     } else {
         res.json({status: 'failed', data: 'Invalid Credentials'})
     }

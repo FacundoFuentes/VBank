@@ -2,8 +2,10 @@ import React from 'react'
 import Nav from '../../components/Nav/Nav'
 import landing from '../../img/image-landing.png'
 import styled from "styled-components"
-import { Button, Text, Spacer, Link} from '@nextui-org/react';
+import { Button, Text, Spacer, } from '@nextui-org/react';
+import {Link} from "react-router-dom";
 import card from "../../img/Card-Landing.png"
+
 
 const Container = styled.div`
 display: flex;
@@ -65,7 +67,9 @@ export default function LandingPage() {
          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
          </PText>
          <ButtonDiv>
+        <Link to="user/signUp">
          <Button color="#2CA1DE" > Get started </Button>
+        </Link>
          </ButtonDiv>
        </TextContainer>
        <ImagenContainer>

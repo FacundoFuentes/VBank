@@ -20,7 +20,7 @@ user.post('/register', async (req, res) => {
     try {
 
         const cardCreated = await Card.create({
-            cardNumber: utils.generarCard(),
+            cardNumber: await utils.generarCard(),
             startDate: new Date(2021, 10, 27),
             dueDate: new Date(2026,10,27),
             status: 'Blocked',

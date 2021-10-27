@@ -35,16 +35,23 @@ const generarCbu = ()=> {
 
 
 // CARD NUMBER
-function generarCard() {
-  return (
+const  generarCard = async () => {
+  const card =
     "5" +
     "47526" +
     Math.floor(Math.random() * 9999999999) // Número random de 10 dígitos
       .toString()
       // Si no llega  a 10, se rellena con 0
       .padStart(9, "0")
-  );
+  
+  const hashedCard = await bcrypt.hash(card.slice(0,13),10)
+  const visibleCard = card.slice(-4)
+
+  const  cardNumber = hashedCard + visibleCard
+  return cardNumber.toString()
 }
+
+generarCard()
 
  const generarCvv = async () => {
 

@@ -7,57 +7,75 @@ const Account = require('../models/Account')
 const Card = require('../models/Card')
 const email = require('../utils/email')
 const user = express.Router()
+const validator = require('validator')
+const utils = require('../utils/utils.js')
 require('dotenv').config()
+
 
 const utils = require('../utils/utils')
 
+//     Username: Una minuscula, una mayuscula, min 6 char, un numero
+// Password: Una minuscula, una mayuscula, min 8 char, un caracter especial, un numero
+// Email: isEmail()
+// DNI: min 7 char, max 8 char
+// Last name: max 32 char
+// First name: max 32 char
 
 user.post('/register', async (req, res) => {
     const {lastName, firstName, email, username, password, dni} = req.body
 
     const HashedPassword = await bcrypt.hash(password, 10)
     
-    try {
+    const validation = utils.validateRegisterData()
 
-        const cardCreated = await Card.create({
-            cardNumber: await utils.generarCard(),
-            startDate: new Date(2021, 10, 27),
-            dueDate: new Date(2026,10,27),
-            status: 'Blocked',
-            cvv: await utils.generarCvv(),
-        })
+    if(validation.status){
 
-
-        const accountCreated = await Account.create({
-            cbu: utils.generarCbu(),
-            state: true,
-            balance: 10000,
-            type: 'Caja de ahorro en pesos',
-            card: cardCreated._id
-        })
-
-        
-        const userCreated = await User.create({
-            lastName,
-            firstName,
-            email,
-            username,
-            password: HashedPassword,
-            dni,
-            accounts: accountCreated._id
-        })
-
-        cardCreated.account = accountCreated._id
-        await cardCreated.save()
-
-        accountCreated.user = userCreated._id
-        await accountCreated.save()
-
-        res.json({status: 'ok', data: userCreated})
-    } catch (error) {
-        console.log(error)
-        res.json({status: 'failed', error: error})
+        try {
+    
+            const cardCreated = await Card.create({
+                cardNumber: await utils.generarCard(),
+                startDate: new Date(2021, 10, 27),
+                dueDate: new Date(2026,10,27),
+                status: 'Blocked',
+                cvv: await utils.generarCvv(),
+            })
+    
+    
+            const accountCreated = await Account.create({
+                cbu: utils.generarCbu(),
+                state: true,
+                balance: 10000,
+                type: 'Caja de ahorro en pesos',
+                card: cardCreated._id
+            })
+    
+            
+            const userCreated = await User.create({
+                lastName,
+                firstName,
+                email,
+                username,
+                password: HashedPassword,
+                dni,
+                accounts: accountCreated._id
+            })
+    
+            cardCreated.account = accountCreated._id
+            await cardCreated.save()
+    
+            accountCreated.user = userCreated._id
+            await accountCreated.save()
+    
+            res.json({status: 'ok', data: userCreated})
+        } catch (error) {
+            console.log(error)
+            res.json({status: 'failed', error: error})
+        }
     }
+    else {
+        res.json({status: 'failed', data: validation.error})
+    }
+
 })
 
 user.post('/login', async (req, res) => {

@@ -7,12 +7,8 @@ const Account = require('../models/Account')
 const Card = require('../models/Card')
 const email = require('../utils/email')
 const user = express.Router()
-const validator = require('validator')
 const utils = require('../utils/utils.js')
 require('dotenv').config()
-
-
-const utils = require('../utils/utils')
 
 //     Username: Una minuscula, una mayuscula, min 6 char, un numero
 // Password: Una minuscula, una mayuscula, min 8 char, un caracter especial, un numero
@@ -26,7 +22,7 @@ user.post('/register', async (req, res) => {
 
     const HashedPassword = await bcrypt.hash(password, 10)
     
-    const validation = utils.validateRegisterData()
+    const validation = utils.validateRegisterData(req.body)
 
     if(validation.status){
 
@@ -73,7 +69,7 @@ user.post('/register', async (req, res) => {
         }
     }
     else {
-        res.json({status: 'failed', data: validation.error})
+        res.status(400).json({status: 'failed', data: validation.error})
     }
 
 })

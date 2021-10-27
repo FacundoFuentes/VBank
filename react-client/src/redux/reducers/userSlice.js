@@ -21,9 +21,11 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
         return
     }
     try { 
+
         const response = await axios.post('http://localhost:3001/user/register', userInfo)
     
-        localStorage.setItem('user_info', JSON.stringify(response.data.data))
+        localStorage.setItem('token', JSON.stringify(response.data.token)) 
+        //cambie "user_info" por "token" y "response.data.data" por "response.data.token"
         return response.data;
         
     } catch (error) {

@@ -3,9 +3,11 @@ const mongoose = require('mongoose')
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Account = require('../models/Account')
 const user = express.Router()
 require('dotenv').config()
 
+const utils = require('../utils/utils')
 
 
 user.post('/register', async (req, res) => {
@@ -14,13 +16,24 @@ user.post('/register', async (req, res) => {
     const HashedPassword = await bcrypt.hash(password, 10)
 
     try {
+        const accountCreated = await Account.create({
+            cbu: utils.generarCbu(),
+            state: true,
+            balance: 10000,
+            type: 'Caja de ahorro en pesos'
+        })
+
+        
+
+
         const userCreated = await User.create({
             lastName,
             firstName,
             email,
             username,
             password: HashedPassword,
-            dni
+            dni,
+            accounts: accountCreated._id
         })
 
         res.json({status: 'ok', data: userCreated})
@@ -49,6 +62,21 @@ user.post('/login', async (req, res) => {
         res.json({status: 'failed', data: 'Inavlid Credentials'})
     }
 
+})
+
+
+user.get('/test', async(req,res) => {
+
+    const user = await Account.findOne({balance: 1000})
+
+    if (user) {
+
+        res.json(user.cbu)
+    } 
+    else {
+
+        res.json('err')
+    } 
 })
 
 module.exports = user

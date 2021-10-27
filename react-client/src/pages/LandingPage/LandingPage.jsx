@@ -8,7 +8,7 @@ import card from "../../img/Card-Landing.png"
 const Container = styled.div`
 display: flex;
 padding: 80px 50px;
-height: 100vh;
+/* height: 100vh; */
 justify-content: center;
 `
 const Title = styled.div`
@@ -51,6 +51,7 @@ display: flex;
 padding: 20px 50px;
 justify-content: center;
 align-items: center;
+margin-top: 50px;
 `
 const ContainerCard = styled.div`
 padding: 50px 100px;
@@ -64,7 +65,13 @@ flex-direction: column;
 justify-content:space-evenly;
 text-align: center;
 height: 230px;
-
+`
+const Line = styled.div`
+border: solid 1px #eaeaea;
+width: 90%;
+height: 1px;
+display: flex;
+margin: 0px auto;
 `
 
 export default function LandingPage() {
@@ -86,7 +93,8 @@ export default function LandingPage() {
          <img width="900px"  src={landing} alt= 'img not found'/>
        </ImagenContainer>
       </Container>   
-
+      <Line/>
+    
         <TitleCard> <Text h3 size="60px">We are the light side of money</Text></TitleCard>
         <ContainerCard>
            <div> 
@@ -97,7 +105,7 @@ export default function LandingPage() {
           <Text h6 size="40px" color="#2CA1DE" >Simple. Transparent. And for free.</Text>
           </TextCard>
         </ContainerCard>
-
+        
     </div>
   ) 
 }

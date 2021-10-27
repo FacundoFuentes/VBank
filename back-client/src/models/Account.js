@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const accountSchema = new mongoose.Schema(
     {
         cbu: {
-            type: Number,
+            type: String,
             required: true
         },
         state: {    

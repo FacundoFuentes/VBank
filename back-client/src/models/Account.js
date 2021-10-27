@@ -21,6 +21,10 @@ const accountSchema = new mongoose.Schema(
             required: true,
         },
 
+        user: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        }
         // transactions: {
         //     type: Schema.ObjectId,
         //     ref: 'Transaction'

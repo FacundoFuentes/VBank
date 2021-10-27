@@ -36,6 +36,9 @@ user.post('/register', async (req, res) => {
             accounts: accountCreated._id
         })
 
+        accountCreated.user = userCreated._id
+        await accountCreated.save()
+
         res.json({status: 'ok', data: userCreated})
     } catch (error) {
         console.log(error)

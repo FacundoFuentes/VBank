@@ -2,11 +2,12 @@ import React from 'react'
 import Nav from '../../components/Nav/Nav'
 import landing from '../../img/image-landing.png'
 import styled from "styled-components"
-import { Button, Text, Spacer, Link} from '@nextui-org/react';
+import { Button, Text } from '@nextui-org/react';
 import card from "../../img/Card-Landing.png"
 
 const Container = styled.div`
 display: flex;
+justify-content:center;
 padding: 80px 50px;
 height: 100vh;
 `

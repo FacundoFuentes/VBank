@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Account = require('../models/Account')
 const Card = require('../models/Card')
-
+const email = require('../utils/email')
 const user = express.Router()
 require('dotenv').config()
 
@@ -16,15 +16,15 @@ user.post('/register', async (req, res) => {
     const {lastName, firstName, email, username, password, dni} = req.body
 
     const HashedPassword = await bcrypt.hash(password, 10)
-
+    
     try {
 
         const cardCreated = await Card.create({
-            cardNumber: utils.generarCard(),
+            cardNumber: await utils.generarCard(),
             startDate: new Date(2021, 10, 27),
             dueDate: new Date(2026,10,27),
             status: 'Blocked',
-            cvv: 123,
+            cvv: await utils.generarCvv(),
         })
 
 
@@ -84,16 +84,23 @@ user.post('/login', async (req, res) => {
 
 user.get('/test', async(req,res) => {
 
-    const user = await Account.findOne({balance: 1000})
+   
+    try{
+        const mail = await email.transporter.sendMail({
+            from: 'Remitente',
+            to: 'simoncito@hotmail.com', // recuperar desde user
+            subject: 'Verification Email',  
+            text: 'Codigo de verificacion: ****' // o html 
+        })
+        
+        res.status(200).json({status: 'ok', data: mail })
 
-    if (user) {
+    } catch (error) {
 
-        res.json(user.cbu)
-    } 
-    else {
+        emailStatus = error;
+        return res.status(400).json({message: 'Something went wrong! '})
 
-        res.json('err')
-    } 
+    }
 })
 
 module.exports = user

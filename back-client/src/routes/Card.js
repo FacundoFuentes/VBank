@@ -7,7 +7,7 @@ const card = express.Router();
 
 function generateCardNumber() {
   return (
-    "4" +
+    "5" +
     "47526" +
     Math.floor(Math.random() * 9999999999) // Número random de 10 dígitos
       .toString()
@@ -32,8 +32,8 @@ card.post("", async (req, res) => {
 
   let CVV = Math.floor((Math.random() * 999).toString().padStart("1"));
 
+  CVV = await bcrypt.hash(CVV, 10);
   try {
-    CVV = await bcrypt.hash(CVV, 10);
 
     const createdCard = await Card.create({
       cardNumber,

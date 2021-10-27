@@ -2,6 +2,7 @@
 
 // const generator = require('creditcard-generator')
 const bcrypt = require('bcrypt')
+const validator = require('validator')
 
 const generarCbu = ()=> {
   var banco = ("000" + ((Math.random() * 999) | 0)).slice(-3);
@@ -60,17 +61,18 @@ generarCard()
   return cvv
 }
 
-function validateRegisterData(lastName, firstName, email, username, password, dni){
+function validateRegisterData({lastName, firstName, email, username, password, dni}){
   const regExPassword = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/)
   const regExUsername = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/)
   let error
-  if(!validator.email()) error = 'Email should have a valid format'
+  if(!validator.isEmail(email)) error = 'Email should have a valid format'
   else if(firstName.length > 32) error = 'First Name cannot be longer than 32 caracters'
   else if(lastName.length > 32) error = 'Last Name cannot be longer than 32 caracters'
   else if(dni.toString().length > 8 || dni.toString().length < 7) error = 'DNI cannot be longer than 8 caracters or shorter than 7'
   else if(!username.match(regExUsername)) error = 'Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number'
   else if(!password.match(regExPassword)) error = 'Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
-  return {status: true, error}
+  else return {status: true, error}
+  return {status: false, error}
 }
 
 module.exports = {

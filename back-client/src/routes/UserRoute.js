@@ -7,12 +7,8 @@ const Account = require('../models/Account')
 const Card = require('../models/Card')
 const email = require('../utils/email')
 const user = express.Router()
-const validator = require('validator')
 const utils = require('../utils/utils.js')
 require('dotenv').config()
-
-
-const utils = require('../utils/utils')
 
 //     Username: Una minuscula, una mayuscula, min 6 char, un numero
 // Password: Una minuscula, una mayuscula, min 8 char, un caracter especial, un numero
@@ -26,7 +22,7 @@ user.post('/register', async (req, res) => {
 
     const HashedPassword = await bcrypt.hash(password, 10)
     
-    const validation = utils.validateRegisterData()
+    const validation = utils.validateRegisterData(req.body)
 
     if(validation.status){
 
@@ -73,7 +69,7 @@ user.post('/register', async (req, res) => {
         }
     }
     else {
-        res.json({status: 'failed', data: validation.error})
+        res.status(400).json({status: 'failed', data: validation.error})
     }
 
 })
@@ -88,13 +84,14 @@ user.post('/login', async (req, res) => {
     // const test = await jwt.verify(token, JWT_SECRET)
 
     if(await bcrypt.compare(password, user.password)) {
-        // const token = await jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '40000'})
-        // localStorage.setItem('token', token)
+        const token = jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '60000'})
+        localStorage.setItem('token', token)
+        console.log(token)
 
         //Falta agregar el TOKEN
         res.json({status: 'ok', data: 'User logged in'})
     } else {
-        res.json({status: 'failed', data: 'Inavlid Credentials'})
+        res.json({status: 'failed', data: 'Invalid Credentials'})
     }
 
 })

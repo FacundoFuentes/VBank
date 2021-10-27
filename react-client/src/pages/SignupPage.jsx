@@ -1,10 +1,14 @@
 import React from 'react'
 
+import {useDispatch} from "react-redux";
+
 import register from "../img/register.jpg"
 import styled from "styled-components"
+import { useForm, Controller } from "react-hook-form";
 import { Input, Button } from '@nextui-org/react';
+import { logoutUser, registerUser } from '../redux/reducers/userSlice';
 
-import { useForm } from "react-hook-form";
+
 
 
 
@@ -47,6 +51,7 @@ form{
   .fields{
     margin-top:10px;
     margin-bottom:25px;
+
     &
     label{
       color: #f5f5f5;
@@ -70,8 +75,22 @@ const BtnSubmit = styled.input``;
 
 
 const SignupPage = () => {
-/* 
-  const { register, handleSubmit } = useForm(); */
+  
+ const dispatch = useDispatch()
+
+  const { control, handleSubmit } = useForm();
+  
+ 
+  const onSubmit = (data) => {
+    console.log(data)
+      dispatch(registerUser(data));  
+
+  }
+
+  const LogOut = () => {
+    dispatch(logoutUser())
+  }
+  
     
   return (
       <Page>
@@ -80,28 +99,90 @@ const SignupPage = () => {
 
           <div className="form">
             <h2>Create Account</h2>
-          <form>
-            <div className="fields">
-            <Input  className="input" underlined labelPlaceholder="Email" color="#f5f5f5" />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div  className="fields">
+          <Controller
+        className="fields"
+        name="dni"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input className="input"
+        underlined 
+        labelPlaceholder="DNI"
+         color="#f5f5f5" {...field} />}
+      />
             </div>
-            <div className="fields">
-            <Input  underlined labelPlaceholder="DNI" color="#f5f5f5"  />
+            <div  className="fields">
+          <Controller
+        className="fields"
+        name="firstName"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input className="input"
+        underlined 
+        labelPlaceholder="First Name"
+         color="#f5f5f5" {...field} />}
+      />
             </div>
-            <div className="fields">
-            <Input  underlined labelPlaceholder="Username" color="#f5f5f5"  />
+            <div  className="fields">
+          <Controller
+        className="fields"
+        name="lastName"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input className="input"
+        underlined 
+        labelPlaceholder="Last Name"
+         color="#f5f5f5" {...field} />}
+      />
             </div>
-            <div className="fields">
-            <Input.Password   underlined labelPlaceholder="Password" color="#f5f5f5"  type="password"
-          />
+
+            <div  className="fields">
+          <Controller
+        className="fields"
+        name="username"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input className="input"
+        underlined 
+        labelPlaceholder="Username"
+         color="#f5f5f5" {...field} />}
+      />
             </div>
-           
-          
-  
-            
-          </form>
+            <div  className="fields">
+          <Controller
+        className="fields"
+        name="email"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input className="input"
+        underlined 
+        labelPlaceholder="Email"
+         color="#f5f5f5" {...field} />}
+      />
+            </div>
+            <div  className="fields">
+          <Controller
+        className="fields"
+        name="password"
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input.Password   underlined labelPlaceholder="Password" color="#f5f5f5"  type="password" className="input"
+        underlined 
+        labelPlaceholder="Password"
+         color="#f5f5f5" {...field} />}
+      />
+            </div>
           <Button type="submit"color="primary" auto>
         Create Account
     </Button>
+
+  
+            
+          </form>
+          <button onClick={LogOut} type="submit"color="primary" auto>
+        Log Out
+    </button> 
 
           </div>
 
@@ -109,3 +190,9 @@ const SignupPage = () => {
   </Page>
   ) }
 export default SignupPage
+/*  lastName,
+            firstName,
+            email,
+            username,
+            password: HashedPassword,
+            dni */

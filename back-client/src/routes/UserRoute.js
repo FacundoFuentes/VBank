@@ -46,6 +46,7 @@ user.post('/register', async (req, res) => {
             dni,
             accounts: accountCreated._id
         })
+        const token = jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '60000'})
 
         cardCreated.account = accountCreated._id
         await cardCreated.save()
@@ -70,13 +71,14 @@ user.post('/login', async (req, res) => {
     // const test = await jwt.verify(token, JWT_SECRET)
 
     if(await bcrypt.compare(password, user.password)) {
-        // const token = await jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '40000'})
-        // localStorage.setItem('token', token)
+        const token = jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '60000'})
+        localStorage.setItem('token', token)
+        console.log(token)
 
         //Falta agregar el TOKEN
         res.json({status: 'ok', data: 'User logged in'})
     } else {
-        res.json({status: 'failed', data: 'Inavlid Credentials'})
+        res.json({status: 'failed', data: 'Invalid Credentials'})
     }
 
 })

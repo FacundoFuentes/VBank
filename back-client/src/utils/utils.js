@@ -1,5 +1,7 @@
 // CALCULO CBU
 
+const generator = require('creditcard-generator')
+
 const generarCbu = ()=> {
   var banco = ("000" + ((Math.random() * 999) | 0)).slice(-3);
   var sucursal = ("0000" + ((Math.random() * 9999) | 0)).slice(-4);
@@ -31,6 +33,13 @@ const generarCbu = ()=> {
 };
 
 
+// CARD NUMBER
+const generarCard = () => {
+  const cardNumber = generator.GenCC('Mastercard', 1)
+  return cardNumber.toString()
+}
+
 module.exports = {
-    generarCbu
+    generarCbu,
+    generarCard
 }

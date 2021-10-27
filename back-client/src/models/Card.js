@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const cardSchema = new mongoose.Schema({
     cardNumber: {
-        type: Number,
+        type: String,
         required: true,
     },
     startDate: {
@@ -17,7 +17,7 @@ const cardSchema = new mongoose.Schema({
         type: String,
         enum: ['Active', 'Expired', 'Blocked',]
     },
-    securityCode: {
+    cvv: {
         type: Number,
         required: true
     },

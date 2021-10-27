@@ -16,7 +16,7 @@ user.post('/register', async (req, res) => {
     const {lastName, firstName, email, username, password, dni} = req.body
 
     const HashedPassword = await bcrypt.hash(password, 10)
-
+    
     try {
 
         const cardCreated = await Card.create({
@@ -24,7 +24,7 @@ user.post('/register', async (req, res) => {
             startDate: new Date(2021, 10, 27),
             dueDate: new Date(2026,10,27),
             status: 'Blocked',
-            cvv: 123,
+            cvv: await utils.generarCvv(),
         })
 
 

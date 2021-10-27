@@ -25,11 +25,11 @@ const cardSchema = new mongoose.Schema({
     },
     status:{
         type: String,
-        enum: ['Active', 'Expired', 'Blocked',]
+        enum: ['Active', 'Expired', 'Blocked', 'Suspended']
     },
 
     cvv: {
-        type: Number,
+        type: String,
         required: true,
         validate: (value) => {
             value < 1000 && value > 0

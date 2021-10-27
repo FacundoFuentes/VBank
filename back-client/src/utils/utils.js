@@ -1,6 +1,7 @@
 // CALCULO CBU
 
-const generator = require('creditcard-generator')
+// const generator = require('creditcard-generator')
+const bcrypt = require('bcrypt')
 
 const generarCbu = ()=> {
   var banco = ("000" + ((Math.random() * 999) | 0)).slice(-3);
@@ -34,12 +35,28 @@ const generarCbu = ()=> {
 
 
 // CARD NUMBER
-const generarCard = () => {
-  const cardNumber = generator.GenCC('Mastercard', 1)
-  return cardNumber.toString()
+function generarCard() {
+  return (
+    "5" +
+    "47526" +
+    Math.floor(Math.random() * 9999999999) // Número random de 10 dígitos
+      .toString()
+      // Si no llega  a 10, se rellena con 0
+      .padStart(9, "0")
+  );
 }
+
+ const generarCvv = async () => {
+
+  let cvv = Math.floor((Math.random() * 999).toString().padStart("1")).toString()
+  cvv = await bcrypt.hash(cvv, 10);
+  return cvv
+}
+
+
 
 module.exports = {
     generarCbu,
-    generarCard
+    generarCard,
+    generarCvv,
 }

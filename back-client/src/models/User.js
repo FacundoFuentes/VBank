@@ -58,12 +58,11 @@ const userSchema = new mongoose.Schema(
     //     type: Date,
     // },
 
-    accounts: [
-      {
+    accounts: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
       }
-    ]
+    
   },
   { timestamps: true }
 );

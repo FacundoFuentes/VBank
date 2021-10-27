@@ -3,26 +3,56 @@ const mongoose = require('mongoose')
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Account = require('../models/Account')
+const Card = require('../models/Card')
+const email = require('../utils/email')
 const user = express.Router()
 require('dotenv').config()
 
+const utils = require('../utils/utils')
 
 
 user.post('/register', async (req, res) => {
     const {lastName, firstName, email, username, password, dni} = req.body
 
     const HashedPassword = await bcrypt.hash(password, 10)
-
+    
     try {
+
+        const cardCreated = await Card.create({
+            cardNumber: await utils.generarCard(),
+            startDate: new Date(2021, 10, 27),
+            dueDate: new Date(2026,10,27),
+            status: 'Blocked',
+            cvv: await utils.generarCvv(),
+        })
+
+
+        const accountCreated = await Account.create({
+            cbu: utils.generarCbu(),
+            state: true,
+            balance: 10000,
+            type: 'Caja de ahorro en pesos',
+            card: cardCreated._id
+        })
+
+        
         const userCreated = await User.create({
             lastName,
             firstName,
             email,
             username,
             password: HashedPassword,
-            dni
+            dni,
+            accounts: accountCreated._id
         })
         const token = jwt.sign({id: user._id, username: user.username}, process.env.JWT_SECRET, {expiresIn: '60000'})
+
+        cardCreated.account = accountCreated._id
+        await cardCreated.save()
+
+        accountCreated.user = userCreated._id
+        await accountCreated.save()
 
         res.json({status: 'ok', data: userCreated, token: token})
     } catch (error) {
@@ -51,6 +81,28 @@ user.post('/login', async (req, res) => {
         res.json({status: 'failed', data: 'Invalid Credentials'})
     }
 
+})
+
+
+user.get('/test', async(req,res) => {
+
+   
+    try{
+        const mail = await email.transporter.sendMail({
+            from: 'Remitente',
+            to: 'simoncito@hotmail.com', // recuperar desde user
+            subject: 'Verification Email',  
+            text: 'Codigo de verificacion: ****' // o html 
+        })
+        
+        res.status(200).json({status: 'ok', data: mail })
+
+    } catch (error) {
+
+        emailStatus = error;
+        return res.status(400).json({message: 'Something went wrong! '})
+
+    }
 })
 
 module.exports = user

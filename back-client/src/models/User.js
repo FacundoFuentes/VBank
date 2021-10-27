@@ -57,6 +57,12 @@ const userSchema = new mongoose.Schema(
     // birthDate: {
     //     type: Date,
     // },
+
+    accounts: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
+      }
+    
   },
   { timestamps: true }
 );

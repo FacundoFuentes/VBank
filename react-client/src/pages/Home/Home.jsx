@@ -1,5 +1,7 @@
 
+import { useState } from "react";
 import styled from "styled-components"
+import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
 
 const Container = styled.div`
@@ -21,6 +23,7 @@ const Grid = styled.div`
   display:flex;
   flex-wrap:wrap;
   width: 70%;
+  height:100%;
 `;
 const CardBalance = styled.div`
   display:flex;
@@ -54,11 +57,52 @@ const Expeses = styled.div`
   width: 90%;
   height: 400px;
 `;
+const ChartContainer = styled.div`
+  display:flex;
+  margin-top:20px;
+  background-color:#F6F6F6;
+  border-radius:20px;
+  justify-content:center;
+  width:90%;
+  
+
+`;
 
 
 
 export default function Home() {
-  
+  const [data] = useState([
+    {
+      "id": "Viajes",
+      "label": "Viajes",
+      "value": 150,
+      "color": "hsl(173, 70%, 50%)"
+    },
+    {
+      "id": "Delivery",
+      "label": "Delivery",
+      "value": 1000,
+      "color": "hsl(36, 70%, 50%)"
+    },
+    {
+      "id": "Ropa",
+      "label": "Ropa",
+      "value": 500,
+      "color": "hsl(130, 70%, 50%)"
+    },
+    {
+      "id": "Comida",
+      "label": "Comida",
+      "value": 200,
+      "color": "hsl(327, 70%, 50%)"
+    },
+    {
+      "id": "Otros",
+      "label": "Otros",
+      "value": 100,
+      "color": "hsl(250, 70%, 50%)"
+    }
+  ])
 
   return (
     <Container>
@@ -81,6 +125,14 @@ export default function Home() {
 
           </Expeses>
         </Grid>
+        <Grid>
+        <Text>Estadisticas</Text>
+        <ChartContainer >
+          <Chart height="500px" data={data}/>
+        </ChartContainer>
+        </Grid>
+          
+          
         
         
     </Container>

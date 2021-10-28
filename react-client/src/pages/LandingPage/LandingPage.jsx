@@ -3,6 +3,7 @@ import Nav from '../../components/Nav/Nav'
 import landing from '../../img/image-landing.png'
 import styled from "styled-components"
 import { Button, Text} from '@nextui-org/react';
+import {Link} from "react-router-dom"
 
 import card from "../../img/Card-Landing.png"
 
@@ -89,7 +90,9 @@ export default function LandingPage() {
          <Text h5> Financial Services for Millennial Customers </Text>
          </PText>
          <ButtonDiv>
+           <Link to="/user/signUp">
          <Button size="large" rounded="Primary" color="#2CA1DE" > Get started </Button>
+           </Link>
          </ButtonDiv>
        </TextContainer>
        <ImagenContainer>

@@ -31,10 +31,11 @@ const accountSchema = new mongoose.Schema(
     },
 
     transactions: [
+
       {
         type: mongoose.Schema.ObjectId,
-        ref: "Transaction",
-      },
+        ref: "AccountTransaction",
+      }
     ],
   },
   { timestamps: true }

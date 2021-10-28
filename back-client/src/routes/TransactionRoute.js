@@ -78,15 +78,21 @@ transaction.get("/", async (req, res) => {
   try {
     
     const user = await User.findOne({ username }).populate('account')
-    const account = await Account.findOne({id: user.account}).populate({
+    const accountTransactions = await Account.findOne({id: user.account}).populate({
       path: 'transactions',
-      model: 'Transaction'
+      model: 'AccountTransaction',
+      populate: {
+        path: 'transaction',
+        model: 'Transaction'
+      }
     })
+    
+    
     // account.transactions.forEach()
     // const account = await user.account.populate('transactions')
     // const transactions = account.transactions
-    console.log(account)
-    res.status(200).send(account)
+    
+    res.status(200).send(accountTransactions.transactions)
 
   } catch (error) {
     res.status(404).send(error.message)

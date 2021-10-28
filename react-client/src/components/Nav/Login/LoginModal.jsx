@@ -23,6 +23,8 @@ const LoginModal = () => {
         console.log('closed');
     };
 
+    
+
     const history= useHistory();
 
     useEffect(() => {

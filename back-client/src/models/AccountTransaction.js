@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const AccountTransactionSchema = new mongoose.Schema({
     role: {
         type: String,
-        enum: ['SENDER', 'RECEIVER']
+        enum: ['SENDER', 'RECEIVER'],
+        required: true
     },
 
     transaction: {

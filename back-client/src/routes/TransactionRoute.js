@@ -74,7 +74,6 @@ transaction.post("/new", async (req, res) => {
 transaction.get("/", async (req, res) => {
 
   const {username} = req.body
-  // accountTrnasction del usuario actual
   try {
     
     const user = await User.findOne({ username }).populate('account')
@@ -87,12 +86,7 @@ transaction.get("/", async (req, res) => {
         model: 'Transaction'
       }
     })
-    
-    
-    // account.transactions.forEach()
-    // const account = await user.account.populate('transactions')
-    // const transactions = account.transactions
-    
+
     res.status(200).send(accountTransactions.transactions)
 
   } catch (error) {

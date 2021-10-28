@@ -1,6 +1,6 @@
-import React from 'react'
-
-import {useDispatch} from "react-redux";
+import React, { useEffect } from 'react'
+import {useHistory} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
 
 import register from "../img/register.jpg"
 import styled from "styled-components"
@@ -78,6 +78,20 @@ const SignupPage = () => {
   
  const dispatch = useDispatch()
 
+ const userState = useSelector(state => state.user);
+
+ const {loggedInUser} =userState; // lo manejo en useEffect
+
+ const history= useHistory();
+
+ useEffect(() => { 
+  if (loggedInUser){
+      //redirect con el hook useHistory
+      history.push("/home"); //esto me lleva hacia esta ventana
+
+  }
+}, [loggedInUser])
+
   const { control, handleSubmit } = useForm();
   
  
@@ -86,6 +100,8 @@ const SignupPage = () => {
       dispatch(registerUser(data));  
 
   }
+
+
 
   const LogOut = () => {
     dispatch(logoutUser())

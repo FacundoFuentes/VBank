@@ -1,9 +1,9 @@
 const express = require("express");
-const stadistics = express.Router();
+const statistics = express.Router();
 const Transaction = require("../models/Transaction");
 
-stadistics.get("/month", async (req, res) => {
-    const {month} = req.body
+statistics.get("/month", async (req, res) => {
+  const { month } = req.body;
   const filteredTransactions = await Transaction.find({
     $expr: {
       $eq: [{ $month: "$date" }, month],
@@ -12,8 +12,8 @@ stadistics.get("/month", async (req, res) => {
   res.json(filteredTransactions);
 });
 
-stadistics.get("/year", async (req, res) => {
-    const {year} = req.body
+statistics.get("/year", async (req, res) => {
+  const { year } = req.body;
   const filteredTransactions = await Transaction.find({
     $expr: {
       $eq: [{ $year: "$date" }, year],
@@ -22,8 +22,8 @@ stadistics.get("/year", async (req, res) => {
   res.json(filteredTransactions);
 });
 
-stadistics.get("/dayOfWeek", async (req, res) => {
-    const {dayOfWeek} = req.body
+statistics.get("/dayOfWeek", async (req, res) => {
+  const { dayOfWeek } = req.body;
   const filteredTransactions = await Transaction.find({
     $expr: {
       $eq: [{ $dayOfWeek: "$date" }, dayOfWeek],
@@ -42,4 +42,4 @@ stadistics.get("/dayOfWeek", async (req, res) => {
 //     },
 //   });
 
-module.exports = stadistics;
+module.exports = statistics;

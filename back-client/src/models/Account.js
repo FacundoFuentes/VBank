@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema(
   {
-    cbu: {
+    cvu: {
       type: String,
       required: true,
     },
@@ -30,12 +30,12 @@ const accountSchema = new mongoose.Schema(
       ref: "User",
     },
 
-    transactions:[
+    transactions: [
       {
-          type: mongoose.Schema.ObjectId,
-          ref: 'Transaction'
-      }
-    ] 
+        type: mongoose.Schema.ObjectId,
+        ref: "Transaction",
+      },
+    ],
   },
   { timestamps: true }
 );

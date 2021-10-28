@@ -6,7 +6,7 @@ const transaction = express.Router();
 const AccountTransaction = require("../models/AccountTransaction");
 require("dotenv").config();
 
-transaction.post("/test", async (req, res) => {
+transaction.post("/new", async (req, res) => {
   const { amount, from, to, description, type } = req.body;
   let userFrom, userTo;
   try {

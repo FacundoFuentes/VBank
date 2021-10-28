@@ -20,14 +20,10 @@ function App() {
         </Route>
         <Route exact path="/user/signUp" component={SignupPage} />
         {/* <Route exact path="/user/signIn" component={} /> */}
-<<<<<<< Updated upstream
-        </Switch>
-        </Router>
-=======
         <Route exact path="/home/transfer" component={Transfer}/>
-    </BrowserRouter>    
+       </Switch>
+    </Router>    
 
->>>>>>> Stashed changes
   );
 }
 

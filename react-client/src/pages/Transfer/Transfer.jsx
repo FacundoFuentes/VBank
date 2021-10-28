@@ -2,6 +2,7 @@ import React from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Textarea} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
+import Sidebar from '../../components/Sidebars/Sidebar';
 
 
 const Container= styled.div`
@@ -58,13 +59,15 @@ export default function Transfer() {
       }
       
     return (
-      <>
+      <div>
+      <Sidebar/>
       <MaxContainer>
       <TitleContainer>
       <Text h3 > Transferir </Text>
       </TitleContainer>
-      <Container>
-      <TextContainer>
+      <form>
+      <Container>    
+      <TextContainer> 
        <ToContainer>
            <Text weight='bold'>Destinatario</Text>
            <Input contentClickable="true" contentRight={<ContactBlack onClick={()=>(alert("hola"))}/>} width="300px"/>
@@ -80,10 +83,11 @@ export default function Transfer() {
        </TextContainer>
        <ButtonContainer>
        <Button rounded="Primary" color="#2CA1DE" size="small">Aceptar</Button>   
-       </ButtonContainer> 
+       </ButtonContainer>  
       </Container>
+      </form>
       </MaxContainer>
       
-      </>
+      </div>
     )
 }

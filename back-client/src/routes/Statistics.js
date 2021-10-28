@@ -3,7 +3,7 @@ const statistics = express.Router();
 const Transaction = require("../models/Transaction");
 
 statistics.get("/month", async (req, res) => {
-    const {month} = req.body
+  const { month } = req.body;
   const filteredTransactions = await Transaction.find({
     $expr: {
       $eq: [{ $month: "$date" }, month],
@@ -13,7 +13,7 @@ statistics.get("/month", async (req, res) => {
 });
 
 statistics.get("/year", async (req, res) => {
-    const {year} = req.body
+  const { year } = req.body;
   const filteredTransactions = await Transaction.find({
     $expr: {
       $eq: [{ $year: "$date" }, year],
@@ -23,7 +23,7 @@ statistics.get("/year", async (req, res) => {
 });
 
 statistics.get("/dayOfWeek", async (req, res) => {
-    const {dayOfWeek} = req.body
+  const { dayOfWeek } = req.body;
   const filteredTransactions = await Transaction.find({
     $expr: {
       $eq: [{ $dayOfWeek: "$date" }, dayOfWeek],

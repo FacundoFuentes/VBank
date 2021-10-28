@@ -18,11 +18,14 @@ transaction.post('/test', async(req,res) => {
  let userFrom, userTo
  try {     
      userFrom = await User.findOne({username: from})
-     console.log(userFrom)
+     accountFrom = await Account.findOne({_id: userFrom.account})
+     
      userTo = await User.findOne({username: to})
+     accountTo = await Account.findOne({_id: userTo.account})
+
  } catch (error) {
      console.log(error)
-     res.status(400).json({status: 'failed', error: 'User not found or a meteorite landed on your house (or in the datacenter)'})
+     return res.status(400).json({status: 'failed', error: 'User not found or a meteorite landed on your house (or in the datacenter)'})
  }
 
     try{
@@ -38,25 +41,29 @@ transaction.post('/test', async(req,res) => {
         })
 
         const accountTransactionFrom = await AccountTransaction.create({
-            type: 'SENDER',
+            role: 'SENDER',
             transaction
         })
         const accountTransactionTo = await AccountTransaction.create({
-            type: 'RECEIVER',
+            role: 'RECEIVER',
             transaction
         })
 
-        userFrom.account.transactions.push(accountTransactionFrom)
-        await userFrom.save()
-        userTo.account.transactions.push(accountTransactionTo)
-        await userTo.save()
 
+
+        accountFrom.transactions.push(accountTransactionFrom)
+        accountTo.transactions.push(accountTransactionTo)
+
+        
+
+        await accountFrom.save()
+        await accountTo.save()
 
         res.status(200).json({status: 'ok', data: transaction})
 
     } catch (error) {
-
-        res.status(400).send(error)
+        
+        res.status(400).send(error.message)
 
     }
 })

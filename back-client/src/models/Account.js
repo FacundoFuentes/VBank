@@ -29,10 +29,13 @@ const accountSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
-    // transactions: {
-    //     type: Schema.ObjectId,
-    //     ref: 'Transaction'
-    // },
+
+    transactions:[
+      {
+          type: mongoose.Schema.ObjectId,
+          ref: 'Transaction'
+      }
+    ] 
   },
   { timestamps: true }
 );

@@ -4,7 +4,10 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Account = require('../models/Account')
+const accountTransaction = require('../models/AccountTransaction')
 const Card = require('../models/Card')
+const Transaction = require('../models/Transaction')
+
 const email = require('../utils/email')
 const user = express.Router()
 const utils = require('../utils/utils.js')
@@ -27,7 +30,21 @@ user.post('/register', async (req, res) => {
     if(validation.status){
 
         try {
-    
+
+            
+            const transaction = await Transaction.create({
+                transactionCode: 'AAAA1', //Random
+                date: new Date(),
+                amount: 1,
+                description: 'Welcome to VBank !',
+                type: 'CHARGE',
+            })
+            
+            const accountTrans = await accountTransaction.create({
+                role: 'RECEIVER',
+                transaction
+            })
+
             const cardCreated = await Card.create({
                 cardNumber: await utils.generarCard(),
                 startDate: new Date(2021, 10, 27),
@@ -42,7 +59,9 @@ user.post('/register', async (req, res) => {
                 state: true,
                 balance: 10000,
                 type: 'Caja de ahorro en pesos',
-                card: cardCreated._id
+                card: cardCreated._id,
+                transactions: accountTrans._id
+
             })
     
             
@@ -53,7 +72,7 @@ user.post('/register', async (req, res) => {
                 username,
                 password: HashedPassword,
                 dni,
-                accounts: accountCreated._id
+                account: accountCreated._id
             })
     
             cardCreated.account = accountCreated._id

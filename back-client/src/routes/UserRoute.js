@@ -5,20 +5,13 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Account = require('../models/Account')
 const accountTransaction = require('../models/AccountTransaction')
-const Card = require('../models/Card')
 const Transaction = require('../models/Transaction')
+const Card = require('../models/Card')
 
 const email = require('../utils/email')
 const user = express.Router()
 const utils = require('../utils/utils.js')
 require('dotenv').config()
-
-//     Username: Una minuscula, una mayuscula, min 6 char, un numero
-// Password: Una minuscula, una mayuscula, min 8 char, un caracter especial, un numero
-// Email: isEmail()
-// DNI: min 7 char, max 8 char
-// Last name: max 32 char
-// First name: max 32 char
 
 user.post('/register', async (req, res) => {
     const {lastName, firstName, email, username, password, dni} = req.body
@@ -114,7 +107,6 @@ user.post('/login', async (req, res) => {
     }
 
 })
-
 
 user.get('/test', async(req,res) => {
 

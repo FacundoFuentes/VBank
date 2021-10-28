@@ -48,7 +48,7 @@ user.post('/register', async (req, res) => {
     
     
             const accountCreated = await Account.create({
-                cbu: utils.generarCbu(),
+                cvu: utils.generarCbu(),
                 state: true,
                 balance: 10000,
                 type: 'Caja de ahorro en pesos',

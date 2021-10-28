@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema(
   {
-    cbu: {
+    cvu: {
       type: String,
       required: true,
     },

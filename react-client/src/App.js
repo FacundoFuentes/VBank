@@ -15,12 +15,14 @@ function App() {
         <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route path='/'>
-        <Route  path="/home" component={Sidebar} />
+        <Route exact path="/home/transfer" component={Transfer}/>
+        <Route path ="/home" component={Sidebar}/>
+      {/*   <Route  path="/home" component={Sidebar} /> */}
         <Route exact path="/home" component={Home} />
         </Route>
         <Route exact path="/user/signUp" component={SignupPage} />
         {/* <Route exact path="/user/signIn" component={} /> */}
-        <Route exact path="/home/transfer" component={Transfer}/>
+        
        </Switch>
     </Router>    
 

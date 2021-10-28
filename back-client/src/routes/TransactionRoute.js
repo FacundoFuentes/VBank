@@ -8,35 +8,55 @@ const jwt = require('jsonwebtoken')
 const Card = require('../models/Card')
 const email = require('../utils/email')
 const transaction = express.Router()
-require('dotenv').config()
-
 const utils = require('../utils/utils')
-
-
+const AccountTransaction = require('../models/AccountTransaction')
+require('dotenv').config()
 
 
 transaction.post('/test', async(req,res) => {
+ const {amount, from, to, description, type } = req.body
+ let userFrom, userTo
+ try {     
+     userFrom = await User.findOne({username: from})
+     console.log(userFrom)
+     userTo = await User.findOne({username: to})
+ } catch (error) {
+     console.log(error)
+     res.status(400).json({status: 'failed', error: 'User not found or a meteorite landed on your house (or in the datacenter)'})
+ }
 
-
-   
     try{
-
         const transaction = await Transaction.create({
-            transactionCode: 'AD235VI',
+            transactionCode: 'AD235VI', //Random
             date: new Date(),
-            amount: 5000,
-            description: 'Rent',
-            type: 'TRANSFER',
-            status: 'PROCESSING',
-            from: '617999fce71cbb627fb4f4ce',
-            to: '6179a7f2d6eaef4beb7c99e5'
+            amount,
+            description,
+            type,
+            // status: 'PROCESSING',
+            from: userFrom,
+            to: userTo
         })
+
+        const accountTransactionFrom = await AccountTransaction.create({
+            type: 'SENDER',
+            transaction
+        })
+        const accountTransactionTo = await AccountTransaction.create({
+            type: 'RECEIVER',
+            transaction
+        })
+
+        userFrom.account.transactions.push(accountTransactionFrom)
+        await userFrom.save()
+        userTo.account.transactions.push(accountTransactionTo)
+        await userTo.save()
+
 
         res.status(200).json({status: 'ok', data: transaction})
 
     } catch (error) {
 
-        res.status(400).send(error.message)
+        res.status(400).send(error)
 
     }
 })

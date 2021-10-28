@@ -31,10 +31,10 @@ const transactionSchema = new mongoose.Schema({
         enum: ['TRANSFER', 'CHARGE', 'REFUND']
     },
 
-    status: {
-        type: String,
-        enum: ['PROCESSING', 'CONFIRMED', 'CANCELLED']
-    },
+    // status: {
+    //     type: String,
+    //     enum: ['PROCESSING', 'CONFIRMED', 'CANCELLED']
+    // },
 
     from: {
         type: mongoose.Schema.Types.ObjectId,

@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import styled from "styled-components"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
 
 const Container = styled.div`
-  margin: 50px 300px;
+  margin: 0px 300px;
   display:flex;
   flex-direction: column;
   width: 100%;

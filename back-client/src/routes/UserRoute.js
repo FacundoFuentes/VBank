@@ -104,7 +104,31 @@ user.post("/login", async (req, res) => {
   }
 });
 
-user.get("/test", async (req, res) => {
+user.get('/byUsername', async (req,res)=>{
+    const {username} = req.body
+    try {
+        const userData = await User.findOne({
+            username
+        })
+
+        if(!userData) return res.status(404).json({status: 'failed', data: 'User not found'})
+
+        else return res.json({status: 'ok', data: {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            username: userData.username,
+            dni: userData.dni
+        }})
+    } catch (error) {
+
+        console.log(error)
+
+        return res.status(400).json({status: 'failed', data: error})
+    }
+})
+
+user.get("/email", async (req, res) => {
   try {
     const mail = await email.transporter.sendMail({
       from: "Remitente",

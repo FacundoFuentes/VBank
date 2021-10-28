@@ -14,25 +14,21 @@ transaction.post("/new", async (req, res) => {
     userTo = await User.findOne({ username: to });
 
     if (!userFrom || !userTo)
-      return res
-        .status(400)
-        .json({
-          status: "failed",
-          error:
-            "User not found or a meteorite landed on your house (or in the data center)",
-        });
+      return res.status(400).json({
+        status: "failed",
+        error:
+          "User not found or a meteorite landed on your house (or in the data center)",
+      });
 
     accountFrom = await Account.findOne({ _id: userFrom.account });
     accountTo = await Account.findOne({ _id: userTo.account });
   } catch (error) {
     console.log(error);
-    return res
-      .status(400)
-      .json({
-        status: "failed",
-        error:
-          "User not found or a meteorite landed on your house (or in the datacenter)",
-      });
+    return res.status(400).json({
+      status: "failed",
+      error:
+        "User not found or a meteorite landed on your house (or in the datacenter)",
+    });
   }
 
   if (accountFrom.balance - amount < 0)
@@ -73,6 +69,29 @@ transaction.post("/new", async (req, res) => {
   } catch (error) {
     return res.status(400).send(error.message);
   }
+});
+
+transaction.get("/", async (req, res) => {
+
+  const {username} = req.body
+  // accountTrnasction del usuario actual
+  try {
+    
+    const user = await User.findOne({ username }).populate('account')
+    const account = await Account.findOne({id: user.account}).populate({
+      path: 'transactions',
+      model: 'Transaction'
+    })
+    // account.transactions.forEach()
+    // const account = await user.account.populate('transactions')
+    // const transactions = account.transactions
+    console.log(account)
+    res.status(200).send(account)
+
+  } catch (error) {
+    res.status(404).send(error.message)
+  }
+
 });
 
 module.exports = transaction;

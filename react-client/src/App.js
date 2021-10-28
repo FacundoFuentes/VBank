@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home";
 
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignupPage from "./pages/SignupPage";
+import Transfer from "./pages/Transfer/Transfer";
 
 import Sidebar from './components/Sidebars/Sidebar.jsx';
 
@@ -19,8 +20,14 @@ function App() {
         </Route>
         <Route exact path="/user/signUp" component={SignupPage} />
         {/* <Route exact path="/user/signIn" component={} /> */}
+<<<<<<< Updated upstream
         </Switch>
         </Router>
+=======
+        <Route exact path="/home/transfer" component={Transfer}/>
+    </BrowserRouter>    
+
+>>>>>>> Stashed changes
   );
 }
 

@@ -3,11 +3,12 @@ const User = require("../models/User");
 const Account = require("../models/Account");
 const Transaction = require("../models/Transaction");
 const transaction = express.Router();
+const bcrypt = require('bcrypt')
 const AccountTransaction = require("../models/AccountTransaction");
 require("dotenv").config();
 
 transaction.post("/new", async (req, res) => {
-  const { amount, from, to, description, type } = req.body;
+  const { amount, from, to, description, type, cvv, validationCode } = req.body;
   let userFrom, userTo;
   try {
     userFrom = await User.findOne({ username: from });
@@ -20,7 +21,13 @@ transaction.post("/new", async (req, res) => {
           "User not found or a meteorite landed on your house (or in the data center)",
       });
 
-    accountFrom = await Account.findOne({ _id: userFrom.account });
+      
+      accountFrom = await Account.findOne({ _id: userFrom.account }).populate({
+        path: 'card',
+        model: 'Card',
+      });
+      if(!(await bcrypt.compare(cvv, accountFrom.card.cvv))) return res.status(400).json({status: 'failed', error: 'CVV is not valid'}) 
+      
     accountTo = await Account.findOne({ _id: userTo.account });
   } catch (error) {
     console.log(error);

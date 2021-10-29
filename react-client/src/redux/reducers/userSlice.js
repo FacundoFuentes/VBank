@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const userInfoString= localStorage.getItem('token');
 const currentUserInfo= userInfoString ? JSON.parse(userInfoString) : null; 
-// si hay un infoString, lo vuelvo a convertir a obj porque lo necesito asi, si no, quiere decir que  no hay un usuario registradoo
+// si hay un infoString, lo vuelvo a convertir a obj porque lo necesito asi, si no, quiere decir que  no hay un usuario registrado
 
 const initUserState={
     loggedInUser:currentUserInfo, // lo hago asi para que pueda ser nulo  o mantenga cualquier info de usuario

@@ -7,9 +7,10 @@ const Account = require("../models/Account");
 const accountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
+const user = express.Router()
+
 
 const email = require("../utils/email");
-const user = express.Router();
 const utils = require("../utils/utils.js");
 require("dotenv").config();
 
@@ -84,29 +85,22 @@ user.post("/register", async (req, res) => {
 });
 
 user.post("/login", async (req, res) => {
-  const { dni, username, password } = req.body;
+  const user = await User.findOne({ dni: req.body.dni, username: req.body.username }).lean();
 
-  const user = await User.findOne({ dni, username }).lean();
+    if(!user) return res.json({status: 'failed', error: 'User not Found'})
 
-  if (!user)
-    return res.json({ status: "failed", error: "Invalid Credentials" });
+    const checkPwMatch= await bcrypt.compare(
+        req.body.password,
+        user.password)
 
-  // const test = await jwt.verify(token, JWT_SECRET)
-
-  if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign(
-      { id: user._id, username: user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: "60000" }
-    );
-
-    console.log(token);
-
-    //token agregado
-    res.json({ status: "ok", data: "User logged in", token: token });
-  } else {
-    res.json({ status: "failed", data: "Invalid Credentials" });
-  }
+    if (!checkPwMatch){
+        return res.status(401).send([{param:"signinError", msg:"Incorrect email or password"}])
+    }
+    // uso destructuring para remover un campo de un objeto
+   const {lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account}= user; // esto es para no enviar la contraseña al front
+   res.send({
+    lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(userWithoutPw)
+})
 });
 
 user.get("/email", async (req, res) => {
@@ -182,4 +176,4 @@ user.get('/userAccountInfo', async (req, res) =>{
   }
 } )
 
-module.exports = user;
+module.exports = user

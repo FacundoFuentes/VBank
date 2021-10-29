@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const userInfoString= localStorage.getItem('token');
 const currentUserInfo= userInfoString ? JSON.parse(userInfoString) : null; 
-// si hay un infoString, lo vuelvo a convertir a obj porque lo necesito asi, si no, quiere decir que  no hay un usuario registradoo
+// si hay un infoString, lo vuelvo a convertir a obj porque lo necesito asi, si no, quiere decir que  no hay un usuario registrado
 
 const initUserState={
     loggedInUser:currentUserInfo, // lo hago asi para que pueda ser nulo  o mantenga cualquier info de usuario
@@ -24,8 +24,8 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
 
         const response = await axios.post('http://localhost:3001/user/register', userInfo)
     
-        localStorage.setItem('token', JSON.stringify(response.data.token)) 
-        //cambie "user_info" por "token" y "response.data.data" por "response.data.token"
+      /*   localStorage.setItem('token', JSON.stringify(response.data.token)) 
+        //cambie "token" por "token" y "response.data.data" por "response.data.token" */
         return response.data;
         
     } catch (error) {
@@ -46,6 +46,7 @@ export const signinUser= createAsyncThunk("user/login", async (userInfo,thunkAPI
         //aca uso el local storage para mantener al usuario 
         // como el response es un objeto, lo tengo que stringifiar
         localStorage.setItem('token', JSON.stringify(response.data))
+   
         return response.data;
         
     } catch (error) {

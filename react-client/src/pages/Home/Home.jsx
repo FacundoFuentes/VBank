@@ -1,11 +1,13 @@
-
-import { useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components"
+import{useSelector} from "react-redux"
+import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
 
 const Container = styled.div`
-  margin: 50px 300px;
+  margin: 0px 300px;
   display:flex;
   flex-direction: column;
   width: 100%;
@@ -71,6 +73,15 @@ const ChartContainer = styled.div`
 
 
 export default function Home() {
+  const loggedInUser = useSelector(state => state.user.loggedInUser)
+  
+  const history= useHistory();
+
+  useEffect(() => {
+   if(!loggedInUser) history.push("/")
+
+  }, [loggedInUser]);
+
   const [data] = useState([
     {
       "id": "Viajes",

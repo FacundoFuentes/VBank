@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
-import { Modal, Button, Text, Input, Row, Checkbox} from '@nextui-org/react';
+import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { signinUser } from '../../../redux/reducers/userSlice';
@@ -50,7 +50,7 @@ const LoginModal = () => {
             history.push("/home"); //esto me lleva hacia esta ventana
 
         }
-    }, [loggedInUser])
+    },[loggedInUser,history])
   
 
 
@@ -94,13 +94,15 @@ const LoginModal = () => {
         control={control}
         defaultValue=""
         rules={{ required: true, pattern: /^([0-9])*$/i }}
-        render={({ field }) => <Input clearable
+        render=
+        {({ field }) => <Input clearable
         bordered
         fullWidth
-        color="primary"
+        
         size="large"
         labelPlaceholder="DNI"
-         color="#f5f5f5" {...field} />}
+         color="#f5f5f5" 
+         {...field} />}
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
@@ -113,7 +115,7 @@ const LoginModal = () => {
         render={({ field }) => <Input clearable
         bordered
         fullWidth
-        color="primary"
+        
         size="large"
         labelPlaceholder="Username"
          color="#f5f5f5" {...field} />}
@@ -129,7 +131,6 @@ const LoginModal = () => {
         bordered
         fullWidth
         type="password"
-        color="primary"
         size="large"
         labelPlaceholder="Password"
          color="#f5f5f5" {...field} />}

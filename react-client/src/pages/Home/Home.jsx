@@ -1,6 +1,5 @@
-import {data, user } from "./user"
-
-import { useEffect } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components"
 import{useSelector} from "react-redux"
 import {useHistory} from "react-router-dom"
@@ -10,7 +9,7 @@ import { Grid, Spacer, Text} from "@nextui-org/react"
 
 
 const Container = styled.div`
-  margin: 50px 300px;
+  margin: 0px 300px;
   display:flex;
   flex-direction: column;
   width: 100%;

@@ -94,7 +94,7 @@ const generarCvv = () => {
   let cvv = Math.floor(
     (Math.random() * (999 - 100) + 100).toString()
   ).toString();
-
+  console.log(cvv)
   const encryptCvv = encrypt(cvv)
   return encryptCvv;
 };

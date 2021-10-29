@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea} from '@nextui-org/react';
+import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
 
@@ -54,38 +54,42 @@ const ContactBlack = styled(Contact)`
 
 
 export default function Transfer() {
+     const [showModal, setShowModal] = useState(false)
+    
+     const openModal=() => {
+      setShowModal(prev => !prev)
+     }
 
-      
     return (
       <div>
       <Sidebar/>
       <MaxContainer>
       <TitleContainer>
-      <Text h3 > Transferir </Text>
+      <Text h3 > Send Money </Text>
       </TitleContainer>
       <form>
       <Container>    
       <TextContainer> 
        <ToContainer>
-           <Text weight='bold'>Destinatario</Text>
+           <Text weight='bold'>To Username</Text>
            <Input contentClickable="true" contentRight={<ContactBlack onClick={()=>(alert("hola"))}/>} width="300px"/>
        </ToContainer>
        <MoneyContainer>
-           <Text weight='bold'>Monto</Text>
+           <Text weight='bold'>How much?</Text>
            <Input width="300px" size="xlarge" />
        </MoneyContainer>
        <DetailContainer>
-           <Text weight='bold'>Motivo</Text>
+           <Text weight='bold'>Note</Text>
            <Textarea  maxlength="120" width="300px"/>
        </DetailContainer>   
        </TextContainer>
        <ButtonContainer>
-       <Button rounded="Primary" color="#2CA1DE" size="small">Aceptar</Button>   
+       <Button onClick={openModal} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer>  
       </Container>
       </form>
       </MaxContainer>
-      
+      <Modal useModal={showModal}> hola</Modal>
       </div>
     )
 }

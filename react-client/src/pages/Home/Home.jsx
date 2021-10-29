@@ -1,4 +1,3 @@
-import React from "react";
 import {data, user } from "./user"
 import { useEffect } from "react";
 import styled from "styled-components"

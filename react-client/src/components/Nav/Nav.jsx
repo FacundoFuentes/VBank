@@ -1,6 +1,6 @@
 import React from 'react'
 import img from "../../img/logo.png"
-import { Button, Container, Row, Spacer, Link} from '@nextui-org/react';
+import { Container, Row, Spacer, Link} from '@nextui-org/react';
 import LoginModal from './Login/LoginModal';
 
 

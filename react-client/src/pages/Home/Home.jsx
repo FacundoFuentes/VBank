@@ -126,7 +126,7 @@ export default function Home() {
   useEffect(() => {
    if(!loggedInUser) history.push("/")
 
-  }, [loggedInUser]);
+  }, [loggedInUser,history]);
   
 
   return (

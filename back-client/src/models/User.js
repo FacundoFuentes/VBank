@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema(
       trim: true
     },
 
+    
     password: {
       type: String,
       required: true,
@@ -45,6 +46,12 @@ const userSchema = new mongoose.Schema(
           throw new Error("Invalid password");
         }
       },
+    },
+
+    validationCode: {
+      type: String,
+      required: true,
+      trim: true 
     },
 
     dni: {

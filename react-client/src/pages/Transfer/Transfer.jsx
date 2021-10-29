@@ -54,9 +54,7 @@ const ContactBlack = styled(Contact)`
 
 
 export default function Transfer() {
-    function handleClick (e) {
-        alert("vamo que funciona")
-      }
+
       
     return (
       <div>

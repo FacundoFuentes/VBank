@@ -1,10 +1,11 @@
 // CALCULO CBU
 
 // const generator = require('creditcard-generator')
-const bcrypt = require('bcrypt')
-const validator = require('validator')
+const bcrypt = require("bcrypt");
+const validator = require("validator");
+const generator = require("generate-password");
 
-const generarCbu = ()=> {
+const generarCbu = () => {
   var banco = ("000" + ((Math.random() * 999) | 0)).slice(-3);
   var sucursal = ("0000" + ((Math.random() * 9999) | 0)).slice(-4);
   var cuenta =
@@ -34,51 +35,75 @@ const generarCbu = ()=> {
   return cbu.toString();
 };
 
-
 // CARD NUMBER
-const  generarCard = async () => {
+const generarCard = async () => {
   const card =
     "5" +
     "47526" +
     Math.floor(Math.random() * 9999999999) // Número random de 10 dígitos
       .toString()
       // Si no llega  a 10, se rellena con 0
-      .padStart(9, "0")
-  
-  const hashedCard = await bcrypt.hash(card.slice(0,13),10)
-  const visibleCard = card.slice(-4)
+      .padStart(9, "0");
 
-  const  cardNumber = hashedCard + visibleCard
-  return cardNumber.toString()
-}
+  const hashedCard = await bcrypt.hash(card.slice(0, 13), 10);
+  const visibleCard = card.slice(-4);
 
-generarCard()
+  const cardNumber = hashedCard + visibleCard;
+  return cardNumber.toString();
+};
 
- const generarCvv = async () => {
+const generarCvv = () => {
+  let cvv = Math.floor(
+    (Math.random() * 999).toString().padStart("1")
+  ).toString();
 
-  let cvv = Math.floor((Math.random() * 999).toString().padStart("1")).toString()
-  console.log(cvv)
-  cvv = await bcrypt.hash(cvv, 10);
-  return cvv
-}
+  return cvv;
+};
 
-function validateRegisterData({lastName, firstName, email, username, password, dni}){
-  const regExPassword = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/)
-  const regExUsername = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/)
-  let error
-  if(!validator.isEmail(email)) error = 'Email should have a valid format'
-  else if(firstName.length > 32) error = 'First Name cannot be longer than 32 caracters'
-  else if(lastName.length > 32) error = 'Last Name cannot be longer than 32 caracters'
-  else if(dni.toString().length > 8 || dni.toString().length < 7) error = 'DNI cannot be longer than 8 caracters or shorter than 7'
-  else if(!username.match(regExUsername)) error = 'Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number'
-  else if(!password.match(regExPassword)) error = 'Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
-  else return {status: true, error}
-  return {status: false, error}
+const generateCode = () => {
+  var validationCode = generator.generate({
+    length: 6,
+    uppercase: false,
+  });
+  return validationCode;
+};
+
+function validateRegisterData({
+  lastName,
+  firstName,
+  email,
+  username,
+  password,
+  dni,
+}) {
+  const regExPassword = new RegExp(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/
+  );
+  const regExUsername = new RegExp(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/
+  );
+  let error;
+  if (!validator.isEmail(email)) error = "Email should have a valid format";
+  else if (firstName.length > 32)
+    error = "First Name cannot be longer than 32 caracters";
+  else if (lastName.length > 32)
+    error = "Last Name cannot be longer than 32 caracters";
+  else if (dni.toString().length > 8 || dni.toString().length < 7)
+    error = "DNI cannot be longer than 8 caracters or shorter than 7";
+  else if (!username.match(regExUsername))
+    error =
+      "Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number";
+  else if (!password.match(regExPassword))
+    error =
+      "Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character";
+  else return { status: true, error };
+  return { status: false, error };
 }
 
 module.exports = {
-    generarCbu,
-    generarCard,
-    generarCvv,
-    validateRegisterData
-}
+  generarCbu,
+  generarCard,
+  generarCvv,
+  validateRegisterData,
+  generateCode,
+};

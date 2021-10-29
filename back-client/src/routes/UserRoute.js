@@ -40,7 +40,7 @@ user.post("/register", async (req, res) => {
         startDate: new Date(2021, 10, 27),
         dueDate: new Date(2026, 10, 27),
         status: "Blocked",
-        cvv: await utils.generarCvv(),
+        cvv: await bcrypt.hash(utils.generarCvv(), 10),
       });
 
       const accountCreated = await Account.create({
@@ -58,6 +58,7 @@ user.post("/register", async (req, res) => {
         email,
         username,
         password: HashedPassword,
+        validationCode: await bcrypt.hash(utils.generateCode(), 10),
         dni,
         account: accountCreated._id,
         adress, //Recently added

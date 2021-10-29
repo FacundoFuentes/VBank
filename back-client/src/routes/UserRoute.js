@@ -97,9 +97,9 @@ user.post("/login", async (req, res) => {
         return res.status(401).send([{param:"signinError", msg:"Incorrect email or password"}])
     }
     // uso destructuring para remover un campo de un objeto
-   const {lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account}= user; // esto es para no enviar la contraseña al front
+   const {firstName, username} = user; // esto es para no enviar la contraseña al front
    res.send({
-    lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(userWithoutPw)
+    lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(user)
 })
 });
 

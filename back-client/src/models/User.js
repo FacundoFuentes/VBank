@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require('validator')
 
-// Agregar ADDRESS;
-
 const userSchema = new mongoose.Schema(
   {
     lastName: {
@@ -60,9 +58,21 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    // birthDate: {
-    //     type: Date,
-    // },
+    birthDate: { //Recently added
+        type: Date,
+    },
+
+    adress: { //Recently added
+      type: String,
+    },
+
+    phoneNumber: { //Recently added
+      type: String,
+    },
+
+    zipCode: { //Recently added
+      type: Number
+    },
 
     account: {
         type: mongoose.Schema.Types.ObjectId,

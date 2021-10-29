@@ -89,7 +89,6 @@ user.post("/login", async (req, res) => {
 
     if(!user) return res.json({status: 'failed', error: 'User not Found'})
 
-        // organice un poco mas el codigo, la funcionalidad es la misma
     const checkPwMatch= await bcrypt.compare(
         req.body.password,
         user.password)
@@ -102,11 +101,7 @@ user.post("/login", async (req, res) => {
    res.send({
     lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(userWithoutPw)
 })
-}
-);
-  
-
-   
+});
 
 user.get("/email", async (req, res) => {
   try {

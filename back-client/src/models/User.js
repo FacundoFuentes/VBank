@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema(
       },
     },
 
+    validationCode: {
+      type: String,
+      required: true,
+      trim: true 
+    },
+
     dni: {
       type: Number,
       required: true,

@@ -40,7 +40,7 @@ user.post("/register", async (req, res) => {
         startDate: new Date(2021, 10, 27),
         dueDate: new Date(2026, 10, 27),
         status: "Blocked",
-        cvv: await utils.generarCvv(),
+        cvv: await bcrypt.hash(utils.generarCvv(), 10),
       });
 
       const accountCreated = await Account.create({
@@ -58,6 +58,7 @@ user.post("/register", async (req, res) => {
         email,
         username,
         password: HashedPassword,
+        validationCode: await bcrypt.hash(utils.generateCode(), 10),
         dni,
         account: accountCreated._id,
       });
@@ -143,47 +144,5 @@ user.get("/email", async (req, res) => {
     return res.status(400).json({ message: "Something went wrong! " });
   }
 });
-
-user.get('/account', async (req, res) => {
-  const {username} = req.body
-
-  try {
-    
-    const user = await User.findOne({username}).populate({
-      path: 'account',
-      model: 'Account',
-      populate: {
-        path: 'card',
-        model: 'Card'
-      }
-    })
-
-    res.status(200).json({
-      userInfo: {
-        firstname: user.firstName,
-        lastname: user.lastName,
-        email: user.email,
-        dni: user.dni,
-      },
-      userAccount: {
-      cvu: user.account.cvu,
-      state: user.account.state,
-      balance: user.account.balance,
-      type: user.account.type,
-      card: {
-        cardNumber: user.account.card.cardNumber.slice(-4),
-        startDate: user.account.card.startDate,
-        dueDate: user.account.card.dueDate,
-        status: user.account.card.status,
-      }
-    }
-    })
-      
-  } catch (error) {
-    res.status(400).json({status: 'failed', error: error.message})
-  }
-
-
-})
 
 module.exports = user;

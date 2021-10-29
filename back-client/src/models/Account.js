@@ -1,41 +1,45 @@
 const mongoose = require("mongoose");
 
-
 const accountSchema = new mongoose.Schema(
-    {
-        cbu: {
-            type: Number,
-            required: true
-        },
-        state: {    
-            type: Boolean,
-            required: true
-        },
-        balance: {  
-            type: Number,
-            required: true,
-        },
-
-        type: {
-            type: String,
-            required: true,
-        },
-
-        // transactions: {
-        //     type: Schema.ObjectId,
-        //     ref: 'Transaction'
-        // },
-
-        // card: {
-        //     type: Schema.ObjectId,
-        //     ref: 'Card'
-        // }
-
+  {
+    cvu: {
+      type: String,
+      required: true,
     },
-    {timestamps:true}
-)
+    state: {
+      type: Boolean,
+      required: true,
+    },
+    balance: {
+      type: Number,
+      required: true,
+    },
 
+    type: {
+      type: String,
+      required: true,
+    },
 
+    card: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Card",
+    },
+
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+
+    transactions: [
+
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "AccountTransaction",
+      }
+    ],
+  },
+  { timestamps: true }
+);
 
 const Account = mongoose.model("Account", accountSchema);
 

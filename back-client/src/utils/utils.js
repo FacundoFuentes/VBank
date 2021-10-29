@@ -4,6 +4,21 @@
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const generator = require("generate-password");
+const CryptoJS = require('crypto-js')
+require('dotenv').config()
+
+
+
+const encrypt  = (param) => {
+  return CryptoJS.AES.encrypt(param, process.env.SECRET_CRYPT)
+}
+
+const decrypt = (param) => {
+  let bytes = CryptoJS.AES.decrypt(param, process.env.SECRET_CRYPT)
+  let original = bytes.toString(CryptoJS.enc.Utf8)
+  return original
+}
+
 
 const generarCbu = () => {
   var banco = ("000" + ((Math.random() * 999) | 0)).slice(-3);
@@ -54,11 +69,14 @@ const generarCard = async () => {
 
 const generarCvv = () => {
   let cvv = Math.floor(
-    (Math.random() * 999).toString().padStart("1")
+    (Math.random() * (999 - 100) + 100).toString()
   ).toString();
 
-  return cvv;
+  const encryptCvv = encrypt(cvv)
+  return encryptCvv;
 };
+
+
 
 const generateCode = () => {
   var validationCode = generator.generate({
@@ -106,4 +124,5 @@ module.exports = {
   generarCvv,
   validateRegisterData,
   generateCode,
+  decrypt
 };

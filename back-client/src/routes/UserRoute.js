@@ -40,7 +40,7 @@ user.post("/register", async (req, res) => {
         startDate: new Date(2021, 10, 27),
         dueDate: new Date(2026, 10, 27),
         status: "Blocked",
-        cvv: await bcrypt.hash(utils.generarCvv(), 10),
+        cvv: utils.generarCvv(),
       });
 
       const accountCreated = await Account.create({

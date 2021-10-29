@@ -11,7 +11,6 @@ const user = express.Router()
 
 
 const email = require("../utils/email");
-const user = express.Router();
 const utils = require("../utils/utils.js");
 require("dotenv").config();
 
@@ -86,28 +85,25 @@ user.post("/register", async (req, res) => {
 });
 
 user.post("/login", async (req, res) => {
-  const { dni, username, password } = req.body;
-
-  const user = await User.findOne({ dni, username }).lean();
+  const user = await User.findOne({ dni: req.body.dni, username: req.body.username }).lean();
 
     if(!user) return res.json({status: 'failed', error: 'User not Found'})
 
         // organice un poco mas el codigo, la funcionalidad es la misma
     const checkPwMatch= await bcrypt.compare(
-        password,
+        req.body.password,
         user.password)
 
     if (!checkPwMatch){
         return res.status(401).send([{param:"signinError", msg:"Incorrect email or password"}])
-
     }
     // uso destructuring para remover un campo de un objeto
-   const {_id,password,createdAt,updatedAt,...userWithoutPw}= user; // esto es para no enviar la contraseña al front
+   const {lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account}= user; // esto es para no enviar la contraseña al front
    res.send({
-    ...userWithoutPw, token: utils.getToken(userWithoutPw)
+    lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(userWithoutPw)
+})
 }
-
-   );
+);
   
 
    
@@ -185,4 +181,4 @@ user.get('/userAccountInfo', async (req, res) =>{
   }
 } )
 
-module.exports = user;
+module.exports = user

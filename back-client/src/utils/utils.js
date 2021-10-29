@@ -57,6 +57,7 @@ generarCard()
  const generarCvv = async () => {
 
   let cvv = Math.floor((Math.random() * 999).toString().padStart("1")).toString()
+  console.log(cvv)
   cvv = await bcrypt.hash(cvv, 10);
   return cvv
 }

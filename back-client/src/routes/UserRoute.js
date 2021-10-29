@@ -14,7 +14,7 @@ const utils = require("../utils/utils.js");
 require("dotenv").config();
 
 user.post("/register", async (req, res) => {
-  const { lastName, firstName, email, username, password, dni } = req.body;
+  const { lastName, firstName, email, username, password, dni, adress, birthDate, phoneNumber, zipCode } = req.body;
 
   const HashedPassword = await bcrypt.hash(password, 10);
 

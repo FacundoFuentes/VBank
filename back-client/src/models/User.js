@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema(
     },
 
     phoneNumber: { //Recently added
-      type: String,
+      type: Number,
     },
 
     zipCode: { //Recently added

@@ -1,14 +1,12 @@
+
 import React, { useEffect } from 'react'
 import {useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
-import register from "../img/register.jpg"
+import register from "../../img/register.jpg"
 import styled from "styled-components"
 import { useForm, Controller } from "react-hook-form";
 import { Input, Button } from '@nextui-org/react';
-import {registerUser } from '../redux/reducers/userSlice';
-
-
-
+import { registerUser } from '../../redux/reducers/userSlice';
 
 
 
@@ -80,12 +78,6 @@ form{
 `;
 
 
-
-const BtnSubmit = styled.input``;
-
-
-
-
 const SignupPage = () => {
   
  const dispatch = useDispatch()
@@ -102,7 +94,7 @@ const SignupPage = () => {
       history.push("/home"); //esto me lleva hacia esta ventana
 
   }
-}, [loggedInUser])
+}, [loggedInUser,history])
 
   const { control, handleSubmit, formState: { errors }} = useForm();
   
@@ -223,9 +215,12 @@ const SignupPage = () => {
         control={control}
         defaultValue=""
         rules={{required:true}}
-        render={({ field }) => <Input.Password   underlined labelPlaceholder="Password" color="#f5f5f5"  type="password" className="input"
-        underlined 
-        labelPlaceholder="Password"
+        render={({ field }) => <Input.Password
+           underlined 
+           labelPlaceholder="Password"
+           
+             type="password" 
+             className="input"
          color="#f5f5f5" {...field} />}
       />
      {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}

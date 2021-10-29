@@ -5,6 +5,7 @@ const Transaction = require("../models/Transaction");
 const transaction = express.Router();
 const bcrypt = require('bcrypt')
 const AccountTransaction = require("../models/AccountTransaction");
+const utils = require('../utils/utils')
 require("dotenv").config();
 
 transaction.post("/new", async (req, res) => {
@@ -26,7 +27,7 @@ transaction.post("/new", async (req, res) => {
         path: 'card',
         model: 'Card',
       });
-      if(!(await bcrypt.compare(cvv, accountFrom.card.cvv))) return res.status(400).json({status: 'failed', error: 'CVV is not valid'}) 
+      if(!(utils.decrypt(accountFrom.card.cvv) === cvv)) return res.status(400).json({status: 'failed', error: 'CVV is not valid'}) 
       
     accountTo = await Account.findOne({ _id: userTo.account });
   } catch (error) {

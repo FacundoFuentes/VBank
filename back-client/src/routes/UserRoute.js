@@ -10,8 +10,9 @@ const Card = require("../models/Card");
 const user = express.Router()
 
 
-const email = require("../utils/email");
+const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
+
 require("dotenv").config();
 
 user.post("/register", async (req, res) => {
@@ -74,6 +75,8 @@ user.post("/register", async (req, res) => {
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 
+      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv)
+
       res.json({ status: "ok", data: userCreated });
     } catch (error) {
       console.log(error);
@@ -87,7 +90,7 @@ user.post("/register", async (req, res) => {
 user.post("/login", async (req, res) => {
   const user = await User.findOne({ dni: req.body.dni, username: req.body.username }).lean();
 
-    if(!user) return res.json({status: 'failed', error: 'User not Found'})
+    if(!user) return res.status(401).json({status: 'failed', error: 'User not Found'})
 
     const checkPwMatch= await bcrypt.compare(
         req.body.password,
@@ -109,7 +112,7 @@ user.get("/email", async (req, res) => {
       from: "Remitente",
       to: "simoncito@hotmail.com", // recuperar desde user
       subject: "Verification Email",
-      text: "Codigo de verificacion: ****", // o html
+      html:"<p>Codigo de verificacion: ****</p>"
     });
 
     res.status(200).json({ status: "ok", data: mail });

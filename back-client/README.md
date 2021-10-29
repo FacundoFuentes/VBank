@@ -27,3 +27,34 @@ username: String <br>
 Devuelve: <br>
 Status 'ok' o 'failed'<br>
 Data: ej 'User Loged In'<br>
+
+<h2>/user/byUsername:</h2>
+
+Recibirá por body: <br>
+username: String<br>
+
+Devuelve: <br>
+{ <br>
+  "status": "ok", <br>
+  "data": { <br>
+    "firstName": "Fuentes", <br>
+    "lastName": "Facundo", <br>
+    "email": "facufu@gmail.com", <br>
+    "username": "FacuFu1", <br> <br>
+    "dni": 16852479 <br>
+  } <br>
+} <br>
+
+<h2>/transactions/new:</h2> 
+
+Recibirá por body: <br>
+amount: Float <br>
+from: username del usuario que envía <br>
+to: username del objectivo a enviar dinero <br>
+description: algo bonito "Feliz cumple te envío 100 pesos" <br>
+type: ['TRANSFER', 'CHARGE', 'REFUND'] <br>
+
+Devuelve: <br>
+{status: 'failed', data: error} <br>
+o si salio bien <br>
+devuelve la transacción completa <br>

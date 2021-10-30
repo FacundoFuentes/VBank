@@ -5,8 +5,8 @@ const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
 require('dotenv').config()
 
-const getToken =(userInfo) => {
-    return jwt.sign(userInfo,process.env.JWT_SECRET, {expiresIn: '60000'});
+const signToken =(userInfo) => {
+    return jwt.sign(userInfo ,process.env.JWT_SECRET, {expiresIn: '60000'});
 }
 
 const verifyToken=(req,res,next) => {
@@ -148,6 +148,6 @@ module.exports = {
   validateRegisterData,
   generateCode,
   decrypt,
-  getToken,
+  signToken,
   verifyToken
 };

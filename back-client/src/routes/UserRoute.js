@@ -85,22 +85,24 @@ user.post("/register", async (req, res) => {
 });
 
 user.post("/login", async (req, res) => {
-  const user = await User.findOne({ dni: req.body.dni, username: req.body.username }).lean();
+  const {username, password} = req.body
 
-    if(!user) return res.json({status: 'failed', error: 'User not Found'})
+  const userFound = User.findOne({username}).lean()
 
-    const checkPwMatch= await bcrypt.compare(
-        req.body.password,
-        user.password)
+  if(!userFound) return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
 
-    if (!checkPwMatch){
-        return res.status(401).send([{param:"signinError", msg:"Incorrect email or password"}])
-    }
-    // uso destructuring para remover un campo de un objeto
-   const {firstName, username} = user; // esto es para no enviar la contraseña al front
-   res.send({
-    lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(user)
-})
+  if(bcrypt.compare(password, userFound.password)){
+
+    const token = utils.signToken({id: user._id, username: user.username})
+
+    return res.status(200).json({status: 'ok', data: token})
+
+  } 
+
+  return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
+
+
+
 });
 
 user.get("/email", async (req, res) => {

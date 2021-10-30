@@ -87,11 +87,11 @@ user.post("/register", async (req, res) => {
 user.post("/login", async (req, res) => {
   const {username, password} = req.body
 
-  const userFound = User.findOne({username}).lean()
+  const userFound = await User.findOne({username}).lean()
 
   if(!userFound) return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
 
-  if(bcrypt.compare(password, userFound.password)){
+  if(await bcrypt.compare(password, userFound.password)){
 
     const token = utils.signToken({id: user._id, username: user.username})
 

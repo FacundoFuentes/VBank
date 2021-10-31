@@ -70,7 +70,7 @@ export default function Transfer() {
 function handleChange(e){
   setState({
       ...state,
-      [e.target.to]: e.target.value
+      [e.target.name]: e.target.value
   })
   
 }
@@ -114,13 +114,13 @@ function handleDescription(e){
        
        <MoneyContainer>
            <Text weight='bold'>How much?</Text>
-           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
+           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleChange(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
            <Text weight='bold'>Note</Text>
-           <Textarea name="description" maxlength="120" width="300px" onChange={(e)=>handleDescription(e)}/>
+           <Textarea name="description" maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
        
        </DetailContainer>   
        

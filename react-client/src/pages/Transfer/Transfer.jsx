@@ -63,8 +63,10 @@ export default function Transfer() {
   const [state, setState] = useState({
     to: '',
     amount: '',
-    description: ''
+    description: '',
+    type: 'TRANSFER'
 })
+
 
 
 function handleChange(e){
@@ -82,13 +84,7 @@ function handleAmount(e){
   })
 }
 
-function handleDescription(e){
-  setState({
-      ...state,
-      [e.target.description]: e.target.value
-  })
-  
-}
+
 
 
 
@@ -108,13 +104,13 @@ function handleDescription(e){
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input name="to" contentClickable="true" contentRight={<ContactBlack onChange={(e)=>handleChange(e)}/>} width="300px"/>
+            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
            <Text weight='bold'>How much?</Text>
-           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleChange(e)} />
+           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
@@ -141,9 +137,9 @@ function handleDescription(e){
         
         <Modal.Body> 
          
-         <Text>To Username: </Text>
-         <Text>How much:</Text>
-         <Text>Note:</Text>
+         <Text>To Username: {` ${state.to}`} </Text>
+         <Text>How much: {` ${state.amount}`} </Text>
+         <Text>Note:{` ${state.description}`}</Text>
         </Modal.Body>
        
         <Modal.Footer>

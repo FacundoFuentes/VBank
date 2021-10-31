@@ -5,11 +5,13 @@ import{useSelector} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
-import { Grid, Spacer, Text} from "@nextui-org/react"
-import Sidebar from "../../components/Sidebars/Sidebar";
+import { Grid, Spacer} from "@nextui-org/react"
+import SideBar from "../../components/Sidebars/Sidebar"
 
-const Container = styled.div`
+
+const ContainerS = styled.div`
   margin: 0px 300px;
+  padding-left:auto;
   display:flex;
   flex-direction: column;
   width: 100%;
@@ -38,7 +40,7 @@ const CardBalance = styled.div`
   padding: 50px;
 `;
 const Balance = styled.div`
-  background-color: #dddbdb;
+  background-color: #ebe4e4a5;
   border-radius:20px;
   display:flex;
   width:100%;
@@ -89,31 +91,28 @@ const CardName = styled.h5`
 `;
 const DateNameTotal = styled.div`
   padding-top: 15px;
+  margin-bottom:10px;
   display:flex;
-  position:relative;
   justify-content:space-around;
   width: 100%;
   height:50px;
 `;
-const LatestMovements = styled(Container)`
-  display:flex;
-  padding-left:30px;
-  margin:20px;
+const LatestMovements = styled(Grid.Container)`
   color:black;
-  padding:20px;
-  width:97%;
-  height:500px;
-  overflow-y:auto;
-  padding-top: 70px;
-  
-  
+  width:100%;
+  padding-bottom:10px;
+
 `;
 const GridLatestMovents = styled(Grid)`
-  display:flex;
-  background-color: #d6d1d182;
   border-radius:10px;
-  height: 50px;
-  justify-content:center;
+`;
+const GridContainer = styled.div`
+  border-radius:10px;
+  height:100%;
+  width:100%;
+  overflow:auto;
+  overflow-x:hidden;
+  
 `;
 
 
@@ -129,9 +128,9 @@ export default function Home() {
   
 
   return (
-    <div>
-    <Sidebar/>
-    <Container>
+    <>
+    <SideBar/>
+    <ContainerS>
         <GridS>
         <TextS>My Card</TextS>
         <TextS>Found</TextS>
@@ -158,21 +157,23 @@ export default function Home() {
                 <h3>Date</h3>
                 <h3>Name</h3>
                 <h3>Total</h3>
+                
             </DateNameTotal>
-              <LatestMovements>
-              {user.latestMovements.map((e, i) => 
-                <Grid.Container key={i} gap={1}  >
-                  <Spacer x={5.5}/>
-                  <GridLatestMovents xs={1} ><Text h4>{`${e.date}` }</Text> </GridLatestMovents>
-                  <Spacer x={1}/>
-                  <GridLatestMovents xs={7.1} ><Text h4>{`${e.name}` }</Text> </GridLatestMovents>
-                  <Spacer x={1}/>
-                  <GridLatestMovents xs={1} ><Text h4>{`-$${e.found}`}</Text> </GridLatestMovents>
-                    <Spacer x={3} y={3}/>
-                </Grid.Container> 
-              ) 
-              }
-              </LatestMovements>
+              <GridContainer>
+              {user.latestMovements?.map((e, i) => 
+              <LatestMovements key={i} gap={2} justify="space-around">
+                <Spacer x={4} />
+                <GridLatestMovents xs={1}>{` ${e.date} `} </GridLatestMovents>
+                <GridLatestMovents justify="center" xs={6}>{` ${e.name} `} </GridLatestMovents>
+                <Spacer x={0}/>
+                <GridLatestMovents xs={1}>{` -$${e.found} `} </GridLatestMovents>
+                <Spacer x={2} />
+              </LatestMovements>  
+                  ) 
+                }
+              </GridContainer>
+              
+        
               
           </Expeses>
         </GridS>
@@ -183,8 +184,8 @@ export default function Home() {
         </ChartContainer>
         </GridS>
         
-    </Container>
-    </div>
+    </ContainerS>
+  </> 
     
   )
 }

@@ -65,7 +65,7 @@ export default function Transfer() {
     amount: '',
     description: ''
 })
-const datos=this.state
+
 
 function handleChange(e){
   setState({
@@ -141,7 +141,7 @@ function handleDescription(e){
         
         <Modal.Body> 
          
-         <Text>To Username:${[state.to]} </Text>
+         <Text>To Username: </Text>
          <Text>How much:</Text>
          <Text>Note:</Text>
         </Modal.Body>

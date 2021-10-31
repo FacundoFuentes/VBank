@@ -93,7 +93,7 @@ const LoginModal = () => {
         name="dni"
         control={control}
         defaultValue=""
-        rules={{ required: true, pattern: /^([0-9])*$/i }}
+        rules={{ required: true, pattern: /^([0-9])*$/i, maxLength:8 }}
         render=
         {({ field }) => <Input clearable
         bordered
@@ -106,6 +106,7 @@ const LoginModal = () => {
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error">it should only have a max of 8 characters</p>}
             <Controller
         className="fields"
         name="username"

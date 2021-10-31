@@ -3,7 +3,56 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
+const pdf = require('html-pdf');
 require('dotenv').config()
+
+const generatePDF = async (date, sender, receiver, amount) => {
+  const content = `
+  <!doctype html>
+      <html>
+         <head>
+              <meta charset="utf-8">
+              <title>PDF Result Template</title>
+              <style>
+                  .Header{
+                    background-color: blue,
+                    display: flex,
+                    align-items: center,
+                    justify-content: center
+                  }
+                  h1 {
+                      color: green;
+                  }
+                  h2{
+                    background-color: blue
+                  }
+              </style>
+          </head>
+          <body>
+          <div className = "Header">
+              <h1>Transaction</h1>
+              <h3>Dear ${receiver}, you received your transaction and it is deposited into your account.
+              <h4>Date: ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}</h4>
+          </div>
+          <div className = "content">
+              <p>${sender} sent ${amount}</p>
+              </div>
+              <h2>VBank</h2>
+          </body>
+      </html>
+  `;
+
+
+  pdf.create(content).toFile('./html-pdf.pdf', function(err, res) {
+      if (err){
+          console.log(err);
+      } else {
+          console.log(res);
+      }
+  });
+}
+const date = new Date()
+generatePDF(date, 'SimonOro1', 'FacuFu1', 100)
 
 const getToken =(userInfo) => {
     return jwt.sign(userInfo,process.env.JWT_SECRET, {expiresIn: '60000'});
@@ -118,7 +167,7 @@ function validateRegisterData({
   dni,
 }) {
   const regExPassword = new RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/
   );
   const regExUsername = new RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/

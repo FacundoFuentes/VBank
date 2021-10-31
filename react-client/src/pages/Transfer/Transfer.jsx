@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
-
+import axios from 'axios' 
 
 const Container= styled.div`
 display: flex;
@@ -61,6 +61,7 @@ export default function Transfer() {
   }
 
   const [state, setState] = useState({
+    from:"SimonOro1",
     to: '',
     amount: '',
     description: '',
@@ -80,11 +81,22 @@ function handleChange(e){
 function handleAmount(e){
   setState({
       ...state,
-      amount: parseFloat(e.target.value)
+      amount: parseInt(e.target.value)
   })
 }
 
 
+ function handleSubmit(e){
+  e.preventDefault()
+  console.log(state)
+  axios.post('http://localhost:3001/transactions/new', state)
+  .then(response=> {
+   console.log(response)
+   }) .catch(error=>{
+     console.log(error)
+   })
+  }
+    
 
 
 
@@ -97,7 +109,7 @@ function handleAmount(e){
           <Text h3 > Send Money </Text>
         </TitleContainer>
          
-         <form>
+         <form >
       
       <Container>    
         <TextContainer> 
@@ -146,7 +158,7 @@ function handleAmount(e){
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" onClick={closeHandler}>
+            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
         </Modal.Footer>
@@ -162,3 +174,4 @@ function handleAmount(e){
       </div>
     )
 }
+

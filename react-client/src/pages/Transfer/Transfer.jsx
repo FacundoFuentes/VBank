@@ -4,6 +4,7 @@ import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
+import jwt from 'jsonwebtoken'
 
 const Container= styled.div`
 display: flex;
@@ -63,12 +64,11 @@ export default function Transfer() {
 
 
   const [state, setState] = useState({
-    from:"SimonOro1",
     to: '',
     amount: '',
     description: '',
     type: 'TRANSFER',
-    cvv:0
+    cvv:''
 })
 
 
@@ -88,17 +88,14 @@ function handleAmount(e){
   })
 }
 
-function handleCvv(e){
-  setState({
-      ...state,
-      cvv: parseInt(e.target.value)
-  })
-}
+const token = JSON.parse(localStorage.getItem("token")).data
+let {username} = jwt.decode(token)
+console.log(username)
 
  function handleSubmit(e){
   e.preventDefault()
   console.log(state)
-  axios.post('http://localhost:3001/transactions/new', state)
+  axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
    }) .catch(error=>{
@@ -161,7 +158,7 @@ function handleCvv(e){
          <Text>To Username: {` ${state.to}`} </Text>
          <Text>How much: {` ${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
-         <Input label="CVV:" type="number" width="60px" onChange={(e)=>handleCvv(e)}></Input>
+         <Input name="cvv"label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>

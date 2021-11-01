@@ -35,18 +35,12 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     }
 })
 
-export const getUserInfo = createAsyncThunk("user/Info", async (username="Crissxp76",thunkAPI) =>{
-  // const token = JSON.parse(localStorage.getItem("token")).data
-  // let {name} = jwt.decode(token)
+export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{
+  const token = JSON.parse(localStorage.getItem("token")).data
+  let {username} = jwt.decode(token)
   
   try {
-    const response = await axios.post("localhost:3001/user/userinfo", {
-      headers:{
-        "Content-Type":"application/json",
-        "X-Requested-With":"XMLHttpRequest"
-      }
-    }, username)
-
+    const response = await axios.post("http://localhost:3001/user/userinfo", {username:username})
     return response.data
   } catch (error) {
     console.log(error)

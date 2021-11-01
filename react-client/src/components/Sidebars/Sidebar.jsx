@@ -81,7 +81,7 @@ const logOut = ()=> {
           <Spacer y={10}/>
             <IconUser/>
             <Spacer y={2}/> 
-         <Link to="/"><IconLogOut onClick={logOut}/></Link>   
+         <Link to="/"><IconLogOut display="flex"  onClick={logOut}/></Link>   
         </SideNav>
     </div>
   )

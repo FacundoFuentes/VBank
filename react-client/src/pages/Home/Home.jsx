@@ -1,12 +1,13 @@
 import {data, user } from "./user"
 import { useEffect } from "react";
 import styled from "styled-components"
-import{useSelector} from "react-redux"
+import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
 import { Grid, Spacer} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
+import { getUserInfo } from "../../redux/reducers/userSlice";
 
 
 const ContainerS = styled.div`
@@ -118,7 +119,7 @@ const GridContainer = styled.div`
 
 export default function Home() {
   const loggedInUser = useSelector(state => state.user.loggedInUser)
-  
+  const dispatch = useDispatch()
   const history= useHistory();
 
    useEffect(() => {
@@ -126,6 +127,9 @@ export default function Home() {
 
   }, [loggedInUser,history]);
   
+  useEffect(() => {
+    dispatch(getUserInfo())
+  }, [])
 
   return (
     <>
@@ -162,10 +166,11 @@ export default function Home() {
               <GridContainer>
               {user.latestMovements?.map((e, i) => 
               <LatestMovements key={i} gap={2} justify="space-around">
-                <Spacer x={4} />
+                <Spacer x={3} />
                 <GridLatestMovents xs={1}>{` ${e.date} `} </GridLatestMovents>
-                <GridLatestMovents justify="center" xs={6}>{` ${e.name} `} </GridLatestMovents>
                 <Spacer x={0}/>
+                <GridLatestMovents justify="center" xs={4}>{` ${e.name} `} </GridLatestMovents>
+                <Spacer x={1}/>
                 <GridLatestMovents xs={1}>{` -$${e.found} `} </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  

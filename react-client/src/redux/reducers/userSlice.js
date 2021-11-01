@@ -51,6 +51,7 @@ export const signinUser= createAsyncThunk("user/login", async (userInfo,thunkAPI
         
     } catch (error) {
         const {rejectWithValue}= thunkAPI;
+        console.log(error.response.data)
         return rejectWithValue(error.response.data);
     }
 })
@@ -88,7 +89,8 @@ const userSlice = createSlice({
           if(registerState.loading === "pending"){
               registerState.loading="idle"// seteo el loading como terminado
               registerState.currentRequestID = undefined;
-              registerState.error = action.payload; //envio el error
+              registerState.error = action.payload.data; //envio el error
+              console.log( registerState.error = action.payload.data )
           }
       },
       [signinUser.pending]: (state,action)=>{

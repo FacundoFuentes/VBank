@@ -6,9 +6,12 @@ const transaction = express.Router();
 const bcrypt = require('bcrypt')
 const AccountTransaction = require("../models/AccountTransaction");
 const utils = require('../utils/utils')
+const JwtStrategy = require('../utils/strategy/jwt.strategy')
+const passport = require ('passport')
 require("dotenv").config();
-
-transaction.post("/new", async (req, res) => {
+passport.use(JwtStrategy)
+transaction.post("/new",
+passport.authenticate('jwt', {session: false}), async (req, res) => {
   const { amount, from, to, description, type, cvv, validationCode } = req.body;
   let userFrom, userTo;
   try {

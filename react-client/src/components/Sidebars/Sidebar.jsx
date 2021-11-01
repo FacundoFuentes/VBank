@@ -78,7 +78,7 @@ const logOut = ()=> {
          <Link to="/home"><IconHome/></Link>
            <Spacer y={3}/>  
           <Link to="/home/transfer"> <IconCashCoin/></Link>
-          <Spacer y={17}/>
+          <Spacer y={10}/>
             <IconUser/>
             <Spacer y={2}/> 
          <Link to="/"><IconLogOut onClick={logOut}/></Link>   

@@ -1,12 +1,13 @@
 import {data, user } from "./user"
 import { useEffect } from "react";
 import styled from "styled-components"
-import{useSelector} from "react-redux"
+import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
 import { Grid, Spacer} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
+import { getUserInfo } from "../../redux/reducers/userSlice";
 
 
 const ContainerS = styled.div`
@@ -118,7 +119,7 @@ const GridContainer = styled.div`
 
 export default function Home() {
   const loggedInUser = useSelector(state => state.user.loggedInUser)
-  
+  const dispatch = useDispatch()
   const history= useHistory();
 
    useEffect(() => {
@@ -126,6 +127,9 @@ export default function Home() {
 
   }, [loggedInUser,history]);
   
+  useEffect(() => {
+    dispatch(getUserInfo())
+  }, [])
 
   return (
     <>

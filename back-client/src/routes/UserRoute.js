@@ -122,9 +122,9 @@ user.post("/login", async (req, res) => {
 //   }
 // });
 
-user.get('/userInfo', async (req, res) => {
+user.post('/userInfo', async (req, res) => {
   const {username} = req.body
-
+  console.log(username)
   try {
     
     const user = await User.findOne({username})

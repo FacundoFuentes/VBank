@@ -1,5 +1,6 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios' 
+import jwt from "jsonwebtoken"
 
 
 
@@ -11,7 +12,7 @@ const initUserState={
     loggedInUser:currentUserInfo, // lo hago asi para que pueda ser nulo  o mantenga cualquier info de usuario
     registerState: {loading: "idle", error:null, currentRequestID: undefined}, //para asegurarme que no haya multiples request desde un mismo usuario
     signinState: {loading: "idle", error:null, currentRequestID: undefined},
-    
+    userInfo: {info:null, loading: "idle", error:null, currentRequestID: undefined}
 }
 
 export const registerUser= createAsyncThunk("user/register", async (userInfo,thunkAPI)=>{
@@ -34,6 +35,23 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     }
 })
 
+export const getUserInfo = createAsyncThunk("user/Info", async (username="Crissxp76",thunkAPI) =>{
+  // const token = JSON.parse(localStorage.getItem("token")).data
+  // let {name} = jwt.decode(token)
+  
+  try {
+    const response = await axios.post("localhost:3001/user/userinfo", {
+      headers:{
+        "Content-Type":"application/json",
+        "X-Requested-With":"XMLHttpRequest"
+      }
+    }, username)
+
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 export const signinUser= createAsyncThunk("user/login", async (userInfo,thunkAPI)=>{
     //manejo de errores
@@ -117,7 +135,30 @@ const userSlice = createSlice({
                 signinState.error = action.payload; //envio el error
             }
         },
-     
+        [getUserInfo.pending]: (state,action)=>{
+          let {userInfo} = state;
+          if(userInfo.loading === "idle"){
+              userInfo.loading = "pending"
+              userInfo.currentRequestID = action.meta.requestId
+          }
+          },
+          [getUserInfo.fulfilled]: (state,action)=>{
+            let {userInfo} = state;
+              if(userInfo.loading === "pending"){
+                  userInfo.loading = "idle"
+                  userInfo.currentRequestID = undefined;
+                  userInfo.error= null;
+                  state.userInfo.info= action.payload
+              }
+              },
+          [getUserInfo.rejected]: (state,action)=>{
+              let {userInfo} = state;
+              if(userInfo.loading === "pending"){
+                  userInfo.loading="idle"// seteo el loading como terminado
+                  userInfo.currentRequestID = undefined;
+                  userInfo.error = action.payload; //envio el error
+              }
+          },
       
   
   }

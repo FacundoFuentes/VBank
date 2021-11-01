@@ -190,5 +190,5 @@ module.exports = {
   generateCode,
   decrypt,
   signToken,
-  verifyToken
+  verifyToken,
 };

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
-
+import axios from 'axios' 
 
 const Container= styled.div`
 display: flex;
@@ -61,10 +61,13 @@ export default function Transfer() {
   }
 
   const [state, setState] = useState({
+    from:"SimonOro1",
     to: '',
     amount: '',
-    description: ''
+    description: '',
+    type: 'TRANSFER'
 })
+
 
 
 function handleChange(e){
@@ -78,17 +81,22 @@ function handleChange(e){
 function handleAmount(e){
   setState({
       ...state,
-      amount: parseFloat(e.target.value)
+      amount: parseInt(e.target.value)
   })
 }
 
-function handleDescription(e){
-  setState({
-      ...state,
-      [e.target.description]: e.target.value
-  })
-  
-}
+
+ function handleSubmit(e){
+  e.preventDefault()
+  console.log(state)
+  axios.post('http://localhost:3001/transactions/new', state)
+  .then(response=> {
+   console.log(response)
+   }) .catch(error=>{
+     console.log(error)
+   })
+  }
+    
 
 
 
@@ -101,20 +109,20 @@ function handleDescription(e){
           <Text h3 > Send Money </Text>
         </TitleContainer>
          
-         <form>
+         <form >
       
       <Container>    
         <TextContainer> 
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input name="to" contentClickable="true" contentRight={<ContactBlack onChange={(e)=>handleChange(e)}/>} width="300px"/>
+            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
            <Text weight='bold'>How much?</Text>
-           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleChange(e)} />
+           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
@@ -141,16 +149,16 @@ function handleDescription(e){
         
         <Modal.Body> 
          
-         <Text>To Username: </Text>
-         <Text>How much:</Text>
-         <Text>Note:</Text>
+         <Text>To Username: {` ${state.to}`} </Text>
+         <Text>How much: {` ${state.amount}`} </Text>
+         <Text>Note:{` ${state.description}`}</Text>
         </Modal.Body>
        
         <Modal.Footer>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" onClick={closeHandler}>
+            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
         </Modal.Footer>
@@ -166,3 +174,4 @@ function handleDescription(e){
       </div>
     )
 }
+

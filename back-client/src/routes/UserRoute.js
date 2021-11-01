@@ -7,9 +7,11 @@ const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
+const {ExtractJwt} = require('passport-jwt')
 const user = express.Router()
-
-
+const JwtStrategy = require('../utils/strategy/jwt.strategy')
+const passport = require ('passport')
+const jwtDecode = require('jwt-decode')
 const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
 
@@ -106,25 +108,9 @@ user.post("/login", async (req, res) => {
 
 });
 
-// user.get("/email", async (req, res) => {
-//   try {
-//     const mail = await email.transporter.sendMail({
-//       from: "Remitente",
-//       to: "simoncito@hotmail.com", // recuperar desde user
-//       subject: "Verification Email",
-//       html:"<p>Codigo de verificacion: ****</p>"
-//     });
-
-//     res.status(200).json({ status: "ok", data: mail });
-//   } catch (error) {
-//     emailStatus = error;
-//     return res.status(400).json({ message: "Something went wrong! " });
-//   }
-// });
-
 user.post('/userInfo', async (req, res) => {
   const {username} = req.body
-  console.log(username)
+
   try {
     
     const user = await User.findOne({username})
@@ -147,7 +133,7 @@ user.post('/userInfo', async (req, res) => {
   }
 })
 
-user.get('/userAccountInfo', async (req, res) =>{
+user.post('/userAccountInfo', async (req, res) =>{
   const {username} = req.body
 
   try {
@@ -180,18 +166,22 @@ user.get('/userAccountInfo', async (req, res) =>{
 } )
 
 
-user.patch('/userBalance', async (req, res) => {
-  const {chargue, username} = req.body
+user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req, res) => {
+
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
+  const {charge} = req.body
 
   try{
+    const username = decodedToken.username
     const user = await User.findOne({username})
     const account_id = user.account
-    const account = await Account.findOne({account_id})
-
+    const account = await Account.findById({_id: account_id})
+    console.log(user.account)
     const transaction = await Transaction.create({
       transactionCode: "AD235hty", //Random
       date: new Date(),
-      amount: chargue,
+      amount: charge,
       description: 'Enjoy your money!',
       type: 'CHARGE',
       // status: 'PROCESSING',
@@ -204,7 +194,7 @@ user.patch('/userBalance', async (req, res) => {
       transaction,
     });
 
-    account.balance += chargue
+    account.balance += charge
     account.transactions.push(accountTransaction)
 
     account.save()

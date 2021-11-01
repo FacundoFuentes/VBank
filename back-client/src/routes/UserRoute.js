@@ -4,7 +4,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
-const accountTransaction = require("../models/AccountTransaction");
+const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
 const user = express.Router()
@@ -32,7 +32,7 @@ user.post("/register", async (req, res) => {
         type: "CHARGE",
       });
 
-      const accountTrans = await accountTransaction.create({
+      const accountTrans = await AccountTransaction.create({
         role: "RECEIVER",
         transaction,
       });
@@ -188,9 +188,6 @@ user.patch('/userBalance', async (req, res) => {
     const account_id = user.account
     const account = await Account.findOne({account_id})
 
-    account.balance += chargue
-    account.save()
-
     const transaction = await Transaction.create({
       transactionCode: "AD235hty", //Random
       date: new Date(),
@@ -202,6 +199,15 @@ user.patch('/userBalance', async (req, res) => {
       to: user,
     });
 
+    const accountTransaction = await AccountTransaction.create({
+      role: "RECEIVER",
+      transaction,
+    });
+
+    account.balance += chargue
+    account.transactions.push(accountTransaction)
+
+    account.save()
     res.status(200).json({status: 'ok', transaction})
 
   }catch(err){

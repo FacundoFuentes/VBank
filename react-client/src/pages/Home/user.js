@@ -20,51 +20,6 @@ export const user = {
       date: "20/12/20",
       name: "Hoadssadsadladaldladsaldsalsaldal",
       found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "20/12/20",
-      name: "Hoadssadsadladaldladsaldsalsaldal",
-      found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "20/12/20",
-      name: "Hoadssadsadladaldladsaldsalsaldal",
-      found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "20/12/20",
-      name: "Hoadssadsadladaldladsaldsalsaldal",
-      found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
     }
    ]
 }

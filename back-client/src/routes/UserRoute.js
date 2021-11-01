@@ -4,14 +4,15 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
-const accountTransaction = require("../models/AccountTransaction");
+const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
 const user = express.Router()
 
 
-const email = require("../utils/email");
+const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
+
 require("dotenv").config();
 
 user.post("/register", async (req, res) => {
@@ -31,7 +32,7 @@ user.post("/register", async (req, res) => {
         type: "CHARGE",
       });
 
-      const accountTrans = await accountTransaction.create({
+      const accountTrans = await AccountTransaction.create({
         role: "RECEIVER",
         transaction,
       });
@@ -74,6 +75,8 @@ user.post("/register", async (req, res) => {
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 
+      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv)
+
       res.json({ status: "ok", data: userCreated });
     } catch (error) {
       console.log(error);
@@ -85,39 +88,39 @@ user.post("/register", async (req, res) => {
 });
 
 user.post("/login", async (req, res) => {
-  const user = await User.findOne({ dni: req.body.dni, username: req.body.username }).lean();
+  const {username, password} = req.body
 
-    if(!user) return res.json({status: 'failed', error: 'User not Found'})
+  const userFound = await User.findOne({username}).lean()
 
-    const checkPwMatch= await bcrypt.compare(
-        req.body.password,
-        user.password)
+  if(!userFound) return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
 
-    if (!checkPwMatch){
-        return res.status(401).send([{param:"signinError", msg:"Incorrect email or password"}])
-    }
-    // uso destructuring para remover un campo de un objeto
-   const {firstName, username} = user; // esto es para no enviar la contraseña al front
-   res.send({
-    lastName, firstName, email, username, validationCode, birthDate, dni, phoneNumber, zipCode, account, token: utils.getToken(user)
-})
+  if(await bcrypt.compare(password, userFound.password)){
+
+    const token = utils.signToken({id: user._id, username: user.username})
+
+    return res.status(200).json({status: 'ok', data: token})
+
+  } 
+
+  return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
+
 });
 
-user.get("/email", async (req, res) => {
-  try {
-    const mail = await email.transporter.sendMail({
-      from: "Remitente",
-      to: "simoncito@hotmail.com", // recuperar desde user
-      subject: "Verification Email",
-      text: "Codigo de verificacion: ****", // o html
-    });
+// user.get("/email", async (req, res) => {
+//   try {
+//     const mail = await email.transporter.sendMail({
+//       from: "Remitente",
+//       to: "simoncito@hotmail.com", // recuperar desde user
+//       subject: "Verification Email",
+//       html:"<p>Codigo de verificacion: ****</p>"
+//     });
 
-    res.status(200).json({ status: "ok", data: mail });
-  } catch (error) {
-    emailStatus = error;
-    return res.status(400).json({ message: "Something went wrong! " });
-  }
-});
+//     res.status(200).json({ status: "ok", data: mail });
+//   } catch (error) {
+//     emailStatus = error;
+//     return res.status(400).json({ message: "Something went wrong! " });
+//   }
+// });
 
 user.get('/userInfo', async (req, res) => {
   const {username} = req.body
@@ -175,5 +178,42 @@ user.get('/userAccountInfo', async (req, res) =>{
     res.status(400).json({status: 'failed', error: error.message})
   }
 } )
+
+
+user.patch('/userBalance', async (req, res) => {
+  const {chargue, username} = req.body
+
+  try{
+    const user = await User.findOne({username})
+    const account_id = user.account
+    const account = await Account.findOne({account_id})
+
+    const transaction = await Transaction.create({
+      transactionCode: "AD235hty", //Random
+      date: new Date(),
+      amount: chargue,
+      description: 'Enjoy your money!',
+      type: 'CHARGE',
+      // status: 'PROCESSING',
+      from: null,
+      to: user,
+    });
+
+    const accountTransaction = await AccountTransaction.create({
+      role: "RECEIVER",
+      transaction,
+    });
+
+    account.balance += chargue
+    account.transactions.push(accountTransaction)
+
+    account.save()
+    res.status(200).json({status: 'ok', transaction})
+
+  }catch(err){
+    console.log(err.message)
+    res.status(400).json({status: 'failed', err})
+  }
+})
 
 module.exports = user

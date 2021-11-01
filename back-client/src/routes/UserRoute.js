@@ -108,23 +108,7 @@ user.post("/login", async (req, res) => {
 
 });
 
-// user.get("/email", async (req, res) => {
-//   try {
-//     const mail = await email.transporter.sendMail({
-//       from: "Remitente",
-//       to: "simoncito@hotmail.com", // recuperar desde user
-//       subject: "Verification Email",
-//       html:"<p>Codigo de verificacion: ****</p>"
-//     });
-
-//     res.status(200).json({ status: "ok", data: mail });
-//   } catch (error) {
-//     emailStatus = error;
-//     return res.status(400).json({ message: "Something went wrong! " });
-//   }
-// });
-
-user.get('/userInfo', async (req, res) => {
+user.post('/userInfo', async (req, res) => {
   const {username} = req.body
 
   try {
@@ -149,7 +133,7 @@ user.get('/userInfo', async (req, res) => {
   }
 })
 
-user.get('/userAccountInfo', async (req, res) =>{
+user.post('/userAccountInfo', async (req, res) =>{
   const {username} = req.body
 
   try {

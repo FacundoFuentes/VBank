@@ -1,5 +1,4 @@
 import {data, user } from "./user"
-
 import { useEffect } from "react";
 import styled from "styled-components"
 import{useSelector} from "react-redux"
@@ -122,7 +121,7 @@ export default function Home() {
   
   const history= useHistory();
 
-  useEffect(() => {
+   useEffect(() => {
    if(!loggedInUser) history.push("/")
 
   }, [loggedInUser,history]);
@@ -184,9 +183,6 @@ export default function Home() {
           <Chart height="500px" data={data}/>
         </ChartContainer>
         </GridS>
-          
-          
-        
         
     </ContainerS>
   </> 

@@ -190,10 +190,22 @@ user.patch('/userBalance', async (req, res) => {
 
     account.balance += chargue
     account.save()
-    
-    res.status(200).json({status: 'ok', account})
+
+    const transaction = await Transaction.create({
+      transactionCode: "AD235hty", //Random
+      date: new Date(),
+      amount: chargue,
+      description: 'Enjoy your money!',
+      type: 'CHARGE',
+      // status: 'PROCESSING',
+      from: null,
+      to: user,
+    });
+
+    res.status(200).json({status: 'ok', transaction})
 
   }catch(err){
+    console.log(err.message)
     res.status(400).json({status: 'failed', err})
   }
 })

@@ -94,6 +94,11 @@ const SignupPage = () => {
 
  const {loggedInUser} =userState; // lo manejo en useEffect
 
+ const {error} = useSelector(state => state.user.registerState)
+
+ error ? console.error(error) : console.log("no error")
+
+
  const history= useHistory();
 
  useEffect(() => { 
@@ -108,9 +113,10 @@ const SignupPage = () => {
   
  
   const onSubmit = (data) => {
-    console.log(data)
+   /*  console.log(data) */
+        if (error) console.log("no se puede enviar")
        dispatch(registerUser(data));
-       history.push("/home")
+      /*  history.push("/home") */
 
   }
     
@@ -128,7 +134,7 @@ const SignupPage = () => {
           <Controller
         className="fields"
         name="dni"
-        rules={{ required: true, pattern: /^([0-9])*$/i }}
+        rules={{ required: true, pattern: /^([0-9])*$/i , maxLength:9}}
         control={control}
         defaultValue=""
         render={({ field }) => <Input className="input"
@@ -140,6 +146,8 @@ const SignupPage = () => {
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error"> DNI cannot be longer than 8 caracters or shorter than 7</p>}
+
             </div>
             <div  className="fields">
           <Controller
@@ -147,7 +155,7 @@ const SignupPage = () => {
         name="firstName"
         control={control}
         defaultValue=""
-        rules={ { pattern: /^[A-Za-z]+$/i, required:true, maxLength:20 }}
+        rules={ { pattern: /^[A-Za-z]+$/i, required:true, maxLength:32}}
         render={({ field }) => <Input className="input"
         underlined 
         labelPlaceholder="First Name"
@@ -155,7 +163,7 @@ const SignupPage = () => {
       />
        {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}
       {errors?.firstName?.type === "maxLength" && (
-        <p className="error">First name cannot exceed 20 characters</p>
+        <p className="error">First name cannot exceed 32 characters</p>
       )}
       {errors?.firstName?.type === "pattern" && (
         <p className="error">Alphabetical characters only</p>
@@ -169,7 +177,7 @@ const SignupPage = () => {
         name="lastName"
         control={control}
         defaultValue=""
-        rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:20 }}
+        rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:32 }}
         render={({ field }) => <Input className="input"
         underlined 
         labelPlaceholder="Last Name"
@@ -177,7 +185,7 @@ const SignupPage = () => {
       />
        {errors?.lastName?.type === "required" && <p className="error">This field is required</p>}
       {errors?.lastName?.type === "maxLength" && (
-        <p className="error">First name cannot exceed 20 characters</p>
+        <p className="error">First name cannot exceed 32 characters</p>
       )}
       {errors?.lastName?.type === "pattern" && (
         <p className="error">Alphabetical characters only</p>
@@ -233,7 +241,8 @@ const SignupPage = () => {
              className="input"
          color="#f5f5f5" {...field} />}
       />
-     {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}
+     {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+     {error && <p className="error">{error}</p>}
             </div>
           <Button type="submit"color="primary" auto>
         Create Account

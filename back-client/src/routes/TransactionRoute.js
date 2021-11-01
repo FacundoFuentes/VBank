@@ -10,6 +10,7 @@ const JwtStrategy = require('../utils/strategy/jwt.strategy')
 const passport = require ('passport')
 require("dotenv").config();
 passport.use(JwtStrategy)
+
 transaction.post("/new",
 passport.authenticate('jwt', {session: false}), async (req, res) => {
   const { amount, from, to, description, type, cvv, validationCode } = req.body;

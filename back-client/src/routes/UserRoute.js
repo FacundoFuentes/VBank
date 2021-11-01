@@ -96,7 +96,7 @@ user.post("/login", async (req, res) => {
 
   if(await bcrypt.compare(password, userFound.password)){
 
-    const token = utils.signToken({id: user._id, username: user.username})
+    const token = utils.signToken({id: userFound._id, username: userFound.username})
 
     return res.status(200).json({status: 'ok', data: token})
 
@@ -180,18 +180,18 @@ user.get('/userAccountInfo', async (req, res) =>{
 } )
 
 
-user.patch('/userBalance', async (req, res) => {
-  const {chargue, username} = req.body
+user.patch('/charge', async (req, res) => {
+  const {charge, username} = req.body
 
   try{
     const user = await User.findOne({username})
     const account_id = user.account
-    const account = await Account.findOne({account_id})
-
+    const account = await Account.findById({_id: account_id})
+    console.log(user.account)
     const transaction = await Transaction.create({
       transactionCode: "AD235hty", //Random
       date: new Date(),
-      amount: chargue,
+      amount: charge,
       description: 'Enjoy your money!',
       type: 'CHARGE',
       // status: 'PROCESSING',
@@ -204,7 +204,7 @@ user.patch('/userBalance', async (req, res) => {
       transaction,
     });
 
-    account.balance += chargue
+    account.balance += charge
     account.transactions.push(accountTransaction)
 
     account.save()

@@ -1,56 +1,88 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
-import { IconContext } from 'react-icons';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import * as IoIcons from 'react-icons/io';
-import './sidebar.css';
-import logo from '../../img/Logos.png';
-function Sidebar() {
-  const [sidebar, setSidebar] = useState(false);
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import {Link } from "react-router-dom"
+import styled from 'styled-components'
+import Logos from "../../img/Logos.png"
+import {Home} from "@styled-icons/boxicons-solid/Home"
+import {DollarCircle} from "@styled-icons/boxicons-solid/DollarCircle"
+import {Menu} from "@styled-icons/boxicons-regular/Menu"
+import {UserCircle} from "@styled-icons/fa-solid/UserCircle"
+import {LogOut} from "@styled-icons/boxicons-regular/LogOut"
+import { Spacer } from "@nextui-org/react"
+import { logoutUser } from '../../redux/reducers/userSlice'
 
-  const showSidebar = () => setSidebar(!sidebar);
 
-  return (
-    <>
-      <IconContext.Provider value={{ color: 'black'}}>
-        <div className='navbar'>
-        <div> 
-          <img src= {logo} alt="logo" className="logo" />
-          <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar} />
-          </Link> 
-          <Link to='/User' className='menu-bars'>
-            <FaIcons.FaUser onClick={''} />
-          </Link>
-          <Link to='/reports' className='menu-bars'>
-            <IoIcons.IoIosPaper  onClick={''} />
-          </Link>
-         </div>  
-        </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
-              <Link to='#' className='menu-bar'>
-               { <AiIcons.AiOutlineClose />}
-              </Link>
-            </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </IconContext.Provider>
-    </>
-  );
+
+const SideNav = styled.div`
+  display:flex;
+  position: fixed;
+  flex-direction:column;
+  align-items:center;
+  flex-direction: flex-start;
+  width:80px;
+  height: 100%;
+  background-color:#2CA1DE;
+  margin:0px;
+  padding:0px;
+  `; 
+const LogoMenu = styled.img`
+  margin-top:30px;
+  width:50px;
+  height: 40px;
+`;
+const IconHome = styled(Home)`
+  color: black;
+  width:30px;
+  height:30px;
+`;
+const IconMenu = styled(Menu)`
+  color: black;
+  width:30px;
+  height:30px;
+  display:none;
+`;
+const IconCashCoin = styled(DollarCircle)`
+  color: black;
+  width:35px;
+  height:35px;
+`;
+const IconUser = styled(UserCircle)`
+  color: black;
+  width:30px;
+  height:30px;
+`;
+const IconLogOut = styled(LogOut)`
+  color: black;
+  width:30px;
+  height:30px;
+  cursor:pointer;
+  &:hover{
+    color:#222222;
+  }
+`;
+
+export default function Sidebar() {
+const dispatch = useDispatch()
+const logOut = ()=> {
+  dispatch(logoutUser())
+
 }
 
-export default Sidebar;
+  return (
+    <div>
+        <SideNav>
+          <LogoMenu src={Logos} />
+          <Spacer y={4}/>
+          <IconMenu/>
+          <Spacer y={6}/>
+         <Link to="/home"><IconHome/></Link>
+           <Spacer y={3}/>  
+          <Link to="/home/transfer"> <IconCashCoin/></Link>
+          <Spacer y={17}/>
+            <IconUser/>
+            <Spacer y={2}/> 
+         <Link to="/"><IconLogOut onClick={logOut}/></Link>   
+        </SideNav>
+    </div>
+  )
+}

@@ -10,8 +10,9 @@ const Card = require("../models/Card");
 const user = express.Router()
 
 
-const email = require("../utils/email");
+const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
+
 require("dotenv").config();
 
 user.post("/register", async (req, res) => {
@@ -74,6 +75,8 @@ user.post("/register", async (req, res) => {
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 
+      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv)
+
       res.json({ status: "ok", data: userCreated });
     } catch (error) {
       console.log(error);
@@ -101,25 +104,23 @@ user.post("/login", async (req, res) => {
 
   return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
 
-
-
 });
 
-user.get("/email", async (req, res) => {
-  try {
-    const mail = await email.transporter.sendMail({
-      from: "Remitente",
-      to: "simoncito@hotmail.com", // recuperar desde user
-      subject: "Verification Email",
-      text: "Codigo de verificacion: ****", // o html
-    });
+// user.get("/email", async (req, res) => {
+//   try {
+//     const mail = await email.transporter.sendMail({
+//       from: "Remitente",
+//       to: "simoncito@hotmail.com", // recuperar desde user
+//       subject: "Verification Email",
+//       html:"<p>Codigo de verificacion: ****</p>"
+//     });
 
-    res.status(200).json({ status: "ok", data: mail });
-  } catch (error) {
-    emailStatus = error;
-    return res.status(400).json({ message: "Something went wrong! " });
-  }
-});
+//     res.status(200).json({ status: "ok", data: mail });
+//   } catch (error) {
+//     emailStatus = error;
+//     return res.status(400).json({ message: "Something went wrong! " });
+//   }
+// });
 
 user.get('/userInfo', async (req, res) => {
   const {username} = req.body
@@ -177,5 +178,36 @@ user.get('/userAccountInfo', async (req, res) =>{
     res.status(400).json({status: 'failed', error: error.message})
   }
 } )
+
+
+user.patch('/userBalance', async (req, res) => {
+  const {chargue, username} = req.body
+
+  try{
+    const user = await User.findOne({username})
+    const account_id = user.account
+    const account = await Account.findOne({account_id})
+
+    account.balance += chargue
+    account.save()
+
+    const transaction = await Transaction.create({
+      transactionCode: "AD235hty", //Random
+      date: new Date(),
+      amount: chargue,
+      description: 'Enjoy your money!',
+      type: 'CHARGE',
+      // status: 'PROCESSING',
+      from: null,
+      to: user,
+    });
+
+    res.status(200).json({status: 'ok', transaction})
+
+  }catch(err){
+    console.log(err.message)
+    res.status(400).json({status: 'failed', err})
+  }
+})
 
 module.exports = user

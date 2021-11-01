@@ -7,9 +7,11 @@ const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
+const {ExtractJwt} = require('passport-jwt')
 const user = express.Router()
-
-
+const JwtStrategy = require('../utils/strategy/jwt.strategy')
+const passport = require ('passport')
+const jwtDecode = require('jwt-decode')
 const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
 
@@ -106,23 +108,7 @@ user.post("/login", async (req, res) => {
 
 });
 
-// user.get("/email", async (req, res) => {
-//   try {
-//     const mail = await email.transporter.sendMail({
-//       from: "Remitente",
-//       to: "simoncito@hotmail.com", // recuperar desde user
-//       subject: "Verification Email",
-//       html:"<p>Codigo de verificacion: ****</p>"
-//     });
-
-//     res.status(200).json({ status: "ok", data: mail });
-//   } catch (error) {
-//     emailStatus = error;
-//     return res.status(400).json({ message: "Something went wrong! " });
-//   }
-// });
-
-user.get('/userInfo', async (req, res) => {
+user.post('/userInfo', async (req, res) => {
   const {username} = req.body
 
   try {
@@ -147,7 +133,7 @@ user.get('/userInfo', async (req, res) => {
   }
 })
 
-user.get('/userAccountInfo', async (req, res) =>{
+user.post('/userAccountInfo', async (req, res) =>{
   const {username} = req.body
 
   try {
@@ -180,10 +166,14 @@ user.get('/userAccountInfo', async (req, res) =>{
 } )
 
 
-user.patch('/charge', async (req, res) => {
-  const {charge, username} = req.body
+user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req, res) => {
+
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
+  const {charge} = req.body
 
   try{
+    const username = decodedToken.username
     const user = await User.findOne({username})
     const account_id = user.account
     const account = await Account.findById({_id: account_id})

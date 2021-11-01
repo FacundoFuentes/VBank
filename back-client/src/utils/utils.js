@@ -10,7 +10,8 @@ require('dotenv').config()
 const signToken =(userInfo) => {
   return jwt.sign(userInfo ,process.env.JWT_SECRET);
     // return jwt.sign(userInfo ,process.env.JWT_SECRET, {expiresIn: '60000'});
-  
+}
+
 const generatePDF = async (date, sender, receiver, amount) => {
   const content = `
   <!doctype html>

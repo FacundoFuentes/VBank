@@ -7,24 +7,29 @@ import styled from "styled-components"
 import { useForm, Controller } from "react-hook-form";
 import { Input, Button } from '@nextui-org/react';
 import { registerUser } from '../../redux/reducers/userSlice';
+import Nav from '../../components/Nav/Nav';
 
 
 
 
-const Page= styled.div`
-background-color: grey;
+const Page = styled.div`
+background-color: none;
 min-height: 100vh;
 display: grid;
-place-items: center;
+position:fixed;
+place-items: center; 
+margin-top:50px;
+
 `;
 
 const FormContainer = styled.div`
+position: relative;
+top:-85px;
 width: 85%;
 background-color:white;
-height: 800px;
+height: auto;
 display: grid;
 grid-template-columns: 1fr 1fr;
-
  img{
    width: 100%;
    min-height: 100%;
@@ -37,11 +42,14 @@ grid-template-columns: 1fr 1fr;
   flex-direction: column;
   align-items: center;
   color: #f5f5f5;
-  height: 100%;
+  height: auto;
+  border-radius:10px;
+  padding-top:25px;
+  padding-bottom:5%;
 }
 
 form{
-  padding-top: 50px;
+  padding-top: 60px;
   display: flex;
   flex-direction: column;
   width: 60%;
@@ -107,6 +115,8 @@ const SignupPage = () => {
   }
     
   return (
+    <>
+      <Nav/>
       <Page>
         <FormContainer>
           <img src={register} alt="register" />
@@ -236,5 +246,6 @@ const SignupPage = () => {
 
         </FormContainer>
   </Page>
+  </>
   ) }
 export default SignupPage

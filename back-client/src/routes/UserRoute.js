@@ -7,9 +7,11 @@ const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
+const {ExtractJwt} = require('passport-jwt')
 const user = express.Router()
-
-
+const JwtStrategy = require('../utils/strategy/jwt.strategy')
+const passport = require ('passport')
+const jwtDecode = require('jwt-decode')
 const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
 
@@ -180,10 +182,14 @@ user.get('/userAccountInfo', async (req, res) =>{
 } )
 
 
-user.patch('/charge', async (req, res) => {
-  const {charge, username} = req.body
+user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req, res) => {
+
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
+  const {charge} = req.body
 
   try{
+    const username = decodedToken.username
     const user = await User.findOne({username})
     const account_id = user.account
     const account = await Account.findById({_id: account_id})

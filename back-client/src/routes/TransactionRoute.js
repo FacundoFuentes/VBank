@@ -8,14 +8,24 @@ const AccountTransaction = require("../models/AccountTransaction");
 const utils = require('../utils/utils')
 const JwtStrategy = require('../utils/strategy/jwt.strategy')
 const passport = require ('passport')
+const {ExtractJwt} = require('passport-jwt')
+const jwtDecode = require('jwt-decode')
 require("dotenv").config();
 passport.use(JwtStrategy)
+
 transaction.post("/new",
 passport.authenticate('jwt', {session: false}), async (req, res) => {
-  const { amount, from, to, description, type, cvv, validationCode } = req.body;
+  const { amount, to, description, type, cvv, validationCode } = req.body;
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
   let userFrom, userTo;
   try {
-    userFrom = await User.findOne({ username: from });
+    if(decodedToken.username === to) return res.status(400).json({
+      status: "failed",
+      error:
+        "You can't receive money from yourself",
+    })
+    userFrom = await User.findOne({ username: decodedToken.username });
     userTo = await User.findOne({ username: to });
 
     if (!userFrom || !userTo)

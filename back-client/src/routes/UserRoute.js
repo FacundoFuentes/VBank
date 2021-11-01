@@ -96,7 +96,7 @@ user.post("/login", async (req, res) => {
 
   if(await bcrypt.compare(password, userFound.password)){
 
-    const token = utils.signToken({id: user._id, username: user.username})
+    const token = utils.signToken({id: userFound._id, username: userFound.username})
 
     return res.status(200).json({status: 'ok', data: token})
 

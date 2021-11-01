@@ -60,12 +60,15 @@ export default function Transfer() {
       setVisible(false);
   }
 
+
+
   const [state, setState] = useState({
     from:"SimonOro1",
     to: '',
     amount: '',
     description: '',
-    type: 'TRANSFER'
+    type: 'TRANSFER',
+    cvv:0
 })
 
 
@@ -85,6 +88,12 @@ function handleAmount(e){
   })
 }
 
+function handleCvv(e){
+  setState({
+      ...state,
+      cvv: parseInt(e.target.value)
+  })
+}
 
  function handleSubmit(e){
   e.preventDefault()
@@ -135,7 +144,7 @@ function handleAmount(e){
        </TextContainer>
        
        <ButtonContainer>
-       <Button onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
 
        <Modal  closeButton 
@@ -152,6 +161,7 @@ function handleAmount(e){
          <Text>To Username: {` ${state.to}`} </Text>
          <Text>How much: {` ${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
+         <Input label="CVV:" type="number" width="60px" onChange={(e)=>handleCvv(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>

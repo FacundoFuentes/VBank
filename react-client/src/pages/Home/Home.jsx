@@ -163,10 +163,11 @@ export default function Home() {
               <GridContainer>
               {user.latestMovements?.map((e, i) => 
               <LatestMovements key={i} gap={2} justify="space-around">
-                <Spacer x={4} />
+                <Spacer x={3} />
                 <GridLatestMovents xs={1}>{` ${e.date} `} </GridLatestMovents>
-                <GridLatestMovents justify="center" xs={6}>{` ${e.name} `} </GridLatestMovents>
                 <Spacer x={0}/>
+                <GridLatestMovents justify="center" xs={4}>{` ${e.name} `} </GridLatestMovents>
+                <Spacer x={1}/>
                 <GridLatestMovents xs={1}>{` -$${e.found} `} </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  

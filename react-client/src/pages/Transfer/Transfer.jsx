@@ -174,6 +174,22 @@ console.log(username)
             <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
+            </>
+            :
+            <>
+            <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
+            Close
+            </Button>
+            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
+            Ok!
+            </Button>
+            {status == 200 &&<Modal>
+              Hola!
+            </Modal> }
+            
+            
+            </>
+            }
         </Modal.Footer>
 
         </Modal> 

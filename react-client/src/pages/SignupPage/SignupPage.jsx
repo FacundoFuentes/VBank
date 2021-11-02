@@ -116,7 +116,7 @@ const SignupPage = () => {
    /*  console.log(data) */
         if (error) console.log("no se puede enviar")
        dispatch(registerUser(data));
-      /*  history.push("/home") */
+        history.push("/")
 
   }
     

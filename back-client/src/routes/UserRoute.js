@@ -77,7 +77,7 @@ user.post("/register", async (req, res) => {
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 
-      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv)
+      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv, userCreated.email)
 
       res.json({ status: "ok", data: userCreated });
     } catch (error) {

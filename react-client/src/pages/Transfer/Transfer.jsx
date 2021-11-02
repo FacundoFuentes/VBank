@@ -98,7 +98,7 @@ console.log(username)
   axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
-   }) .catch(error=>{
+   }).catch(error=>{
      console.log(error)
    })
   }

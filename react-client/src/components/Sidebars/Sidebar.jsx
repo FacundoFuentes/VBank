@@ -15,7 +15,8 @@ import { logoutUser } from '../../redux/reducers/userSlice'
 
 const SideNav = styled.div`
   display:flex;
-  position: fixed;
+  position:fixed;
+  overflow:hidden;
   flex-direction:column;
   align-items:center;
   flex-direction: flex-start;
@@ -47,11 +48,21 @@ const IconCashCoin = styled(DollarCircle)`
   height:35px;
 `;
 const IconUser = styled(UserCircle)`
+display:flex;
+  position:relative;
+  margin: 0;
+  padding:0;
+  top:200px;
   color: black;
   width:30px;
   height:30px;
 `;
 const IconLogOut = styled(LogOut)`
+  display:flex;
+  position:relative;
+  margin: 0;
+  padding:0;
+  top:200px;
   color: black;
   width:30px;
   height:30px;
@@ -71,6 +82,7 @@ const logOut = ()=> {
   return (
     <div>
         <SideNav>
+          
           <LogoMenu src={Logos} />
           <Spacer y={4}/>
           <IconMenu/>
@@ -78,10 +90,10 @@ const logOut = ()=> {
          <Link to="/home"><IconHome/></Link>
            <Spacer y={3}/>  
           <Link to="/home/transfer"> <IconCashCoin/></Link>
-          <Spacer y={10}/>
             <IconUser/>
             <Spacer y={2}/> 
          <Link to="/"><IconLogOut display="flex"  onClick={logOut}/></Link>   
+        
         </SideNav>
     </div>
   )

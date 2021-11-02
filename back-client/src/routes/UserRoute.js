@@ -29,7 +29,7 @@ user.post("/register", async (req, res) => {
       const transaction = await Transaction.create({
         transactionCode: "AAAA1", //Random
         date: new Date(),
-        amount: 1,
+        amount: 100,
         description: "Welcome to VBank !",
         type: "CHARGE",
       });
@@ -77,14 +77,14 @@ user.post("/register", async (req, res) => {
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 
-      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv)
+      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv, userCreated.email)
 
       res.json({ status: "ok", data: userCreated });
     } catch (error) {
       console.log(error);
       res.json({ status: "failed", error: error });
     }
-  } else {
+  } else { 
     res.status(400).json({ status: "failed", data: validation.error });
   }
 });

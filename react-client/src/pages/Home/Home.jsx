@@ -187,7 +187,7 @@ export default function Home() {
                 <Spacer x={-4}/>
                 <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
                 <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{` $${e.transaction.amount}`} </GridLatestMovents>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` + $ ${e.transaction.amount}` : ` - $ ${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  
                   ) 

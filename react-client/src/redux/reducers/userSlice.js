@@ -123,7 +123,7 @@ const userSlice = createSlice({
               registerState.loading = "idle"
               registerState.currentRequestID = undefined;
               registerState.error= null;
-              state.loggedInUser= action.payload
+            //   state.loggedInUser= action.payload  Me devuleve al landing de esta manera
           }
           },
       [registerUser.rejected]: (state,action)=>{

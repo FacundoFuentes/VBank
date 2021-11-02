@@ -99,7 +99,13 @@ console.log(username)
   .then(response=> {
    console.log(response)
    }).catch(error=>{
+
      console.log(error)
+
+     setError(error.response.data.error)
+     setStatus(error.response.data.status)
+      
+
    })
   }
     

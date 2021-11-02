@@ -30,10 +30,10 @@ transporter.verify().then(() => {
 
 
 
-const email = async (code,cvu,cardNumber,cvv) => {
+const email = async (code,cvu,cardNumber,cvv,email) => {
     const mail = await transporter.sendMail({
         from: "Remitente",
-        to: "simoncito@hotmail.com", // recuperar desde user
+        to: email, // recuperar desde user
         subject: "Verification Email",
         // template: 'verification',
         // context: {

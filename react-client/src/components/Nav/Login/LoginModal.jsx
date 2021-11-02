@@ -23,6 +23,9 @@ const LoginModal = () => {
 
     const {loggedInUser} =userState; 
 
+    const error = useSelector(state => state.user.signinState.error);
+    console.log(error)
+
 
 
     const [visible, setVisible] = useState(false);
@@ -60,7 +63,7 @@ const LoginModal = () => {
   
  
   const onSubmit = (data) => {
-    console.log(data)
+    // console.log(data)
       dispatch(signinUser(data));   
 
   }
@@ -93,7 +96,7 @@ const LoginModal = () => {
         name="dni"
         control={control}
         defaultValue=""
-        rules={{ required: true, pattern: /^([0-9])*$/i }}
+        rules={{ required: true, pattern: /^([0-9])*$/i, maxLength:8 }}
         render=
         {({ field }) => <Input clearable
         bordered
@@ -106,12 +109,13 @@ const LoginModal = () => {
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error">it should only have a max of 8 characters</p>}
             <Controller
         className="fields"
         name="username"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -121,12 +125,13 @@ const LoginModal = () => {
          color="#f5f5f5" {...field} />}
       />
       {errors.username?.type === 'required' && <p className="error">This field is required</p>}
+      {errors.username?.type === 'pattern' && <p className="error">Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number</p>}
             <Controller
         className="fields"
         name="password"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, pattern:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/}}
         render={({ field }) => <Input.Password clearable
         bordered
         fullWidth
@@ -136,6 +141,10 @@ const LoginModal = () => {
          color="#f5f5f5" {...field} />}
       />
        {errors.password?.type === 'required' && <p className="error">This field is required</p>}
+       {errors.password?.type === 'pattern' && <p className="error"> Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+
+       {error && <p className="error">{error.error}</p>}
+      
       
                 <Row justify="space-between">
                

@@ -23,6 +23,9 @@ const LoginModal = () => {
 
     const {loggedInUser} =userState; 
 
+    const error = useSelector(state => state.user.signinState.error);
+    console.log(error)
+
 
 
     const [visible, setVisible] = useState(false);
@@ -139,6 +142,8 @@ const LoginModal = () => {
       />
        {errors.password?.type === 'required' && <p className="error">This field is required</p>}
        {errors.password?.type === 'pattern' && <p className="error"> Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+
+       {error && <p className="error">{error.error}</p>}
       
       
                 <Row justify="space-between">

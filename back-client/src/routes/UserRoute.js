@@ -29,7 +29,7 @@ user.post("/register", async (req, res) => {
       const transaction = await Transaction.create({
         transactionCode: "AAAA1", //Random
         date: new Date(),
-        amount: 1,
+        amount: 100,
         description: "Welcome to VBank !",
         type: "CHARGE",
       });
@@ -84,7 +84,7 @@ user.post("/register", async (req, res) => {
       console.log(error);
       res.json({ status: "failed", error: error });
     }
-  } else {
+  } else { 
     res.status(400).json({ status: "failed", data: validation.error });
   }
 });

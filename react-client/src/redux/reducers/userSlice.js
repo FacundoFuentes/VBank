@@ -4,15 +4,23 @@ import jwt from "jsonwebtoken"
 
 
 
-const userInfoString= localStorage.getItem('token');
+const userInfoString = localStorage.getItem('token');
 const currentUserInfo= userInfoString ? JSON.parse(userInfoString) : null; 
 // si hay un infoString, lo vuelvo a convertir a obj porque lo necesito asi, si no, quiere decir que  no hay un usuario registrado
+
+
+
+
+
 
 const initUserState={
     loggedInUser:currentUserInfo, // lo hago asi para que pueda ser nulo  o mantenga cualquier info de usuario
     registerState: {loading: "idle", error:null, currentRequestID: undefined}, //para asegurarme que no haya multiples request desde un mismo usuario
     signinState: {loading: "idle", error:null, currentRequestID: undefined},
-    userInfo: {info:null, loading: "idle", error:null, currentRequestID: undefined}
+    userInfo: {info:null, loading: "idle", error:null, currentRequestID: undefined},
+    userAccountInfo: {info:null, loading: "idle", error:null, currentRequestID: undefined},
+    userBalance: {info:null, loading: "idle", error:null, currentRequestID: undefined}
+    
 }
 
 export const registerUser= createAsyncThunk("user/register", async (userInfo,thunkAPI)=>{
@@ -38,9 +46,31 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
 export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
-  
+
   try {
     const response = await axios.post("http://localhost:3001/user/userinfo", {username:username})
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+})
+export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (thunkAPI) =>{
+  const token = JSON.parse(localStorage.getItem("token")).data
+  let {username} = jwt.decode(token)
+
+  try {
+    const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username})
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+})
+export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{
+  const token = JSON.parse(localStorage.getItem("token")).data
+  let {username} = jwt.decode(token)
+
+  try {
+    const response = await axios.post("http://localhost:3001/transactions", {username:username})
     return response.data
   } catch (error) {
     console.log(error)
@@ -153,6 +183,55 @@ const userSlice = createSlice({
                   userInfo.error = action.payload; //envio el error
               }
           },
+          
+        [getUserAccountInfo.pending]: (state,action)=>{
+          let {userAccountInfo} = state;
+          if(userAccountInfo.loading === "idle"){
+              userAccountInfo.loading = "pending"
+              userAccountInfo.currentRequestID = action.meta.requestId
+          }
+          },
+          [getUserAccountInfo.fulfilled]: (state,action)=>{
+            let {userAccountInfo} = state;
+              if(userAccountInfo.loading === "pending"){
+                  userAccountInfo.loading = "idle"
+                  userAccountInfo.currentRequestID = undefined;
+                  userAccountInfo.error= null;
+                  state.userAccountInfo.info= action.payload
+              }
+              },
+          [getUserAccountInfo.rejected]: (state,action)=>{
+              let {userAccountInfo} = state;
+              if(userAccountInfo.loading === "pending"){
+                  userAccountInfo.loading="idle"// seteo el loading como terminado
+                  userAccountInfo.currentRequestID = undefined;
+                  userAccountInfo.error = action.payload; //envio el error
+              }
+          },
+          [getBalance.pending]: (state,action)=>{
+            let {userBalance} = state;
+            if(userBalance.loading === "idle"){
+                userBalance.loading = "pending"
+                userBalance.currentRequestID = action.meta.requestId
+            }
+            },
+            [getBalance.fulfilled]: (state,action)=>{
+              let {userBalance} = state;
+                if(userBalance.loading === "pending"){
+                    userBalance.loading = "idle"
+                    userBalance.currentRequestID = undefined;
+                    userBalance.error= null;
+                    state.userBalance.info= action.payload
+                }
+                },
+            [getBalance.rejected]: (state,action)=>{
+                let {userBalance} = state;
+                if(userBalance.loading === "pending"){
+                    userBalance.loading="idle"// seteo el loading como terminado
+                    userBalance.currentRequestID = undefined;
+                    userBalance.error = action.payload; //envio el error
+                }
+            }
       
   
   }

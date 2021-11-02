@@ -1,10 +1,10 @@
 
 
 export const user = {
-  name: "Pepe",
+  name: "Pepe2",
   lastName: "Argento",
   found: 5000,
-  cardNumber: "1234 1324 4567 8964",
+  cardNumber: "*** **** **** 8964",
   latestMovements: [
     {
       date: "20/12/20",

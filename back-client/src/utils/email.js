@@ -1,16 +1,16 @@
 const  nodemailer = require('nodemailer')
 // const hbs = require('nodemailer-express-handlebars');
-
+const utils = require('../utils/utils')
 
 
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // security for port 465 ( gmail host)
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // security for port 465 ( gmail host)
     auth: {
-        user:'wixpkil7cvo2qi7s@ethereal.email', // generated google user
-        pass: 'sBVdTwqcWNQDqHdKZp' // generated google password
+        user:'servinchristianmanuel@gmail.com', // generated google user
+        pass: 'hugownzaqtznmliw' // generated google password
     }
 })
 
@@ -32,7 +32,7 @@ transporter.verify().then(() => {
 
 const email = async (code,cvu,cardNumber,cvv,email) => {
     const mail = await transporter.sendMail({
-        from: "Remitente",
+        from: "servinchristianmanuel@gmail.com",
         to: email, // recuperar desde user
         subject: "Verification Email",
         // template: 'verification',
@@ -41,11 +41,17 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
         // }
         html:`
             <h1> Welcome to VBank !! </h1>
-            <p>Codigo de verificacion:${code}</p>
             <p>CVU:${cvu}</p>
             <h2>Datos de la Tarjeta </h2>
-            <p>${cardNumber}</p>
-            <p>codigo de seguridad:${cvv}</p>`
+            <p>**** **** **** ${cardNumber.slice(-4)}</p>
+            <p>codigo de seguridad:${utils.decrypt(cvv)}</p>`
+    }, function (err, info){
+        if (err){
+            res.json(err)
+        }
+        else {
+            res.json(info)
+        }
     })
     
     return mail

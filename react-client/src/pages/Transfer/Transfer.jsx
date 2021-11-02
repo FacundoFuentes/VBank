@@ -5,6 +5,10 @@ import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
 import jwt from 'jsonwebtoken'
+import {useHistory} from 'react-router-dom'
+
+import success from "../../img/success.gif"
+
 
 const Container= styled.div`
 display: flex;
@@ -51,6 +55,15 @@ const ContactBlack = styled(Contact)`
   height: 50px;
   
 `
+const DivCheck = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+
+`
+
+
+
 
 
 
@@ -59,9 +72,11 @@ export default function Transfer() {
   const handler = () => setVisible(true);
   const closeHandler = () => {
       setVisible(false);
+      setError('');
+   
   }
 
-
+const myHistory = useHistory()
 
   const [state, setState] = useState({
     to: '',
@@ -71,6 +86,10 @@ export default function Transfer() {
     cvv:''
 })
 
+const [error,setError] = useState('')
+console.log(error)
+
+const [status, setStatus] =useState(0)
 
 
 function handleChange(e){
@@ -94,15 +113,20 @@ console.log(username)
 
  function handleSubmit(e){
   e.preventDefault()
-  console.log(state)
+  
   axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
+   setStatus(response.status)
+   console.log(response.status)
+   
    }).catch(error=>{
-     console.log(error)
+     setError(error.response.data.error)
+     setStatus(error.response.data.status)
+     
    })
   }
-    
+  
 
 
 
@@ -143,12 +167,15 @@ console.log(username)
        <ButtonContainer>
        <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
-
-       <Modal  closeButton 
+       
+       <Modal  
+         preventClose 
          aria-labelledby="modal-title"
          open={visible}
          onClose={closeHandler}>
-
+       {
+         status !== 200 ?
+         <>
          <Modal.Header>
            <Text h3>Check before send!</Text>
          </Modal.Header>
@@ -162,14 +189,42 @@ console.log(username)
         </Modal.Body>
        
         <Modal.Footer>
+           { error
+            ?
+            <>
+            <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
             <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
+            </>
+            :
+            <>
+            <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
+            Close
+            </Button>
+            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
+            Ok!
+            </Button>
+            {status == 200 &&<Modal>
+              Hola!
+            </Modal> }
+            
+            </>
+            }
         </Modal.Footer>
-
+          </>
+          :
+          <>
+          <DivCheck>
+          <img src={success} alt='loading gif' />
+          </DivCheck>
+          
+          <Button  color="#2CA1DE" onClick={()=> myHistory.push("/home")}> Ok! </Button>
+          </>
+          }  
         </Modal> 
       
       </Container>

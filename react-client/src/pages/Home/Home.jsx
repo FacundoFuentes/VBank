@@ -18,6 +18,7 @@ const ContainerS = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content:center;
+  overflow-y:scroll;
   `;
 const TextS = styled.h2`
   font-weight: bold;

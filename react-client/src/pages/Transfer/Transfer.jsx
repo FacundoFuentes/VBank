@@ -4,6 +4,7 @@ import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
+import jwt from 'jsonwebtoken'
 
 const Container= styled.div`
 display: flex;
@@ -60,12 +61,14 @@ export default function Transfer() {
       setVisible(false);
   }
 
+
+
   const [state, setState] = useState({
-    from:"SimonOro1",
     to: '',
     amount: '',
     description: '',
-    type: 'TRANSFER'
+    type: 'TRANSFER',
+    cvv:''
 })
 
 
@@ -85,11 +88,14 @@ function handleAmount(e){
   })
 }
 
+const token = JSON.parse(localStorage.getItem("token")).data
+let {username} = jwt.decode(token)
+console.log(username)
 
  function handleSubmit(e){
   e.preventDefault()
   console.log(state)
-  axios.post('http://localhost:3001/transactions/new', state)
+  axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
    }) .catch(error=>{
@@ -135,7 +141,7 @@ function handleAmount(e){
        </TextContainer>
        
        <ButtonContainer>
-       <Button onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
 
        <Modal  closeButton 
@@ -152,6 +158,7 @@ function handleAmount(e){
          <Text>To Username: {` ${state.to}`} </Text>
          <Text>How much: {` ${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
+         <Input name="cvv"label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>

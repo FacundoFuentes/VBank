@@ -7,24 +7,29 @@ import styled from "styled-components"
 import { useForm, Controller } from "react-hook-form";
 import { Input, Button } from '@nextui-org/react';
 import { registerUser } from '../../redux/reducers/userSlice';
+import Nav from '../../components/Nav/Nav';
 
 
 
 
-const Page= styled.div`
-background-color: grey;
+const Page = styled.div`
+background-color: none;
 min-height: 100vh;
 display: grid;
-place-items: center;
+position:fixed;
+place-items: center; 
+margin-top:50px;
+
 `;
 
 const FormContainer = styled.div`
+position: relative;
+top:-85px;
 width: 85%;
 background-color:white;
-height: 800px;
+height: auto;
 display: grid;
 grid-template-columns: 1fr 1fr;
-
  img{
    width: 100%;
    min-height: 100%;
@@ -37,11 +42,14 @@ grid-template-columns: 1fr 1fr;
   flex-direction: column;
   align-items: center;
   color: #f5f5f5;
-  height: 100%;
+  height: auto;
+  border-radius:10px;
+  padding-top:25px;
+  padding-bottom:5%;
 }
 
 form{
-  padding-top: 50px;
+  padding-top: 60px;
   display: flex;
   flex-direction: column;
   width: 60%;
@@ -86,6 +94,11 @@ const SignupPage = () => {
 
  const {loggedInUser} =userState; // lo manejo en useEffect
 
+ const {error} = useSelector(state => state.user.registerState)
+
+ error ? console.error(error) : console.log("no error")
+
+
  const history= useHistory();
 
  useEffect(() => { 
@@ -97,16 +110,21 @@ const SignupPage = () => {
 }, [loggedInUser,history])
 
   const { control, handleSubmit, formState: { errors }} = useForm();
-  
- 
+   
+
   const onSubmit = (data) => {
-    console.log(data)
-       dispatch(registerUser(data));
-       history.push("/home")
+   /*  console.log(data) */
+      if (error) console.log("no se puede enviar")
+      dispatch(registerUser(data));
+      alert("User Created Succefully, Check Your EmailBox 📫")
+      history.push("/")
+      
 
   }
     
   return (
+    <>
+      <Nav/>
       <Page>
         <FormContainer>
           <img src={register} alt="register" />
@@ -118,7 +136,7 @@ const SignupPage = () => {
           <Controller
         className="fields"
         name="dni"
-        rules={{ required: true, pattern: /^([0-9])*$/i }}
+        rules={{ required: true, pattern: /^([0-9])*$/i , maxLength:9}}
         control={control}
         defaultValue=""
         render={({ field }) => <Input className="input"
@@ -130,6 +148,8 @@ const SignupPage = () => {
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error"> DNI cannot be longer than 8 caracters or shorter than 7</p>}
+
             </div>
             <div  className="fields">
           <Controller
@@ -137,7 +157,7 @@ const SignupPage = () => {
         name="firstName"
         control={control}
         defaultValue=""
-        rules={ { pattern: /^[A-Za-z]+$/i, required:true, maxLength:20 }}
+        rules={ { pattern: /^[A-Za-z]+$/i, required:true, maxLength:32}}
         render={({ field }) => <Input className="input"
         underlined 
         labelPlaceholder="First Name"
@@ -145,7 +165,7 @@ const SignupPage = () => {
       />
        {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}
       {errors?.firstName?.type === "maxLength" && (
-        <p className="error">First name cannot exceed 20 characters</p>
+        <p className="error">First name cannot exceed 32 characters</p>
       )}
       {errors?.firstName?.type === "pattern" && (
         <p className="error">Alphabetical characters only</p>
@@ -159,7 +179,7 @@ const SignupPage = () => {
         name="lastName"
         control={control}
         defaultValue=""
-        rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:20 }}
+        rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:32 }}
         render={({ field }) => <Input className="input"
         underlined 
         labelPlaceholder="Last Name"
@@ -167,7 +187,7 @@ const SignupPage = () => {
       />
        {errors?.lastName?.type === "required" && <p className="error">This field is required</p>}
       {errors?.lastName?.type === "maxLength" && (
-        <p className="error">First name cannot exceed 20 characters</p>
+        <p className="error">First name cannot exceed 32 characters</p>
       )}
       {errors?.lastName?.type === "pattern" && (
         <p className="error">Alphabetical characters only</p>
@@ -223,7 +243,8 @@ const SignupPage = () => {
              className="input"
          color="#f5f5f5" {...field} />}
       />
-     {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}
+     {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+     {error && <p className="error">{error}</p>}
             </div>
           <Button type="submit"color="primary" auto>
         Create Account
@@ -236,5 +257,6 @@ const SignupPage = () => {
 
         </FormContainer>
   </Page>
+  </>
   ) }
 export default SignupPage

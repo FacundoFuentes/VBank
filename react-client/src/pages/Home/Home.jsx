@@ -1,16 +1,19 @@
 import {data, user } from "./user"
-
 import { useEffect } from "react";
 import styled from "styled-components"
-import{useSelector} from "react-redux"
+import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
-import { Grid, Spacer, Text} from "@nextui-org/react"
+import { Grid, Spacer} from "@nextui-org/react"
+import SideBar from "../../components/Sidebars/Sidebar"
+import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
 
 
-const Container = styled.div`
-  margin: 50px 300px;
+
+const ContainerS = styled.div`
+  margin: 0px 300px;
+  padding-left:auto;
   display:flex;
   flex-direction: column;
   width: 100%;
@@ -39,7 +42,7 @@ const CardBalance = styled.div`
   padding: 50px;
 `;
 const Balance = styled.div`
-  background-color: #dddbdb;
+  background-color: #ebe4e4a5;
   border-radius:20px;
   display:flex;
   width:100%;
@@ -90,47 +93,57 @@ const CardName = styled.h5`
 `;
 const DateNameTotal = styled.div`
   padding-top: 15px;
+  margin-bottom:10px;
   display:flex;
-  position:relative;
   justify-content:space-around;
   width: 100%;
   height:50px;
 `;
-const LatestMovements = styled(Container)`
-  display:flex;
-  padding-left:30px;
-  margin:20px;
+const LatestMovements = styled(Grid.Container)`
   color:black;
-  padding:20px;
-  width:97%;
-  height:500px;
-  overflow-y:auto;
-  padding-top: 70px;
-  
-  
+  width:100%;
+  padding-bottom:10px;
+
 `;
 const GridLatestMovents = styled(Grid)`
-  display:flex;
-  background-color: #d6d1d182;
   border-radius:10px;
-  height: 50px;
-  justify-content:center;
+`;
+const GridContainer = styled.div`
+  border-radius:10px;
+  height:100%;
+  width:100%;
+  overflow:auto;
+  overflow-x:hidden;
+  
 `;
 
 
 export default function Home() {
   const loggedInUser = useSelector(state => state.user.loggedInUser)
-  
+  const userInfo = useSelector(state => state.user.userInfo.info)
+  const userAccountInfo = useSelector(state => state.user.userAccountInfo.info)
+  const userTransaction = useSelector(state => state.user.userBalance.info)
+  const dispatch = useDispatch()
   const history= useHistory();
 
-  useEffect(() => {
+ 
+  
+
+   useEffect(() => {
    if(!loggedInUser) history.push("/")
 
   }, [loggedInUser,history]);
   
+  useEffect(() => {
+    dispatch(getUserInfo())
+    dispatch(getUserAccountInfo())
+    dispatch(getBalance())
+  }, [])
 
   return (
-    <Container>
+    <>
+    <SideBar/>
+    <ContainerS>
         <GridS>
         <TextS>My Card</TextS>
         <TextS>Found</TextS>
@@ -138,16 +151,21 @@ export default function Home() {
         <GridS>
             <CardBalance>
             <img height="200px" src={img} alt="" />
-            <CardNnumber>
-            {`${user.cardNumber}`}
-            </CardNnumber>
-           <CardName>
-           {`${user.name} ${user.lastName}`}
-           </CardName>
+
+            
+            {userInfo && userAccountInfo &&
+            <><CardNnumber>
+                {`**** **** **** ${userAccountInfo.card.cardNumber}`}
+              </CardNnumber><CardName>
+                  {`${userInfo.firstname} ${userInfo.lastname}`}
+                </CardName></>}
+           
             <Line/>
+            {userAccountInfo && 
             <Balance>
-                <h1>${`${user.found}`}</h1>
-            </Balance>
+                <h1>${`${userAccountInfo.balance}`}</h1>
+            </Balance> }
+           
             </CardBalance>
         </GridS>
         <GridS>
@@ -157,21 +175,25 @@ export default function Home() {
                 <h3>Date</h3>
                 <h3>Name</h3>
                 <h3>Total</h3>
+                
             </DateNameTotal>
-              <LatestMovements>
-              {user.latestMovements.map((e, i) => 
-                <Grid.Container key={i} gap={1}  >
-                  <Spacer x={5.5}/>
-                  <GridLatestMovents xs={1} ><Text h4>{`${e.date}` }</Text> </GridLatestMovents>
-                  <Spacer x={1}/>
-                  <GridLatestMovents xs={7.1} ><Text h4>{`${e.name}` }</Text> </GridLatestMovents>
-                  <Spacer x={1}/>
-                  <GridLatestMovents xs={1} ><Text h4>{`-$${e.found}`}</Text> </GridLatestMovents>
-                    <Spacer x={3} y={3}/>
-                </Grid.Container> 
-              ) 
-              }
-              </LatestMovements>
+              <GridContainer>
+
+              {userTransaction?.map((e, i) => 
+              <LatestMovements key={i} gap={2} justify="space-around">
+                <Spacer x={3} />
+                <GridLatestMovents xs={2}>{` ${e.transaction.date.slice(0,10)} `} </GridLatestMovents>
+                <Spacer x={-4}/>
+                <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
+                <Spacer x={1}/>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` + $ ${e.transaction.amount}` : ` - $ ${e.transaction.amount}` } </GridLatestMovents>
+                <Spacer x={2} />
+              </LatestMovements>  
+                  ) 
+                }
+              </GridContainer>
+              
+        
               
           </Expeses>
         </GridS>
@@ -181,12 +203,9 @@ export default function Home() {
           <Chart height="500px" data={data}/>
         </ChartContainer>
         </GridS>
-          
-          
         
-        
-    </Container>
-     
+    </ContainerS>
+  </> 
     
   )
 }

@@ -1,10 +1,10 @@
 
 
 export const user = {
-  name: "Pepe",
+  name: "Pepe2",
   lastName: "Argento",
   found: 5000,
-  cardNumber: "1234 1324 4567 8964",
+  cardNumber: "*** **** **** 8964",
   latestMovements: [
     {
       date: "20/12/20",
@@ -20,53 +20,9 @@ export const user = {
       date: "20/12/20",
       name: "Hoadssadsadladaldladsaldsalsaldal",
       found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "20/12/20",
-      name: "Hoadssadsadladaldladsaldsalsaldal",
-      found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "20/12/20",
-      name: "Hoadssadsadladaldladsaldsalsaldal",
-      found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
-    },
-    {
-      date: "20/12/20",
-      name: "Hoadssadsadladaldladsaldsalsaldal",
-      found: 200,
-    },
-    {
-      date: "15/10/20",
-      name: "ropa",
-      found: 500
     }
-   ]
+   ] 
+   
 }
 export const data = [{
   "id": "Viajes",

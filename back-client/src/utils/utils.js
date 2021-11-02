@@ -3,27 +3,67 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
+const pdf = require('html-pdf');
 require('dotenv').config()
+
+
+const signToken =(userInfo) => {
+  return jwt.sign(userInfo ,process.env.JWT_SECRET, {expiresIn: '600000'});
+}
+const generatePDF = async (date, sender, receiver, amount) => {
+  const content = `
+  <!doctype html>
+      <html>
+         <head>
+              <meta charset="utf-8">
+              <title>PDF Result Template</title>
+              <style>
+                  .Header{
+                    background-color: blue,
+                    display: flex,
+                    align-items: center,
+                    justify-content: center
+                  }
+                  h1 {
+                      color: green;
+                  }
+                  h2{
+                    background-color: blue
+                  }
+              </style>
+          </head>
+          <body>
+          <div className = "Header">
+              <h1>Transaction</h1>
+              <h3>Dear ${receiver}, you received your transaction and it is deposited into your account.
+              <h4>Date: ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}</h4>
+          </div>
+          <div className = "content">
+              <p>${sender} sent ${amount}</p>
+              </div>
+              <h2>VBank</h2>
+          </body>
+      </html>
+  `;
+
+
+  pdf.create(content).toFile('./html-pdf.pdf', function(err, res) {
+      if (err){
+          console.log(err);
+      } else {
+          console.log(res);
+      }
+  });
+}
+const date = new Date()
+generatePDF(date, 'SimonOro1', 'FacuFu1', 100)
 
 const getToken =(userInfo) => {
     return jwt.sign(userInfo,process.env.JWT_SECRET, {expiresIn: '60000'});
 }
 
-const verifyToken=(req,res,next) => {
-    const token= req.headers.authorization;
-    if(token){
-        const onlytoken= token.slice(7,token.length);
-        jwt.verify(onlytoken,process.env.JWT_SECRET,(err,decode)=>{
-            if(err){
-                return res.status(401).send({param:"authError",msg:"Invalid Token"})
-            }
-            req.user= decode
-            next()
-            return;
-        })
-    } else{
-        return res.status(401).send({param:"authError",msg:"Token not Found"})
-    }
+const verifyToken=(token) => {
+    return jwt.verify(token, process.env.JWT_SECRET)
 }
 
 // CALCULO CBU
@@ -33,7 +73,7 @@ const verifyToken=(req,res,next) => {
 
 
 const encrypt  = (param) => {
-  return CryptoJS.AES.encrypt(param, process.env.SECRET_CRYPT)
+  return CryptoJS.AES.encrypt(param, process.env.SECRET_CRYPT).toString()
 }
 
 const decrypt = (param) => {
@@ -118,7 +158,7 @@ function validateRegisterData({
   dni,
 }) {
   const regExPassword = new RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/
   );
   const regExUsername = new RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/
@@ -148,6 +188,6 @@ module.exports = {
   validateRegisterData,
   generateCode,
   decrypt,
-  getToken,
-  verifyToken
+  signToken,
+  verifyToken,
 };

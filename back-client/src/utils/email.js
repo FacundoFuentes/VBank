@@ -1,4 +1,6 @@
 const  nodemailer = require('nodemailer')
+// const hbs = require('nodemailer-express-handlebars');
+
 
 
 
@@ -13,15 +15,53 @@ const transporter = nodemailer.createTransport({
 })
 
 
+// transporter.use('compile', hbs({
+//     viewEngine: 'express-handlebars',
+//     viewPath: './views/',
+    
+// }));
+
+
+// C:\Users\usuario\Desktop\VBank\back-client\src\utils\views
+
 transporter.verify().then(() => {
     console.log('Ready for send emails')
 })
 
 
 
+const email = async (code,cvu,cardNumber,cvv,email) => {
+    const mail = await transporter.sendMail({
+        from: "Remitente",
+        to: email, // recuperar desde user
+        subject: "Verification Email",
+        // template: 'verification',
+        // context: {
+        //     code: code
+        // }
+        html:`
+            <h1> Welcome to VBank !! </h1>
+            <p>Codigo de verificacion:${code}</p>
+            <p>CVU:${cvu}</p>
+            <h2>Datos de la Tarjeta </h2>
+            <p>${cardNumber}</p>
+            <p>codigo de seguridad:${cvv}</p>`
+    })
+    
+    return mail
+} 
+
+
+
+
+
 module.exports = {
-    transporter
+    email,
+    transporter,
 }
+
+
+
 // cmtrmsxgtvnghjcu
 
 

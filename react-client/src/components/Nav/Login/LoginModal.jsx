@@ -63,7 +63,7 @@ const LoginModal = () => {
   
  
   const onSubmit = (data) => {
-    console.log(data)
+    // console.log(data)
       dispatch(signinUser(data));   
 
   }

@@ -110,13 +110,15 @@ const SignupPage = () => {
 }, [loggedInUser,history])
 
   const { control, handleSubmit, formState: { errors }} = useForm();
-  
- 
+   
+
   const onSubmit = (data) => {
    /*  console.log(data) */
-        if (error) console.log("no se puede enviar")
-       dispatch(registerUser(data));
-        history.push("/")
+      if (error) console.log("no se puede enviar")
+      dispatch(registerUser(data));
+      alert("User Created Succefully, Check Your EmailBox 📫")
+      history.push("/")
+      
 
   }
     

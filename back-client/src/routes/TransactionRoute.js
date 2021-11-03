@@ -29,13 +29,29 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
     })
 
     userFrom = await User.findOne({ username: decodedToken.username }); //Busco el usuario cuyo username es el del token
-    userTo = await User.findOne({ username: to }); //Busco el ususario receiver
+    accountFrom = await Account.findOne({_id: userFrom.account})
+    
+    
+    if(to.length > 16){ //Si es CVU
+      accountTo = await Account.findOne({cvu: to}).populate('user')//Busco la cuenta del usuario RECEIVER
+      userTo = await User.findOne({_id: accountTo.user}).populate('account')
+    } else{
+      console.log('hola')
+      userTo = await User.findOne({ username: to}).populate('account')
+      accountTo = await Account.findOne({_id: userTo.account})
+    } 
+
+    if(decodedToken.username === userTo.username)return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver
+      status: "failed",
+      error:
+        "You can't receive money from yourself",
+    })
 
     if (!userFrom || !userTo) //Si alguno de los dos no existe
       return res.status(400).json({
         status: "failed",
         error:
-          "User not found or a meteorite landed on your house (or in the data center)",
+          "User not found or a meteorite landed on your house (or in the data center)" + error.message,
       });
 
       
@@ -47,12 +63,11 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
         return res.status(400).json({status: 'failed', error: 'CVV is not valid'})
       } 
       
-    accountTo = await Account.findOne({ _id: userTo.account });//Busco la cuenta del usuario RECEIVER
   } catch (error) {
     return res.status(400).json({
       status: "failed",
       error:
-        "User not found or a meteorite landed on your house (or in the datacenter)",
+        "User not found or a meteorite landed on your house (or in the datacenter)"+ error.message,
     });
   }
 

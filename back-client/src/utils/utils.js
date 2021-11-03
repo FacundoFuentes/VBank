@@ -58,8 +58,8 @@ const generatePDF = async (date, sender, receiver, amount) => {
       }
   });
 }
-const date = new Date()
-generatePDF(date, 'SimonOro1', 'FacuFu1', 100)
+// const date = new Date()
+// generatePDF(date, 'SimonOro1', 'FacuFu1', 100)
 
 const getToken =(userInfo) => {
     return jwt.sign(userInfo,process.env.JWT_SECRET, {expiresIn: '60000'});

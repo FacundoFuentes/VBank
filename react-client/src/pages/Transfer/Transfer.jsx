@@ -4,6 +4,11 @@ import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
+import jwt from 'jsonwebtoken'
+import {useHistory} from 'react-router-dom'
+
+import success from "../../img/success.gif"
+
 
 const Container= styled.div`
 display: flex;
@@ -50,6 +55,21 @@ const ContactBlack = styled(Contact)`
   height: 50px;
   
 `
+const DivCheck = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+
+`
+
+
+const defaultForm = {
+  to: '',
+  amount: '',
+  description: '',
+  type: 'TRANSFER',
+  cvv:''
+}
 
 
 
@@ -58,16 +78,18 @@ export default function Transfer() {
   const handler = () => setVisible(true);
   const closeHandler = () => {
       setVisible(false);
+      setError('');
+   
   }
 
-  const [state, setState] = useState({
-    from:"SimonOro1",
-    to: '',
-    amount: '',
-    description: '',
-    type: 'TRANSFER'
-})
+const myHistory = useHistory()
 
+const [state, setState] = useState(defaultForm)
+
+const [error,setError] = useState('')
+console.log(error)
+
+const [status, setStatus] =useState(0)
 
 
 function handleChange(e){
@@ -85,19 +107,31 @@ function handleAmount(e){
   })
 }
 
+const token = JSON.parse(localStorage.getItem("token")).data
+let {username} = jwt.decode(token)
+console.log(username)
 
  function handleSubmit(e){
   e.preventDefault()
-  console.log(state)
-  axios.post('http://localhost:3001/transactions/new', state)
+  
+  axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
-   }) .catch(error=>{
-     console.log(error)
+   setStatus(response.status)
+   console.log(response.status)
+   
+   }).catch(error=>{
+     setError(error.response.data.error)
+     setStatus(error.response.data.status)
+      
    })
   }
-    
-
+  
+  function HandleCloseSucces(e){
+    e.preventDefault()
+    setState(defaultForm)
+    closeHandler()
+  }
 
 
     return (
@@ -116,33 +150,36 @@ function handleAmount(e){
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
+            <Input name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
            <Text weight='bold'>How much?</Text>
-           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
+           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
            <Text weight='bold'>Note</Text>
-           <Textarea name="description" maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
+           <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
        
        </DetailContainer>   
        
        </TextContainer>
        
        <ButtonContainer>
-       <Button onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
-
-       <Modal  closeButton 
+       
+       <Modal  
+         preventClose 
          aria-labelledby="modal-title"
          open={visible}
          onClose={closeHandler}>
-
+       {
+         status !== 200 ?
+         <>
          <Modal.Header>
            <Text h3>Check before send!</Text>
          </Modal.Header>
@@ -152,17 +189,42 @@ function handleAmount(e){
          <Text>To Username: {` ${state.to}`} </Text>
          <Text>How much: {` ${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
+         <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>
+           { error?.length > 1  ? 
+            <>
+            <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
             <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
-        </Modal.Footer>
-
+            </>
+            :
+            <>
+            <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
+            Close
+            </Button>
+            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
+            Ok!
+            </Button>
+            
+            </>
+            }
+          </Modal.Footer>
+          </>
+          :
+          <>
+          <DivCheck>
+          <img src={success} alt='loading gif' />
+          </DivCheck>
+          
+          <Button  color="#2CA1DE" onClick={(e)=> HandleCloseSucces(e) }> Ok! </Button>
+          </>
+          }  
         </Modal> 
       
       </Container>

@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { signinUser } from '../../../redux/reducers/userSlice';
+import { logoutUser, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
@@ -22,6 +22,9 @@ const LoginModal = () => {
     const userState = useSelector(state => state.user);
 
     const {loggedInUser} =userState; 
+
+    const error = useSelector(state => state.user.signinState.error);
+    console.log(error)
 
 
 
@@ -42,13 +45,12 @@ const LoginModal = () => {
 
     
 
-    const history= useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         if (loggedInUser){
             //redirect con el hook useHistory
             history.push("/home"); //esto me lleva hacia esta ventana
-
         }
     },[loggedInUser,history])
   
@@ -60,9 +62,10 @@ const LoginModal = () => {
   
  
   const onSubmit = (data) => {
-    console.log(data)
-      dispatch(signinUser(data));   
-
+    // console.log(data)
+      dispatch(signinUser(data)); 
+      setVisible(false)
+      
   }
 
     return (
@@ -139,6 +142,8 @@ const LoginModal = () => {
       />
        {errors.password?.type === 'required' && <p className="error">This field is required</p>}
        {errors.password?.type === 'pattern' && <p className="error"> Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+
+       {error && <p className="error">{error.error}</p>}
       
       
                 <Row justify="space-between">

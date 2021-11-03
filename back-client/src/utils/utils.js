@@ -49,9 +49,9 @@ const generatePDF = async (date, sender, receiver, amount) => {
       </html>
   `;
 
-
+a88amp
   pdf.create(content).toFile('./html-pdf.pdf', function(err, res) {
-      if (err){
+      if (err){a88amp
           console.log(err);
       } else {
           console.log(res);
@@ -152,6 +152,8 @@ const generateCode = () => {
   return validationCode;
 };
 
+
+
 const generateCargeNumber = () => {
   let params = {
     min: 11110000,
@@ -159,11 +161,9 @@ const generateCargeNumber = () => {
     integer: true
   }
   const number = random(params)
-  console.log(number)
-  return number
+  return number.toString()
 }
 
-generateCargeNumber()
 
 function validateRegisterData({
   lastName,
@@ -206,4 +206,5 @@ module.exports = {
   decrypt,
   signToken,
   verifyToken,
+  generateCargeNumber,
 };

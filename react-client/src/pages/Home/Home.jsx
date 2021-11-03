@@ -13,7 +13,7 @@ import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers
 
 const ContainerS = styled.div`
   margin: 0px 300px;
-  padding-left:auto;
+ 
   display:flex;
   flex-direction: column;
   width: 100%;
@@ -23,9 +23,11 @@ const ContainerS = styled.div`
 const TextS = styled.h2`
   font-weight: bold;
   justify-content: flex-start;
-  margin-left: 55px;
-  margin-right: 250px;
+  margin-top:25px;
+  margin-left: 0px;
+  margin-right: 27%;
   margin-bottom:0px;
+  
 `;
 const GridS = styled.div`
   margin:5px 20px;
@@ -79,18 +81,20 @@ const ChartContainer = styled.div`
 const CardNnumber = styled.h3`
   color:#F6F6F6;
   position: absolute;
-  width:500px;
+  width:300px;
   height:50px;
-  top:240px;
-  left:400px;
+  top:270px;
+  left:1;
+  padding-left:20px;
 `;
 const CardName = styled.h5`
   color:#F6F6F6;
   position: absolute;
   width:500px;
   height:50px;
-  top:270px;
-  left:400px;
+  top:300px;
+  padding-left:20px;
+  left:1;
 `;
 const DateNameTotal = styled.div`
   padding-top: 15px;
@@ -142,7 +146,7 @@ export default function Home() {
   }, [])
 
   return (
-    <>
+    <div>
     <SideBar/>
     <ContainerS>
         <GridS>
@@ -187,15 +191,12 @@ export default function Home() {
                 <Spacer x={-4}/>
                 <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
                 <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` + $ ${e.transaction.amount}` : ` - $ ${e.transaction.amount}` } </GridLatestMovents>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` +$${e.transaction.amount}` : ` -$${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  
                   ) 
                 }
               </GridContainer>
-              
-        
-              
           </Expeses>
         </GridS>
         <GridS>
@@ -204,9 +205,9 @@ export default function Home() {
           <Chart height="500px" data={data}/>
         </ChartContainer>
         </GridS>
-        
     </ContainerS>
-  </> 
+        <Spacer y={3}/>
+  </div> 
     
   )
 }

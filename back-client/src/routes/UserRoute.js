@@ -29,7 +29,7 @@ user.post("/register", async (req, res) => {
   if (validation.status) {
     try {
       const transaction = await Transaction.create({
-        transactionCode: "AAAA1", //Random
+        transactionCode:  utils.generateCargeNumber(), //Random
         date: new Date(),
         amount: 100,
         description: "Welcome to VBank !",
@@ -181,9 +181,9 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
     const account = await Account.findById({_id: account_id})
     console.log(user.account)
     const transaction = await Transaction.create({
-      transactionCode: "AD235hty", //Random
+      transactionCode: utils.generateCargeNumber(), //Random
       date: new Date(),
-      amount: charge,
+      amount: Number(charge),
       description: 'Enjoy your money!',
       type: 'CHARGE',
       // status: 'PROCESSING',
@@ -196,7 +196,7 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
       transaction,
     });
 
-    account.balance += charge
+    account.balance += Number(charge)
     account.transactions.push(accountTransaction)
 
     account.save()

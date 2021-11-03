@@ -250,10 +250,24 @@ user.post('/contacts', async(req, res) => {
     res.status(200).json({status: 'ok', contacts})
   }catch(err){
     error = err.message
-    res.status(400).json({status:'ok', error})
+    res.status(400).json({status:'failed', error})
   }
 })
 
+user.patch('/updateContact', async(req, res) => {
+  const {_Id, description} = req.body
+  try {
+    const contact= await Contact.findOne({_Id})
+    contact.description = description
+    contact.save() 
+
+    res.status(200).json({status: 'ok', contact})
+
+  }catch(err){
+    error = err.message
+    res.status(400).json({status:'failed', error})
+  }
+})
 
 user.delete('/deleteContact', async(req, res) => {
   const {_Id} = req.body

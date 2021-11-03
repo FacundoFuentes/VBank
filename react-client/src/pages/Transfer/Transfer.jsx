@@ -63,7 +63,13 @@ align-items: center;
 `
 
 
-
+const defaultForm = {
+  to: '',
+  amount: '',
+  description: '',
+  type: 'TRANSFER',
+  cvv:''
+}
 
 
 
@@ -78,13 +84,7 @@ export default function Transfer() {
 
 const myHistory = useHistory()
 
-  const [state, setState] = useState({
-    to: '',
-    amount: '',
-    description: '',
-    type: 'TRANSFER',
-    cvv:''
-})
+const [state, setState] = useState(defaultForm)
 
 const [error,setError] = useState('')
 console.log(error)
@@ -127,7 +127,11 @@ console.log(username)
    })
   }
   
-
+  function HandleCloseSucces(e){
+    e.preventDefault()
+    setState(defaultForm)
+    closeHandler()
+  }
 
 
     return (
@@ -146,19 +150,19 @@ console.log(username)
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
+            <Input name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
            <Text weight='bold'>How much?</Text>
-           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
+           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
            <Text weight='bold'>Note</Text>
-           <Textarea name="description" maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
+           <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
        
        </DetailContainer>   
        
@@ -185,12 +189,11 @@ console.log(username)
          <Text>To Username: {` ${state.to}`} </Text>
          <Text>How much: {` ${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
-         <Input name="cvv"label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
+         <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>
-           { error
-            ?
+           { error?.length > 1  ? 
             <>
             <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
@@ -208,14 +211,10 @@ console.log(username)
             <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
-            {status == 200 &&<Modal>
-              Hola!
-            </Modal> }
-            
             
             </>
             }
-        </Modal.Footer>
+          </Modal.Footer>
           </>
           :
           <>
@@ -223,7 +222,7 @@ console.log(username)
           <img src={success} alt='loading gif' />
           </DivCheck>
           
-          <Button  color="#2CA1DE" onClick={()=> myHistory.push("/home")}> Ok! </Button>
+          <Button  color="#2CA1DE" onClick={(e)=> HandleCloseSucces(e) }> Ok! </Button>
           </>
           }  
         </Modal> 

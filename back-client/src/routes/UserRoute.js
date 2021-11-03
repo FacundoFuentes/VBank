@@ -92,9 +92,9 @@ user.post("/register", async (req, res) => {
 });
 
 user.post("/login", async (req, res) => {
-  const {username, password} = req.body
+  const {username, password, dni} = req.body
 
-  const userFound = await User.findOne({username}).lean()
+  const userFound = await User.findOne({username, dni}).lean()
 
   if(!userFound) return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
 

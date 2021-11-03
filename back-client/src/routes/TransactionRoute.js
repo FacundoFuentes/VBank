@@ -92,7 +92,7 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
   }
 });
 
-transaction.get("/", async (req, res) => {
+transaction.post("/", async (req, res) => {
 
   const {username} = req.body
   try {

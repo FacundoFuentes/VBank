@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { signinUser } from '../../../redux/reducers/userSlice';
+import { logoutUser, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
@@ -45,7 +45,7 @@ const LoginModal = () => {
 
     
 
-    const history= useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         if (loggedInUser){
@@ -63,9 +63,10 @@ const LoginModal = () => {
   
  
   const onSubmit = (data) => {
-    console.log(data)
-      dispatch(signinUser(data));   
-
+    // console.log(data)
+      dispatch(signinUser(data)); 
+      setVisible(false)
+      
   }
 
     return (

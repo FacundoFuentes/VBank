@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 
 const transactionSchema = new mongoose.Schema({
 
-
     transactionCode: {
         type: String,
         required: true,
@@ -31,11 +30,6 @@ const transactionSchema = new mongoose.Schema({
         enum: ['TRANSFER', 'CHARGE', 'REFUND']
     },
 
-    // status: {
-    //     type: String,
-    //     enum: ['PROCESSING', 'CONFIRMED', 'CANCELLED']
-    // },
-
     from: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -44,6 +38,11 @@ const transactionSchema = new mongoose.Schema({
     to: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+
+    branch: {
+        type: String,
+        default: 'other'
     }
 })
 

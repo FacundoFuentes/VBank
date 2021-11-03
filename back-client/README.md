@@ -53,8 +53,19 @@ from: username del usuario que envía <br>
 to: username del objectivo a enviar dinero <br>
 description: algo bonito "Feliz cumple te envío 100 pesos" <br>
 type: ['TRANSFER', 'CHARGE', 'REFUND'] <br>
+branch: String <br>
 
 Devuelve: <br>
 {status: 'failed', data: error} <br>
 o si salio bien <br>
 devuelve la transacción completa <br>
+
+<h2>/transactions</h2>
+
+Recibirá por body: <br>
+username: usuario del cual quieren ver las transacciones
+
+Devuelve: <br>
+{status: 'failed', data: error} <br>
+o si salio bien <br>
+las transacciones del usuario <br>

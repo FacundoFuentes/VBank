@@ -15,7 +15,7 @@ passport.use(JwtStrategy)
 
 transaction.post("/new",
 passport.authenticate('jwt', {session: false}), async (req, res) => {
-  const { amount, to, description, type, cvv, validationCode } = req.body;
+  const { amount, to, description, type, cvv, branch } = req.body;
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
   let userFrom, userTo;
@@ -67,6 +67,7 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
       // status: 'PROCESSING',
       from: userFrom,
       to: userTo,
+      branch,
     });
 
     const accountTransactionFrom = await AccountTransaction.create({
@@ -98,7 +99,6 @@ transaction.post("/", async (req, res) => {
   try {
     
     const user = await User.findOne({ username }).populate('account')
-    console.log(user.account._id)
     const accountTransactions = await Account.findOne({_id: user.account._id}).populate({
       path: 'transactions',
       model: 'AccountTransaction',
@@ -111,7 +111,7 @@ transaction.post("/", async (req, res) => {
     res.status(200).send(accountTransactions.transactions)
 
   } catch (error) {
-    res.status(404).send(error.message)
+    res.status(404).send({status: 'failed', data: error})
   }
 
 });

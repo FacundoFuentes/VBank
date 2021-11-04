@@ -47,7 +47,7 @@ const DetailContainer = styled.div `
 margin-bottom: 0px;
 `
 const ButtonContainer = styled.div`
-margin-left:450px;
+margin-left:155px;
 
 `
 const ContactBlack = styled(Contact)`

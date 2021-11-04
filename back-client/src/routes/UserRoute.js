@@ -216,10 +216,11 @@ user.post('/newContact', async (req, res) => {
 
   try{
     const username = decodedToken.username
-
+    
     const {description, cvu} = req.body
-    const  account =  await Account.findOne({cvu})
+    const  account =  await Account.findOne({cvu: cvu})
     const  user = await User.findOne({username})
+    console.log(account)
 
     const contact = await Contact.create({
         account: account,
@@ -272,7 +273,7 @@ user.patch('/updateContact', async(req, res) => {
 user.delete('/deleteContact', async(req, res) => {
   const {_Id} = req.body
   try {
-    const obj = await Contact.deleteOne({_Id});
+    const obj = await Contact.deleteOne({_id: _Id});
     res.status(200).json({status:'ok', obj})
   }catch(err) {
     res.status(400).send(err.message)

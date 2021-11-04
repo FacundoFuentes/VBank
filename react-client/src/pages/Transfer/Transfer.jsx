@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
@@ -46,8 +46,10 @@ margin-bottom: 10px;
 const DetailContainer = styled.div `
 margin-bottom: 0px;
 `
+const BranchContainer = styled.div`
+`
 const ButtonContainer = styled.div`
-margin-left:450px;
+margin-left:155px;
 
 `
 const ContactBlack = styled(Contact)`
@@ -61,14 +63,23 @@ justify-content: center;
 align-items: center;
 
 `
-
+const Select = styled.select`
+    color:#333;
+    width: 300px;
+    height: 40px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #eaeaea;
+    border-radius: 15px;
+`
 
 const defaultForm = {
   to: '',
   amount: '',
   description: '',
   type: 'TRANSFER',
-  cvv:''
+  cvv:'',
+  branch:'',
 }
 
 
@@ -82,7 +93,7 @@ export default function Transfer() {
    
   }
 
-const myHistory = useHistory()
+const myRef = useRef(null)
 
 const [state, setState] = useState(defaultForm)
 
@@ -106,6 +117,15 @@ function handleAmount(e){
       amount: parseInt(e.target.value)
   })
 }
+const handleBranch = () => {
+  setState({
+    ...state,
+    branch: myRef.current.value
+  })
+  
+}
+
+
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
@@ -149,7 +169,7 @@ console.log(username)
         <TextContainer> 
          
           <ToContainer>
-            <Text weight='bold'>To Username</Text>
+            <Text weight='bold'>To Username/CVU</Text>
             <Input name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
@@ -163,8 +183,23 @@ console.log(username)
        <DetailContainer>
            <Text weight='bold'>Note</Text>
            <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
-       
+ 
        </DetailContainer>   
+       <BranchContainer>
+        <Text weight='bold'>Why?</Text>
+          <Select ref={myRef} onChange={handleBranch}>
+          <option  value="Branch" >Select reason</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Food">Food</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Games">Games</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+          </Select>
+ 
+       </BranchContainer>   
        
        </TextContainer>
        
@@ -187,8 +222,9 @@ console.log(username)
         <Modal.Body> 
          
          <Text>To Username: {` ${state.to}`} </Text>
-         <Text>How much: {` ${state.amount}`} </Text>
+         <Text>How much?: {` $${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
+         <Text>Why?:{`  ${state.branch}`}</Text>
          <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        

@@ -1,36 +1,39 @@
 const express = require("express");
 const Account = require("../models/Account.js");
-const PlaceishonFijeishon = require("../models/PlaceishonFijeishon.js");
+const FixedDeposit = require("../models/FixedDeposit.js");
 const User = require("../models/User.js");
 const Transaction = require("../models/Transaction");
 const AccountTransaction = require("../models/AccountTransaction");
 
-const plazo = express.Router();
+const fixedDeposit = express.Router();
 
 //
 //ACCOUNT TIENE QUE TENER ARRAY CON PLAZOS
 //
 // TRANSACTION TIENE QUE TENER OPCIÓN PARA PLAZO FIJO
 //
-// QUIZÁS SE PODRÍA MODULARIZAR LA CREACIÓN DE LA TRANSACCIÓN
 
-plazo.post("/new", async (req, res) => {
-  const { token, days, amount } = req.body;
-  // Extraer username del token
-  const username = token.username;
+fixedDeposit.post("/new", async (req, res) => {
+  const { username, days, amount, interestRate } = req.body;
+  // const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req) //Extraigo el token que me llega por head
+  // const decodedToken = jwtDecode(authToken) // Decodeo el token
+  // const username = decodedToken.username;
   try {
     const foundUser = await User.findOne({ username });
-    const foundAccount = await Account.findOne({ _id: foundUser.account._id });
+    const foundAccount = await Account.findOne({ _id: foundUser.account });
     if (foundAccount.balance < amount)
       return res.status(400).json({
         status: "failed",
         data: "You dont have enough in your account",
       });
+      const todayDate = new Date()
+      const finishDate = new Date()
+      finishDate.setDate(todayDate.getDate() + days)
     const transactionCreated = await Transaction.create({
-      date: new Date(),
+      date: todayDate,
       amount,
-      description: "Plazo fijo on FECHA",
-      type: "Plazo",
+      description: `Fixed Deposit on ${todayDate.getMonth()}/${todayDate.getDay()}/${todayDate.getFullYear()}` ,
+      type: "FIXED DEPOSIT",
       transactionCode: "ADS61Q" /*Randomizar*/,
     });
     if (!transactionCreated)
@@ -51,13 +54,15 @@ plazo.post("/new", async (req, res) => {
           status: "failed",
           data: "An unknown error ocurred during creation",
         });
-    const plazoCreated = await PlaceishonFijeishon.create({
+    const fixedDepositCreated = await FixedDeposit.create({
       account: foundAccount,
       amount,
+      interestRate,
+      finishDate
     });
     foundAccount.balance -= amount;
     foundAccount.save();
-    res.json({ status: "ok", data: plazoCreated });
+    res.json({ status: "ok", data: fixedDepositCreated });
   } catch (error) {
     res.status(400).json({
       status: "failed",
@@ -70,7 +75,7 @@ plazo.post("/new", async (req, res) => {
   }
 });
 
-plazo.get("/", async (req, res) => {
+fixedDeposit.get("/", async (req, res) => {
   const { cvu } = req.body;
 
   // Popular y traer el array con todos los plazos
@@ -87,24 +92,24 @@ plazo.get("/", async (req, res) => {
   }
 });
 
-plazo.post("/cobrar", async (req, res) => {
-  const { plazoId } = req.body;
+fixedDeposit.post("/cobrar", async (req, res) => {
+  const { fixedDepositId } = req.body;
 
   try {
-    const plazoFound = await PlaceishonFijeishon.findOne({ _id: plazoId });
-    if (plazoFound && plazoFound.status === "Finished") {
+    const fixedDepositFound = await FixedDeposit.findOne({ _id: fixedDepositId });
+    if (fixedDepositFound && fixedDepositFound.status === "Finished") {
       const accountFound = await Account.findOne({
-        cvu: plazoFound.account.cvu,
+        cvu: fixedDepositFound.account.cvu,
       });
-      accountFound.balance += plazoFound.amount * (1 + plazoFound.interes);
-      plazoFound.status = "Cobraded";
+      accountFound.balance += fixedDepositFound.amount * (1 + fixedDepositFound.interes);
+      fixedDepositFound.status = "Cobraded";
       accountFound.save();
-      plazoFound.save();
+      fixedDepositFound.save();
     } else
-      res.status(400).json({ status: "failed", data: "Plazo does not exists" });
+      res.status(400).json({ status: "failed", data: "Fixed Deposit does not exists" });
   } catch (error) {
     res.json({ status: "failed", data: error });
   }
 });
 
-module.exports = plazo;
+module.exports = fixedDeposit;

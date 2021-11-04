@@ -1,15 +1,6 @@
 const mongoose = require("mongoose");
 
-function calculateFinishDate() {
-    let actualDate = new Date();
-    return new Date(
-      actualDate.getFullYear() + 1,
-      actualDate.getMonth(),
-      actualDate.getDay()
-    );
-  }
-
-const plazoSchema = new mongoose.Schema({
+const fixedDepositSchema = new mongoose.Schema({
   amount: {
       type: Number,
       required: true,
@@ -22,13 +13,12 @@ const plazoSchema = new mongoose.Schema({
   finishDate: {
     type: Date,
     required: true,
-    default: calculateFinishDate(),
   },
   status: {
     type: String,
     enum: ["Active", "Finished", "Cobraded"],
   },
-  interes: {
+  interestRate: {
       type: Number,
       required: true
   },
@@ -38,6 +28,6 @@ const plazoSchema = new mongoose.Schema({
   },
 });
 
-const Plazo = mongoose.model("Plazo", plazoSchema);
+const FixedDeposit = mongoose.model("FixedDeposit", fixedDepositSchema);
 
-module.exports = Plazo;
+module.exports = FixedDeposit;

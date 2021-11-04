@@ -10,7 +10,7 @@ flex-direction: column;
 align-items: center;
 height: 450px;
 width: 700px;
-background-color: #F6F6F6;
+background-color: #FFF;
 border-radius: 10px;
 `
 const MaxContainer=styled.div`
@@ -21,8 +21,8 @@ align-items: center;
 justify-content: center;
 `
 const TitleContainer= styled.div`
-margin-right: 280px;
-margin-bottom: 10px;
+margin-right:50px;
+
 `
 
 const TextContainer = styled.div`
@@ -41,7 +41,7 @@ margin-bottom: 0px;
 margin-top: 30px;
 `
 const ButtonContainer = styled.div`
-margin-left:450px;
+margin-left:155px;
 
 `
 
@@ -116,7 +116,7 @@ export default function FixedTerm() {
        </MoneyContainer>
        
        <DetailContainer>
-       <Card  color="#2CA1DE" bordered borderColor="#D8DBE2" >
+       <Card  color="#f3f3f3" bordered borderColor="#D8DBE2" >
            <Text size="20px" weight='bold'>Interest rate: </Text>
            <Text > from 30 to 90 days: TNA 37% </Text>
            <Text > from 90 to 365 days: TNA 40% </Text>

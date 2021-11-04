@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Transfer from "./pages/Transfer/Transfer";
 import SignupPage from "./pages/SignupPage/SignupPage";
+import FixedTerm from "./pages/FixedTerm/FixedTerm";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/home" component={Home} />
         <Route exact path="/home/transfer" component={Transfer}/>
         <Route exact path="/user/signUp"  component={SignupPage}/>  
+        <Route exact path="/fixedTerm" component={FixedTerm}/>
        </Switch>
     </Router>    
 

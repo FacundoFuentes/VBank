@@ -7,6 +7,8 @@ const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
+const Contact = require("../models/Contact");
+
 const {ExtractJwt} = require('passport-jwt')
 const user = express.Router()
 const JwtStrategy = require('../utils/strategy/jwt.strategy')
@@ -27,7 +29,7 @@ user.post("/register", async (req, res) => {
   if (validation.status) {
     try {
       const transaction = await Transaction.create({
-        transactionCode: "AAAA1", //Random
+        transactionCode:  utils.generateCargeNumber(), //Random
         date: new Date(),
         amount: 100,
         description: "Welcome to VBank !",
@@ -90,9 +92,9 @@ user.post("/register", async (req, res) => {
 });
 
 user.post("/login", async (req, res) => {
-  const {username, password} = req.body
+  const {username, password, dni} = req.body
 
-  const userFound = await User.findOne({username}).lean()
+  const userFound = await User.findOne({username, dni}).lean()
 
   if(!userFound) return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
 
@@ -109,7 +111,7 @@ user.post("/login", async (req, res) => {
 });
 
 user.post('/userInfo', async (req, res) => {
-  const {username} = req.body
+  const {username} = req.body // add token
 
   try {
     
@@ -134,7 +136,7 @@ user.post('/userInfo', async (req, res) => {
 })
 
 user.post('/userAccountInfo', async (req, res) =>{
-  const {username} = req.body
+  const {username} = req.body // add token
 
   try {
     const user = await User.findOne({username}).populate({
@@ -179,9 +181,9 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
     const account = await Account.findById({_id: account_id})
     console.log(user.account)
     const transaction = await Transaction.create({
-      transactionCode: "AD235hty", //Random
+      transactionCode: utils.generateCargeNumber(), //Random
       date: new Date(),
-      amount: charge,
+      amount: Number(charge),
       description: 'Enjoy your money!',
       type: 'CHARGE',
       // status: 'PROCESSING',
@@ -194,7 +196,7 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
       transaction,
     });
 
-    account.balance += charge
+    account.balance += Number(charge)
     account.transactions.push(accountTransaction)
 
     account.save()
@@ -206,4 +208,76 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
   }
 })
 
+
+
+user.post('/newContact', async (req, res) => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
+
+  try{
+    const username = decodedToken.username
+
+    const {description, cvu} = req.body
+    const  account =  await Account.findOne({cvu})
+    const  user = await User.findOne({username})
+
+    const contact = await Contact.create({
+        account: account,
+        description: description
+    })
+
+    user.contacts.push(contact)
+    user.save()
+
+    res.status(200).json({status: 'ok', contact})
+  }catch(err){
+    let error = err.message
+    res.status(400).json({status: 'failed', error})
+  }
+})
+
+user.post('/contacts', async(req, res) => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
+
+  try{
+    const username = decodedToken.username
+    const  user = await User.findOne({username}).populate({
+      path: 'contacts',
+      model: 'Contact'
+    })
+    const contacts = user.contacts
+    res.status(200).json({status: 'ok', contacts})
+  }catch(err){
+    error = err.message
+    res.status(400).json({status:'failed', error})
+  }
+})
+
+user.patch('/updateContact', async(req, res) => {
+  const {_Id, description} = req.body
+  try {
+    const contact= await Contact.findOne({_Id})
+    contact.description = description
+    contact.save() 
+
+    res.status(200).json({status: 'ok', contact})
+
+  }catch(err){
+    error = err.message
+    res.status(400).json({status:'failed', error})
+  }
+})
+
+user.delete('/deleteContact', async(req, res) => {
+  const {_Id} = req.body
+  try {
+    const obj = await Contact.deleteOne({_Id});
+    res.status(200).json({status:'ok', obj})
+  }catch(err) {
+    res.status(400).send(err.message)
+  }
+})
+
 module.exports = user
+

@@ -78,7 +78,15 @@ const userSchema = new mongoose.Schema(
     account: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
+      },
+
+    contacts:
+    [
+      {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Contact'
       }
+    ] 
     
   },
   { timestamps: true }

@@ -4,6 +4,9 @@ const validator = require("validator");
 const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
 const pdf = require('html-pdf');
+const random = require("simple-random-number-generator");
+
+
 require('dotenv').config()
 
 
@@ -46,9 +49,9 @@ const generatePDF = async (date, sender, receiver, amount) => {
       </html>
   `;
 
-
+a88amp
   pdf.create(content).toFile('./html-pdf.pdf', function(err, res) {
-      if (err){
+      if (err){a88amp
           console.log(err);
       } else {
           console.log(res);
@@ -149,6 +152,19 @@ const generateCode = () => {
   return validationCode;
 };
 
+
+
+const generateCargeNumber = () => {
+  let params = {
+    min: 11110000,
+    max: 99999999,
+    integer: true
+  }
+  const number = random(params)
+  return number.toString()
+}
+
+
 function validateRegisterData({
   lastName,
   firstName,
@@ -190,4 +206,5 @@ module.exports = {
   decrypt,
   signToken,
   verifyToken,
+  generateCargeNumber,
 };

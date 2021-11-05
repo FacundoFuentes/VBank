@@ -7,6 +7,8 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import Transfer from "./pages/Transfer/Transfer";
 import SignupPage from "./pages/SignupPage/SignupPage";
 
+import Profile from "./pages/Profile/Profile";
+
 function App() {
   return (
         <Router>
@@ -15,6 +17,7 @@ function App() {
         <Route exact path="/home" component={Home} />
         <Route exact path="/home/transfer" component={Transfer}/>
         <Route exact path="/user/signUp"  component={SignupPage}/>  
+        <Route exact path="/user/profile"  component={Profile}/>
        </Switch>
     </Router>    
 

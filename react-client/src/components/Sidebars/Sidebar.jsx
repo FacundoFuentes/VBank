@@ -164,7 +164,7 @@ const logOut = ()=> {
 
           <Grid.Container style={{cursor:'pointer'}}>
             <Grid>
-             <Link to="/home"><IconUser/></Link>  
+             <Link to="/user/profile"><IconUser/></Link>  
             </Grid>
             <Spacer x={1}/>
             <Grid>

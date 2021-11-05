@@ -17,7 +17,7 @@ flex-direction: column;
 align-items: center;
 height: 450px;
 width: 700px;
-background-color: #F6F6F6;
+background-color: white;
 border-radius: 10px;
 `
 const MaxContainer=styled.div`
@@ -28,28 +28,36 @@ align-items: center;
 justify-content: center;
 `
 const TitleContainer= styled.div`
-margin-right: 280px;
+margin-right: 85px;
 margin-bottom: 10px;
+padding: 5px;
 `
 
 const TextContainer = styled.div`
 `
 const ToContainer= styled.div`
 margin-top:10px;
-
+padding:5px;
 margin-bottom: 10px;
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
+padding:5px
 `
 const DetailContainer = styled.div `
-margin-bottom: 0px;
+margin-top: 10px;
+margin-bottom: 10px;
+padding:5px
 `
 const BranchContainer = styled.div`
+margin-top:10px;
+margin-bottom:10px;
+padding:5px
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
+padding: 5px;
 
 `
 const ContactBlack = styled(Contact)`
@@ -66,11 +74,12 @@ align-items: center;
 const Select = styled.select`
     color:#333;
     width: 300px;
-    height: 40px;
+    height: 35px;
     margin-bottom: 10px;
     border: none;
     background-color: #eaeaea;
-    border-radius: 15px;
+    border-radius: 10px;
+    padding:5px 10px;
 `
 
 const defaultForm = {
@@ -169,26 +178,26 @@ console.log(username)
         <TextContainer> 
          
           <ToContainer>
-            <Text weight='bold'>To Username/CVU</Text>
+            <Text >To Username/CVU</Text>
             <Input name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text weight='bold'>How much?</Text>
-           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
+           <Text >How much?</Text>
+           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
-           <Text weight='bold'>Note</Text>
+           <Text >Note</Text>
            <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
  
        </DetailContainer>   
        <BranchContainer>
-        <Text weight='bold'>Why?</Text>
+        <Text>Why?</Text>
           <Select ref={myRef} onChange={handleBranch}>
-          <option  value="Branch" >Select reason</option>
+          <option  value="Branch">select reason</option>
                     <option value="Travel">Travel</option>
                     <option value="Food">Food</option>
                     <option value="Shopping">Shopping</option>

@@ -27,7 +27,7 @@ const transactionSchema = new mongoose.Schema({
 
     type: {
         type: String,
-        enum: ['TRANSFER', 'CHARGE', 'REFUND']
+        enum: ['TRANSFER', 'CHARGE', 'REFUND', 'FIXED DEPOSIT']
     },
 
     from: {

@@ -1,11 +1,10 @@
-import {data, user } from "./user"
 import { useEffect } from "react";
 import styled from "styled-components"
 import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
-import { Grid, Spacer} from "@nextui-org/react"
+import { Grid, Spacer, Text} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
 import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
 
@@ -72,6 +71,8 @@ const Expeses = styled.div`
 `;
 const ChartContainer = styled.div`
   display:flex;
+  justify-content: center;
+  align-items:center;
   margin-top:20px;
   background-color:#F6F6F6;
   border-radius:20px;
@@ -131,9 +132,8 @@ export default function Home() {
   const dispatch = useDispatch()
   const history= useHistory();
 
-  console.log(userTransaction)
+ 
   
-
    useEffect(() => {
    if(!loggedInUser) history.push("/")
 
@@ -144,6 +144,38 @@ export default function Home() {
     dispatch(getUserAccountInfo())
     dispatch(getBalance())
   }, [])
+
+
+
+
+  let data2 = userTransaction?.map(e => {
+    return `${e.transaction.branch}`
+    }
+  )
+  data2 = data2?.filter((e,i)=> data2.indexOf(e) === i)
+
+  data2 = data2?.map(e => {
+    return{
+      id: e,
+      label: e,
+      value: 0
+    }
+  })
+  let arrayAmount = userTransaction?.map(e => {
+    return {
+      name: e.transaction.branch,
+      amount: e.transaction.amount
+    }
+  })
+
+  for(let i = 0; i < data2?.length; i++){
+    for(let j = 0; j < arrayAmount?.length;j++){
+      if(data2[i].label === arrayAmount[j].name){
+        data2[i].value += arrayAmount[j].amount
+      }
+    }
+  }
+
 
   return (
     <div>
@@ -177,9 +209,15 @@ export default function Home() {
            <TextS>Latest movements</TextS>
           <Expeses>
             <DateNameTotal>
-                <h3>Date</h3>
-                <h3>Name</h3>
-                <h3>Total</h3>
+            <LatestMovements  gap={2} justify="space-around">
+                <Spacer x={4} />
+                <GridLatestMovents xs={2}>Date</GridLatestMovents>
+                <Spacer x={-5}/>
+                <GridLatestMovents justify="center" xs={4}>Name</GridLatestMovents>
+                <Spacer x={1}/>
+                <GridLatestMovents xs={1}>Total</GridLatestMovents>
+                <Spacer x={2} />
+              </LatestMovements>  
                 
             </DateNameTotal>
               <GridContainer>
@@ -201,9 +239,18 @@ export default function Home() {
         </GridS>
         <GridS>
         <TextS>statistics</TextS>
+        {data2 ? 
         <ChartContainer >
-          <Chart height="500px" data={data}/>
-        </ChartContainer>
+        <Chart height="500px" data={data2}/>
+      </ChartContainer>
+      :
+      <ChartContainer >
+         <Text h2 style={{height:"300px"}}>
+              No tienes movimientos 
+         </Text>
+      </ChartContainer>
+        }
+        
         </GridS>
     </ContainerS>
         <Spacer y={3}/>

@@ -1,11 +1,10 @@
-import {data, user } from "./user"
 import { useEffect } from "react";
 import styled from "styled-components"
 import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
-import { Grid, Spacer} from "@nextui-org/react"
+import { Grid, Spacer, Text} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
 import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
 
@@ -13,18 +12,21 @@ import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers
 
 const ContainerS = styled.div`
   margin: 0px 300px;
-  padding-left:auto;
+ 
   display:flex;
   flex-direction: column;
   width: 100%;
   justify-content:center;
+  overflow-y:scroll;
   `;
 const TextS = styled.h2`
   font-weight: bold;
   justify-content: flex-start;
-  margin-left: 55px;
-  margin-right: 250px;
+  margin-top:25px;
+  margin-left: 0px;
+  margin-right: 27%;
   margin-bottom:0px;
+  
 `;
 const GridS = styled.div`
   margin:5px 20px;
@@ -69,6 +71,8 @@ const Expeses = styled.div`
 `;
 const ChartContainer = styled.div`
   display:flex;
+  justify-content: center;
+  align-items:center;
   margin-top:20px;
   background-color:#F6F6F6;
   border-radius:20px;
@@ -78,18 +82,20 @@ const ChartContainer = styled.div`
 const CardNnumber = styled.h3`
   color:#F6F6F6;
   position: absolute;
-  width:500px;
+  width:300px;
   height:50px;
-  top:240px;
-  left:400px;
+  top:270px;
+  left:1;
+  padding-left:20px;
 `;
 const CardName = styled.h5`
   color:#F6F6F6;
   position: absolute;
   width:500px;
   height:50px;
-  top:270px;
-  left:400px;
+  top:300px;
+  padding-left:20px;
+  left:1;
 `;
 const DateNameTotal = styled.div`
   padding-top: 15px;
@@ -128,7 +134,6 @@ export default function Home() {
 
  
   
-
    useEffect(() => {
    if(!loggedInUser) history.push("/")
 
@@ -140,8 +145,40 @@ export default function Home() {
     dispatch(getBalance())
   }, [])
 
+
+
+
+  let data2 = userTransaction?.map(e => {
+    return `${e.transaction.branch}`
+    }
+  )
+  data2 = data2?.filter((e,i)=> data2.indexOf(e) === i)
+
+  data2 = data2?.map(e => {
+    return{
+      id: e,
+      label: e,
+      value: 0
+    }
+  })
+  let arrayAmount = userTransaction?.map(e => {
+    return {
+      name: e.transaction.branch,
+      amount: e.transaction.amount
+    }
+  })
+
+  for(let i = 0; i < data2?.length; i++){
+    for(let j = 0; j < arrayAmount?.length;j++){
+      if(data2[i].label === arrayAmount[j].name){
+        data2[i].value += arrayAmount[j].amount
+      }
+    }
+  }
+
+
   return (
-    <>
+    <div>
     <SideBar/>
     <ContainerS>
         <GridS>
@@ -172,9 +209,15 @@ export default function Home() {
            <TextS>Latest movements</TextS>
           <Expeses>
             <DateNameTotal>
-                <h3>Date</h3>
-                <h3>Name</h3>
-                <h3>Total</h3>
+            <LatestMovements  gap={2} justify="space-around">
+                <Spacer x={4} />
+                <GridLatestMovents xs={2}>Date</GridLatestMovents>
+                <Spacer x={-5}/>
+                <GridLatestMovents justify="center" xs={4}>Name</GridLatestMovents>
+                <Spacer x={1}/>
+                <GridLatestMovents xs={1}>Total</GridLatestMovents>
+                <Spacer x={2} />
+              </LatestMovements>  
                 
             </DateNameTotal>
               <GridContainer>
@@ -186,26 +229,32 @@ export default function Home() {
                 <Spacer x={-4}/>
                 <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
                 <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` + $ ${e.transaction.amount}` : ` - $ ${e.transaction.amount}` } </GridLatestMovents>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` +$${e.transaction.amount}` : ` -$${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  
                   ) 
                 }
               </GridContainer>
-              
-        
-              
           </Expeses>
         </GridS>
         <GridS>
         <TextS>statistics</TextS>
+        {data2 ? 
         <ChartContainer >
-          <Chart height="500px" data={data}/>
-        </ChartContainer>
-        </GridS>
+        <Chart height="500px" data={data2}/>
+      </ChartContainer>
+      :
+      <ChartContainer >
+         <Text h2 style={{height:"300px"}}>
+              No tienes movimientos 
+         </Text>
+      </ChartContainer>
+        }
         
+        </GridS>
     </ContainerS>
-  </> 
+        <Spacer y={3}/>
+  </div> 
     
   )
 }

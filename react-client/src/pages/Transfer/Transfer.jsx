@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
@@ -17,7 +17,7 @@ flex-direction: column;
 align-items: center;
 height: 450px;
 width: 700px;
-background-color: #F6F6F6;
+background-color: white;
 border-radius: 10px;
 `
 const MaxContainer=styled.div`
@@ -28,26 +28,36 @@ align-items: center;
 justify-content: center;
 `
 const TitleContainer= styled.div`
-margin-right: 280px;
+margin-right: 85px;
 margin-bottom: 10px;
+padding: 5px;
 `
 
 const TextContainer = styled.div`
 `
 const ToContainer= styled.div`
 margin-top:10px;
-
+padding:5px;
 margin-bottom: 10px;
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
+padding:5px
 `
 const DetailContainer = styled.div `
-margin-bottom: 0px;
+margin-top: 10px;
+margin-bottom: 10px;
+padding:5px
+`
+const BranchContainer = styled.div`
+margin-top:10px;
+margin-bottom:10px;
+padding:5px
 `
 const ButtonContainer = styled.div`
-margin-left:450px;
+margin-left:155px;
+padding: 5px;
 
 `
 const ContactBlack = styled(Contact)`
@@ -61,9 +71,25 @@ justify-content: center;
 align-items: center;
 
 `
+const Select = styled.select`
+    color:#333;
+    width: 300px;
+    height: 35px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #eaeaea;
+    border-radius: 10px;
+    padding:5px 10px;
+`
 
-
-
+const defaultForm = {
+  to: '',
+  amount: '',
+  description: '',
+  type: 'TRANSFER',
+  cvv:'',
+  branch:'',
+}
 
 
 
@@ -76,15 +102,9 @@ export default function Transfer() {
    
   }
 
-const myHistory = useHistory()
+const myRef = useRef(null)
 
-  const [state, setState] = useState({
-    to: '',
-    amount: '',
-    description: '',
-    type: 'TRANSFER',
-    cvv:''
-})
+const [state, setState] = useState(defaultForm)
 
 const [error,setError] = useState('')
 console.log(error)
@@ -106,6 +126,15 @@ function handleAmount(e){
       amount: parseInt(e.target.value)
   })
 }
+const handleBranch = () => {
+  setState({
+    ...state,
+    branch: myRef.current.value
+  })
+  
+}
+
+
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
@@ -127,7 +156,11 @@ console.log(username)
    })
   }
   
-
+  function HandleCloseSucces(e){
+    e.preventDefault()
+    setState(defaultForm)
+    closeHandler()
+  }
 
 
     return (
@@ -145,22 +178,37 @@ console.log(username)
         <TextContainer> 
          
           <ToContainer>
-            <Text weight='bold'>To Username</Text>
-            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
+            <Text >To Username/CVU</Text>
+            <Input name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text weight='bold'>How much?</Text>
-           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
+           <Text >How much?</Text>
+           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
-           <Text weight='bold'>Note</Text>
-           <Textarea name="description" maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
-       
+           <Text >Note</Text>
+           <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
+ 
        </DetailContainer>   
+       <BranchContainer>
+        <Text>Why?</Text>
+          <Select ref={myRef} onChange={handleBranch}>
+          <option  value="Branch">select reason</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Food">Food</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Games">Games</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+          </Select>
+ 
+       </BranchContainer>   
        
        </TextContainer>
        
@@ -183,14 +231,14 @@ console.log(username)
         <Modal.Body> 
          
          <Text>To Username: {` ${state.to}`} </Text>
-         <Text>How much: {` ${state.amount}`} </Text>
+         <Text>How much?: {` $${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
-         <Input name="cvv"label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
+         <Text>Why?:{`  ${state.branch}`}</Text>
+         <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>
-           { error
-            ?
+           { error?.length > 1  ? 
             <>
             <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
@@ -208,13 +256,10 @@ console.log(username)
             <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
-            {status == 200 &&<Modal>
-              Hola!
-            </Modal> }
             
             </>
             }
-        </Modal.Footer>
+          </Modal.Footer>
           </>
           :
           <>
@@ -222,7 +267,7 @@ console.log(username)
           <img src={success} alt='loading gif' />
           </DivCheck>
           
-          <Button  color="#2CA1DE" onClick={()=> myHistory.push("/home")}> Ok! </Button>
+          <Button  color="#2CA1DE" onClick={(e)=> HandleCloseSucces(e) }> Ok! </Button>
           </>
           }  
         </Modal> 

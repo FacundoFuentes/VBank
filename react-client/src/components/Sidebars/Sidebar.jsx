@@ -76,7 +76,6 @@ const ExtendNav = styled(SideNav)`
   align-items:flex-start;
   padding-left:25px;
 
-  
 `;
 
 
@@ -102,7 +101,7 @@ const logOut = ()=> {
            <Spacer y={2}/>  
           <Link to="/home/transfer"> <IconCashCoin/></Link>
           <Spacer y={2}/>
-            <IconUser />
+           <Link to="/user/profile"> <IconUser /> </Link>
             <Spacer y={2}/> 
          <Link to="/"><IconLogOut display="flex"  onClick={logOut}/></Link>   
         
@@ -162,15 +161,19 @@ const logOut = ()=> {
           </Link>
           <Spacer y={2}/>
 
+
+
+          <Link to="/user/profile">
           <Grid.Container style={{cursor:'pointer'}}>
             <Grid>
-             <Link to="/user/profile"><IconUser/></Link>  
+             <IconUser/>
             </Grid>
             <Spacer x={1}/>
             <Grid>
              <Text color="black">User</Text>
             </Grid>
           </Grid.Container>
+          </Link>
 
           <Spacer y={2}/>
 

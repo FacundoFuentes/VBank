@@ -131,7 +131,7 @@ export default function Home() {
   const dispatch = useDispatch()
   const history= useHistory();
 
- 
+  console.log(userTransaction)
   
 
    useEffect(() => {

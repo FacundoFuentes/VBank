@@ -36,7 +36,6 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
       accountTo = await Account.findOne({cvu: to}).populate('user')//Busco la cuenta del usuario RECEIVER
       userTo = await User.findOne({_id: accountTo.user}).populate('account')
     } else{
-      console.log('hola')
       userTo = await User.findOne({ username: to}).populate('account')
       accountTo = await Account.findOne({_id: userTo.account})
     } 

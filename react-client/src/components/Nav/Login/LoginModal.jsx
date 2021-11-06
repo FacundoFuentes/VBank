@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { signinUser } from '../../../redux/reducers/userSlice';
+import { logoutUser, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
@@ -24,7 +24,7 @@ const LoginModal = () => {
     const {loggedInUser} =userState; 
 
     const error = useSelector(state => state.user.signinState.error);
-    console.log(error)
+   
 
 
 
@@ -45,12 +45,12 @@ const LoginModal = () => {
 
     
 
-    const history= useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         if (loggedInUser){
             //redirect con el hook useHistory
-            history.push("/home"); //esto me lleva hacia esta ventana
+            history.push("/"); //esto me lleva hacia esta ventana
 
         }
     },[loggedInUser,history])
@@ -64,8 +64,9 @@ const LoginModal = () => {
  
   const onSubmit = (data) => {
     // console.log(data)
-      dispatch(signinUser(data));   
-
+      dispatch(signinUser(data)); 
+      setVisible(false)
+      
   }
 
     return (
@@ -157,7 +158,7 @@ const LoginModal = () => {
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close
                 </Button>
-                <Button auto type="submit">
+                <Button color="#2CA1DE" auto type="submit">
                 Sign in
                 </Button>
             </Modal.Footer>

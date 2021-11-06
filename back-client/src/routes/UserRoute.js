@@ -94,6 +94,7 @@ user.post("/register", async (req, res) => {
 
 user.post("/login", async (req, res) => {
   const {username, password, dni} = req.body
+  console.log(req.body)
 
   const userFound = await User.findOne({username, dni}).lean()
 
@@ -214,9 +215,10 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
 user.post('/newContact', async (req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
-  let contactAccount, contactUser;
 
   try{
+    let contactAccount, contactUser;
+
     const username = decodedToken.username
     const user = await User.findOne({username: decodedToken.username})
     const {description, data} = req.body
@@ -267,9 +269,10 @@ user.post('/newContact', async (req, res) => {
   }
 })
 
-user.post('/contacts', async(req, res) => {
+user.get('/contacts', async(req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
+  console.log(decodedToken)
 
   try{
     const username = decodedToken.username
@@ -300,10 +303,15 @@ user.patch('/updateContact', async(req, res) => {
   }
 })
 
-user.delete('/deleteContact', async(req, res) => {
-  const {_Id} = req.body
+
+//El delete no permite body, paso el id por param
+user.delete('/deleteContact/:id', async(req, res) => {
+  const {id} = req.params
+
+  console.log(req.params)
+
   try {
-    const obj = await Contact.deleteOne({_id: _Id});
+    const obj = await Contact.deleteOne({_id: id});
     res.status(200).json({status:'ok', obj})
   }catch(err) {
     res.status(400).send(err.message)

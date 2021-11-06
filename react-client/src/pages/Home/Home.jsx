@@ -143,7 +143,7 @@ export default function Home() {
     dispatch(getUserInfo())
     dispatch(getUserAccountInfo())
     dispatch(getBalance())
-  }, [])
+  }, [dispatch])
 
 
 
@@ -161,20 +161,29 @@ export default function Home() {
       value: 0
     }
   })
+
   let arrayAmount = userTransaction?.map(e => {
     return {
       name: e.transaction.branch,
-      amount: e.transaction.amount
+      amount: e.transaction.amount,
+      role: e.role
     }
   })
 
   for(let i = 0; i < data2?.length; i++){
     for(let j = 0; j < arrayAmount?.length;j++){
       if(data2[i].label === arrayAmount[j].name){
-        data2[i].value += arrayAmount[j].amount
+          if(arrayAmount[j].role !== "RECEIVER"){
+          data2[i].value += arrayAmount[j].amount
+        }
       }
+      
     }
   }
+  data2 = data2?.filter(e => e.value > 0)
+  
+
+
 
 
   return (
@@ -229,7 +238,7 @@ export default function Home() {
                 <Spacer x={-4}/>
                 <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
                 <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` +$${e.transaction.amount}` : ` -$${e.transaction.amount}` } </GridLatestMovents>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? `+$${e.transaction.amount}` : `-$${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  
                   ) 
@@ -239,14 +248,18 @@ export default function Home() {
         </GridS>
         <GridS>
         <TextS>statistics</TextS>
-        {data2 ? 
+        {data2?.length > 0 ? 
         <ChartContainer >
         <Chart height="500px" data={data2}/>
       </ChartContainer>
       :
       <ChartContainer >
-         <Text h2 style={{height:"300px"}}>
-              No tienes movimientos 
+         <Text h2 style={{height:"500px"}}>
+         <Chart height="500px" data={[{
+           "id":"no movement ",
+           "laber":"no movement ",
+           "value":1
+         }]}/>
          </Text>
       </ChartContainer>
         }

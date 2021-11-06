@@ -10,7 +10,7 @@ import {UserCircle} from "@styled-icons/fa-solid/UserCircle"
 import {LogOut} from "@styled-icons/boxicons-regular/LogOut"
 import { Spacer, Text , Grid} from "@nextui-org/react"
 import { logoutUser } from '../../redux/reducers/userSlice'
-
+import { BuildingRetailMoney } from "@styled-icons/fluentui-system-filled/BuildingRetailMoney"
 
 
 const SideNav = styled.div`
@@ -47,6 +47,11 @@ const IconCashCoin = styled(DollarCircle)`
   width:35px;
   height:35px;
 `;
+const IconCharge = styled(BuildingRetailMoney)`
+  color: black;
+  width:35px;
+  height:35px;
+`;
 const IconUser = styled(UserCircle)`
   display:flex;
   cursor:pointer;
@@ -79,6 +84,7 @@ const ExtendNav = styled(SideNav)`
 `;
 
 
+
 export default function Sidebar() {
 const dispatch = useDispatch()
 const [menuExtend, SetMenuExtend] = useState()
@@ -100,6 +106,8 @@ const logOut = ()=> {
          <Link to="/home"><IconHome/></Link>
            <Spacer y={2}/>  
           <Link to="/home/transfer"> <IconCashCoin/></Link>
+          <Spacer y={2}/>
+          <Link to="/home/charge"> <IconCharge/></Link>
           <Spacer y={2}/>
            <Link to="/user/profile"> <IconUser /> </Link>
             <Spacer y={2}/> 
@@ -156,6 +164,19 @@ const logOut = ()=> {
             <Spacer x={0.6}/>
             <Grid>
             <Text color="black">Transfer</Text>
+            </Grid>
+          </Grid.Container>
+          </Link>
+          <Spacer y={2}/>
+
+          <Link to="/home/charge">
+          <Grid.Container>
+            <Grid>
+            <IconCharge/>
+            </Grid>
+            <Spacer x={0.6}/>
+            <Grid>
+            <Text color="black">Charge</Text>
             </Grid>
           </Grid.Container>
           </Link>

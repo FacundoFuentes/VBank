@@ -24,7 +24,7 @@ const TextS = styled.h2`
   justify-content: flex-start;
   margin-top:25px;
   margin-left: 0px;
-  margin-right: 27%;
+  margin-right: 32%;
   margin-bottom:0px;
   
 `;
@@ -66,7 +66,7 @@ const Expeses = styled.div`
   border-radius:20px;
   background-color: #F6F6F6;
   width: 90%;
-  height: 480px;
+  height: 320px;
   
 `;
 const ChartContainer = styled.div`
@@ -143,7 +143,7 @@ export default function Home() {
     dispatch(getUserInfo())
     dispatch(getUserAccountInfo())
     dispatch(getBalance())
-  }, [])
+  }, [dispatch])
 
 
 
@@ -161,20 +161,29 @@ export default function Home() {
       value: 0
     }
   })
+
   let arrayAmount = userTransaction?.map(e => {
     return {
       name: e.transaction.branch,
-      amount: e.transaction.amount
+      amount: e.transaction.amount,
+      role: e.role
     }
   })
 
   for(let i = 0; i < data2?.length; i++){
     for(let j = 0; j < arrayAmount?.length;j++){
       if(data2[i].label === arrayAmount[j].name){
-        data2[i].value += arrayAmount[j].amount
+          if(arrayAmount[j].role !== "RECEIVER"){
+          data2[i].value += arrayAmount[j].amount
+        }
       }
+      
     }
   }
+  data2 = data2?.filter(e => e.value > 0)
+  
+
+
 
 
   return (
@@ -217,19 +226,18 @@ export default function Home() {
                 <Spacer x={1}/>
                 <GridLatestMovents xs={1}>Total</GridLatestMovents>
                 <Spacer x={2} />
-              </LatestMovements>  
-                
+              </LatestMovements>     
             </DateNameTotal>
               <GridContainer>
 
               {userTransaction?.map((e, i) => 
-              <LatestMovements key={i} gap={2} justify="space-around">
+              <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
                 <Spacer x={3} />
                 <GridLatestMovents xs={2}>{` ${e.transaction.date.slice(0,10)} `} </GridLatestMovents>
                 <Spacer x={-4}/>
                 <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
                 <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` +$${e.transaction.amount}` : ` -$${e.transaction.amount}` } </GridLatestMovents>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? `+$${e.transaction.amount}` : `-$${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  
                   ) 
@@ -239,14 +247,18 @@ export default function Home() {
         </GridS>
         <GridS>
         <TextS>statistics</TextS>
-        {data2 ? 
+        {data2?.length > 0 ? 
         <ChartContainer >
         <Chart height="500px" data={data2}/>
       </ChartContainer>
       :
       <ChartContainer >
-         <Text h2 style={{height:"300px"}}>
-              No tienes movimientos 
+         <Text h2 style={{height:"500px"}}>
+         <Chart height="500px" data={[{
+           "id":"no movement ",
+           "laber":"no movement ",
+           "value":1
+         }]}/>
          </Text>
       </ChartContainer>
         }

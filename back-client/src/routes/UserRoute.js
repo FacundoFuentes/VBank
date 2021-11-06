@@ -52,7 +52,7 @@ user.post("/register", async (req, res) => {
       const accountCreated = await Account.create({
         cvu: utils.generarCbu(),
         state: true,
-        balance: 10000,
+        balance: 0,
         type: "Caja de ahorro en pesos",
         card: cardCreated._id,
         transactions: accountTrans._id,
@@ -76,6 +76,7 @@ user.post("/register", async (req, res) => {
       cardCreated.account = accountCreated._id;
       await cardCreated.save();
 
+      accountCreated.balance += transaction.amount;
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 

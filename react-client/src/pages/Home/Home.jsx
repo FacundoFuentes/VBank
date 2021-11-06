@@ -24,7 +24,7 @@ const TextS = styled.h2`
   justify-content: flex-start;
   margin-top:25px;
   margin-left: 0px;
-  margin-right: 27%;
+  margin-right: 32%;
   margin-bottom:0px;
   
 `;
@@ -66,7 +66,7 @@ const Expeses = styled.div`
   border-radius:20px;
   background-color: #F6F6F6;
   width: 90%;
-  height: 480px;
+  height: 320px;
   
 `;
 const ChartContainer = styled.div`
@@ -226,13 +226,12 @@ export default function Home() {
                 <Spacer x={1}/>
                 <GridLatestMovents xs={1}>Total</GridLatestMovents>
                 <Spacer x={2} />
-              </LatestMovements>  
-                
+              </LatestMovements>     
             </DateNameTotal>
               <GridContainer>
 
               {userTransaction?.map((e, i) => 
-              <LatestMovements key={i} gap={2} justify="space-around">
+              <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
                 <Spacer x={3} />
                 <GridLatestMovents xs={2}>{` ${e.transaction.date.slice(0,10)} `} </GridLatestMovents>
                 <Spacer x={-4}/>

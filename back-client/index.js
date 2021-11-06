@@ -30,7 +30,7 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'));
 app.use(passport.initialize())
-app.use(verifyToken.unless({path: ['/','/user/login', '/user/register', '/clearDb/full']}))
+// app.use(verifyToken.unless({path: ['/','/user/login', '/user/register', '/clearDb/full']}))
 //Hay que mandar el token desde el front
 //Si el token es invalido, redirect a http://localhost:3000
 

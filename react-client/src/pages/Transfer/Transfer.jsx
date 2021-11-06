@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
-import {Contact} from "@styled-icons/boxicons-solid/Contact"
+
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
 import jwt from 'jsonwebtoken'
 import {useHistory} from 'react-router-dom'
 
 import success from "../../img/success.gif"
+import ContactModal from '../../components/Contact/Contact';
 
 
 const Container= styled.div`
@@ -38,6 +39,14 @@ const ToContainer= styled.div`
 margin-top:10px;
 
 margin-bottom: 10px;
+.input-content.jsx-1792023292{
+ 
+ width: 30px;
+  padding-right: calc(8.0976pt);
+  padding-left: 0;
+ 
+
+}
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
@@ -50,11 +59,13 @@ const ButtonContainer = styled.div`
 margin-left:450px;
 
 `
-const ContactBlack = styled(Contact)`
+/* const ContactBlack = styled(Contact)`
   color: black;
   height: 50px;
   
-`
+` */
+
+
 const DivCheck = styled.div`
 display: flex;
 justify-content: center;
@@ -150,7 +161,7 @@ console.log(username)
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
+            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal/>} width="300px"/>
          
           </ToContainer>
        

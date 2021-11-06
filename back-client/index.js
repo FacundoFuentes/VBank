@@ -19,10 +19,9 @@ const verifyToken = (req, res, next) =>{
 
     try {
         jwt.verify(authToken, process.env.JWT_SECRET)
-        res.redirect('http://localhost:3001/user/login')
         next()
     } catch (error) {
-        res.status(400).json({status: 'failed', data: error})
+        res.status(401).json({status: 'failed', data: 'Unauthorized', error: error})
     }
   }
 verifyToken.unless = unless
@@ -32,6 +31,8 @@ app.use(express.json())
 app.use(morgan('dev'));
 app.use(passport.initialize())
 app.use(verifyToken.unless({path: ['/','/user/login', '/user/register', '/clearDb/full']}))
+//Hay que mandar el token desde el front
+//Si el token es invalido, redirect a http://localhost:3000
 
 
 app.use('/', router);

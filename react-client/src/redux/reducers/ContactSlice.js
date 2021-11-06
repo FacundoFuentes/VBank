@@ -25,17 +25,15 @@ export const addContact = createAsyncThunk(
   "contacts/add",
   async (payload, thunkAPI) => {
     const token = await JSON.parse(localStorage.getItem("token")).data
+    // console.log('token: ', token)
     if (token){
       let {username}= jwt.decode(token)
-      console.log("el usuario es "+ username)
+      // console.log("el usuario es "+ username)
     }
     try {
       if (token){
-        const response = await axios.post("http://localhost:3001/user/newcontact",{
-          headers: { Authorization: "Bearer " + token },
-        },
-         payload)
-        console.log(response)
+        const response = await axios.post("http://localhost:3001/user/newContact",payload,{headers:{'Authorization':'Bearer ' + token}})
+        // console.log(response)
   
          const { dispatch } = thunkAPI;
         dispatch(getContacts(payload));

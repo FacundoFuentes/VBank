@@ -213,13 +213,21 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
 
 
 user.post('/newContact', async (req, res) => {
+
+
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  console.log(authToken)
   const decodedToken = jwtDecode(authToken)
+  console.log(decodedToken)
+
+
+
 
   try{
     let contactAccount, contactUser;
 
     const username = decodedToken.username
+    console.log(username)
     const user = await User.findOne({username: decodedToken.username})
     const {description, data} = req.body
 
@@ -272,7 +280,6 @@ user.post('/newContact', async (req, res) => {
 user.get('/contacts', async(req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
-  console.log(decodedToken)
 
   try{
     const username = decodedToken.username

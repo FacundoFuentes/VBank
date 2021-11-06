@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import Transfer from "./pages/Transfer/Transfer";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import FixedTerm from "./pages/FixedTerm/FixedTerm";
+
 import Profile from "./pages/Profile/Profile";
 import Charge from "./pages/Charge/Charge";
 
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/user/signUp"  component={SignupPage}/>  
         <Route exact path="/fixedTerm" component={FixedTerm}/>
         <Route exact path="/user/profile"  component={Profile}/>
+        <Route exact path="/Charge" component={Charge} />
        </Switch>
     </Router>    
 

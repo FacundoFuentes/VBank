@@ -29,19 +29,23 @@ const TextContainer = styled.div`
 `
 const ToContainer= styled.div`
 margin-top:10px;
-
 margin-bottom: 10px;
+padding: 5px;
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
+padding: 5px;
+
 `
 const DetailContainer = styled.div `
 margin-bottom: 0px;
 margin-top: 30px;
+padding: 5px;
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
+padding: 5px;
 
 `
 
@@ -104,20 +108,20 @@ export default function FixedTerm() {
         <TextContainer> 
          
           <ToContainer>
-            <Text weight='bold'>How much?</Text>
+            <Text >How much?</Text>
             <Input name="amount" value={state.amount} contentClickable="true" onChange={(e)=>handleChange(e)}  width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text weight='bold'>How long?</Text>
+           <Text>How long?</Text>
            <Input name="days" value={state.days} type="date" step="0.01" width="300px" onChange={(e)=>handleChange(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
        <Card  color="#f3f3f3" bordered borderColor="#D8DBE2" >
-           <Text size="20px" weight='bold'>Interest rate: </Text>
+           <Text  >Interest rate: </Text>
            <Text > from 30 to 90 days: TNA 37% </Text>
            <Text > from 90 to 365 days: TNA 40% </Text>
         </Card>
@@ -131,10 +135,12 @@ export default function FixedTerm() {
        </ButtonContainer> 
        
        <Modal  
+         
          preventClose 
          aria-labelledby="modal-title"
          open={visible}
          onClose={closeHandler}>
+      
  
          <Modal.Header>
            <Text  h3>Check before send!</Text>
@@ -144,17 +150,17 @@ export default function FixedTerm() {
          
          <Text >How much: {` $ ${state.amount}`} </Text>
          <Text >Due date: {` ${state.days}`} </Text>
-           <>
+          
                {
                 days_difference < 90 ? <Text > Interest rate: 37% </Text> : <Text > Interest rate: 40% </Text>
                }
-           </>
+          
          <Text >Period:{` ${days_difference} days`}</Text>
          {
              days_difference < 90 ?
-              <Text color="#2CA1DE" size="20px">TOTAL CREDIT:  {`$ ${rate37Total}`} </Text>
+              <Text color="#2CA1DE" size="20px">Total credit: {`$ ${rate37Total}`} </Text>
               :
-              <Text color="#2CA1DE" size="20px">TOTAL CREDIT:  {`$ ${rate40Total}`} </Text>
+              <Text color="#2CA1DE" size="20px">Total credit: {`$ ${rate40Total}`} </Text>
          }
          
         </Modal.Body>

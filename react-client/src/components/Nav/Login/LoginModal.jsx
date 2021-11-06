@@ -24,7 +24,7 @@ const LoginModal = () => {
     const {loggedInUser} =userState; 
 
     const error = useSelector(state => state.user.signinState.error);
-    console.log(error)
+   
 
 
 
@@ -50,7 +50,8 @@ const LoginModal = () => {
     useEffect(() => {
         if (loggedInUser){
             //redirect con el hook useHistory
-            history.push("/home"); //esto me lleva hacia esta ventana
+            history.push("/"); //esto me lleva hacia esta ventana
+
         }
     },[loggedInUser,history])
   

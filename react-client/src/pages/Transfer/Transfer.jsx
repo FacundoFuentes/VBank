@@ -118,7 +118,7 @@ const myRef = useRef(null)
 const [state, setState] = useState(defaultForm)
 
 const [error,setError] = useState('')
-console.log(error)
+
 
 const [status, setStatus] =useState(0)
 
@@ -149,7 +149,7 @@ const handleBranch = () => {
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
-console.log(username)
+
 
  function handleSubmit(e){
   e.preventDefault()

@@ -93,6 +93,7 @@ user.post("/register", async (req, res) => {
 
 user.post("/login", async (req, res) => {
   const {username, password, dni} = req.body
+  console.log(req.body)
 
   const userFound = await User.findOne({username, dni}).lean()
 
@@ -215,30 +216,62 @@ user.post('/newContact', async (req, res) => {
   const decodedToken = jwtDecode(authToken)
 
   try{
-    const username = decodedToken.username
+    let contactAccount, contactUser;
 
-    const {description, cvu} = req.body
-    const  account =  await Account.findOne({cvu})
-    const  user = await User.findOne({username})
+    const username = decodedToken.username
+    const user = await User.findOne({username: decodedToken.username})
+    const {description, data} = req.body
+
+    if(data.length > 16){ //Si es CVU
+      contactAccount= await Account.findOne({cvu: data}).populate({
+        path: 'user',
+        model:  'User'
+      })//Busco la cuenta del usuario RECEIVER
+      contactUser = await User.findOne({_id: contactAccount.user}).populate('account')
+    } else{
+      contactUser = await User.findOne({ username: data}).populate('account')
+      contactAccount = await Account.findOne({_id: contactUser.account})
+    } 
+
+    if(username === contactUser.username)return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver
+      status: "failed",
+      error:
+        "You can't create a contact of yourself",
+    })
+
+    // const  account =  await Account.findOne({cvu: cvu})
+    // const  user = await User.findOne({username})
+    // console.log(account)
 
     const contact = await Contact.create({
-        account: account,
+        account: contactAccount,
         description: description
     })
 
+
+    const response = {
+      cvu: contact.account.cvu,
+      username: contact.account.user.username,
+      firstName: contact.account.user.firstName,
+      lastName: contact.account.user.lastName
+
+
+    }
+    
     user.contacts.push(contact)
     user.save()
 
-    res.status(200).json({status: 'ok', contact})
+    res.status(200).json({status: 'ok', response})
   }catch(err){
     let error = err.message
     res.status(400).json({status: 'failed', error})
   }
 })
 
-user.post('/contacts', async(req, res) => {
+user.get('/contacts', async(req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
+  console.log(decodedToken)
 
   try{
     const username = decodedToken.username
@@ -269,10 +302,15 @@ user.patch('/updateContact', async(req, res) => {
   }
 })
 
-user.delete('/deleteContact', async(req, res) => {
-  const {_Id} = req.body
+
+//El delete no permite body, paso el id por param
+user.delete('/deleteContact/:id', async(req, res) => {
+  const {id} = req.params
+
+  console.log(req.params)
+
   try {
-    const obj = await Contact.deleteOne({_Id});
+    const obj = await Contact.deleteOne({_id: id});
     res.status(200).json({status:'ok', obj})
   }catch(err) {
     res.status(400).send(err.message)

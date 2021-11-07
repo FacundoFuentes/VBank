@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { signinUser } from '../../../redux/reducers/userSlice';
+import { logoutUser, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
@@ -22,6 +22,9 @@ const LoginModal = () => {
     const userState = useSelector(state => state.user);
 
     const {loggedInUser} =userState; 
+
+    const error = useSelector(state => state.user.signinState.error);
+   
 
 
 
@@ -42,12 +45,12 @@ const LoginModal = () => {
 
     
 
-    const history= useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         if (loggedInUser){
             //redirect con el hook useHistory
-            history.push("/home"); //esto me lleva hacia esta ventana
+            history.push("/"); //esto me lleva hacia esta ventana
 
         }
     },[loggedInUser,history])
@@ -60,9 +63,10 @@ const LoginModal = () => {
   
  
   const onSubmit = (data) => {
-    console.log(data)
-      dispatch(signinUser(data));   
-
+    // console.log(data)
+      dispatch(signinUser(data)); 
+      setVisible(false)
+      
   }
 
     return (
@@ -93,7 +97,7 @@ const LoginModal = () => {
         name="dni"
         control={control}
         defaultValue=""
-        rules={{ required: true, pattern: /^([0-9])*$/i }}
+        rules={{ required: true, pattern: /^([0-9])*$/i, maxLength:8 }}
         render=
         {({ field }) => <Input clearable
         bordered
@@ -106,12 +110,13 @@ const LoginModal = () => {
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error">it should only have a max of 8 characters</p>}
             <Controller
         className="fields"
         name="username"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -121,12 +126,13 @@ const LoginModal = () => {
          color="#f5f5f5" {...field} />}
       />
       {errors.username?.type === 'required' && <p className="error">This field is required</p>}
+      {errors.username?.type === 'pattern' && <p className="error">Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number</p>}
             <Controller
         className="fields"
         name="password"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, pattern:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/}}
         render={({ field }) => <Input.Password clearable
         bordered
         fullWidth
@@ -136,6 +142,10 @@ const LoginModal = () => {
          color="#f5f5f5" {...field} />}
       />
        {errors.password?.type === 'required' && <p className="error">This field is required</p>}
+       {errors.password?.type === 'pattern' && <p className="error"> Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+
+       {error && <p className="error">{error.error}</p>}
+      
       
                 <Row justify="space-between">
                
@@ -148,7 +158,7 @@ const LoginModal = () => {
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close
                 </Button>
-                <Button auto type="submit">
+                <Button color="#2CA1DE" auto type="submit">
                 Sign in
                 </Button>
             </Modal.Footer>

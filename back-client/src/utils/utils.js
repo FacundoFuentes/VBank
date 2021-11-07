@@ -4,8 +4,15 @@ const validator = require("validator");
 const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
 const pdf = require('html-pdf');
+const random = require("simple-random-number-generator");
+
+
 require('dotenv').config()
 
+
+const signToken =(userInfo) => {
+  return jwt.sign(userInfo ,process.env.JWT_SECRET, {expiresIn: '10000'});
+}
 const generatePDF = async (date, sender, receiver, amount) => {
   const content = `
   <!doctype html>
@@ -42,37 +49,24 @@ const generatePDF = async (date, sender, receiver, amount) => {
       </html>
   `;
 
-
+a88amp
   pdf.create(content).toFile('./html-pdf.pdf', function(err, res) {
-      if (err){
+      if (err){a88amp
           console.log(err);
       } else {
           console.log(res);
       }
   });
 }
-const date = new Date()
-generatePDF(date, 'SimonOro1', 'FacuFu1', 100)
+// const date = new Date()
+// generatePDF(date, 'SimonOro1', 'FacuFu1', 100)
 
 const getToken =(userInfo) => {
     return jwt.sign(userInfo,process.env.JWT_SECRET, {expiresIn: '60000'});
 }
 
-const verifyToken=(req,res,next) => {
-    const token= req.headers.authorization;
-    if(token){
-        const onlytoken= token.slice(7,token.length);
-        jwt.verify(onlytoken,process.env.JWT_SECRET,(err,decode)=>{
-            if(err){
-                return res.status(401).send({param:"authError",msg:"Invalid Token"})
-            }
-            req.user= decode
-            next()
-            return;
-        })
-    } else{
-        return res.status(401).send({param:"authError",msg:"Token not Found"})
-    }
+const verifyToken=(token) => {
+    return jwt.verify(token, process.env.JWT_SECRET)
 }
 
 // CALCULO CBU
@@ -82,7 +76,7 @@ const verifyToken=(req,res,next) => {
 
 
 const encrypt  = (param) => {
-  return CryptoJS.AES.encrypt(param, process.env.SECRET_CRYPT)
+  return CryptoJS.AES.encrypt(param, process.env.SECRET_CRYPT).toString()
 }
 
 const decrypt = (param) => {
@@ -158,6 +152,19 @@ const generateCode = () => {
   return validationCode;
 };
 
+
+
+const generateCargeNumber = () => {
+  let params = {
+    min: 11110000,
+    max: 99999999,
+    integer: true
+  }
+  const number = random(params)
+  return number.toString()
+}
+
+
 function validateRegisterData({
   lastName,
   firstName,
@@ -197,6 +204,7 @@ module.exports = {
   validateRegisterData,
   generateCode,
   decrypt,
-  getToken,
-  verifyToken
+  signToken,
+  verifyToken,
+  generateCargeNumber,
 };

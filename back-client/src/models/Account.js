@@ -29,14 +29,18 @@ const accountSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
-
     transactions: [
-
       {
         type: mongoose.Schema.ObjectId,
         ref: "AccountTransaction",
       }
     ],
+    fixedDeposit: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "fixedDeposit"
+      }
+    ]
   },
   { timestamps: true }
 );

@@ -92,9 +92,6 @@ export default function Profile() {
     dispatch(getUserInfo())
   }, [])
 
-
-
-
   return (
     <>
     <Sidebar/>
@@ -120,16 +117,16 @@ export default function Profile() {
     <User> {`${userInfo.lastname}`} </User>}
      {/*  <Edit>Edit</Edit> */}
    </Info>
-    <Info> 
-    <span>Password:</span> 
-    <User>  </User>
-     {/*  <Edit>Edit</Edit> */}
-    </Info>
     <Info>
     <span>Email:</span> 
     {userInfo &&
     <User>{`${userInfo.email}`} </User>}
      {/*  <Edit>Edit</Edit> */}
+    <Info> 
+    <span>Password:</span> 
+    <User>  </User>
+     {/*  <Edit>Edit</Edit> */}
+    </Info>
     </Info>
     <Link to='/home'>
     <Button> Back </Button>

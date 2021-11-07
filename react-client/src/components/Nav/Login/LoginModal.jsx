@@ -50,7 +50,7 @@ const LoginModal = () => {
     useEffect(() => {
         if (loggedInUser){
             //redirect con el hook useHistory
-            history.push("/"); //esto me lleva hacia esta ventana
+            history.push("/home"); //esto me lleva hacia esta ventana
 
         }
     },[loggedInUser,history])

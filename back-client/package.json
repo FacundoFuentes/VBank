@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build":"cd react-client && npm run build",
+    "install-client":"cd react-client && npm install",
+    "heroku-postbuild": "npm run install client && npm run build"
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -14,7 +17,6 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-unless": "^1.0.0",
     "generate-password": "^1.6.1",
     "html-pdf": "^3.0.1",
     "jsonwebtoken": "^8.5.1",

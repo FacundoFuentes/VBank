@@ -21,7 +21,9 @@ app.use('/', router);
 
 
 
-
+if(proceess.env.NODE_ENV === 'production') {
+    app.use(express.static('react-client/build'))
+}
 
 
 app.listen(port, () => {

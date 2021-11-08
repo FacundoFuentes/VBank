@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styled from "styled-components";
+import {PersonAdd} from "@styled-icons/evaicons-solid/PersonAdd"
 import { addContact } from '../../../redux/reducers/ContactSlice';
 
 
@@ -17,6 +18,14 @@ const StyledModal = styled(Modal)`
      font-size: 15px;
 }
 `;
+const StyledButton = styled(Button)`
+
+
+.icon{
+  padding-top: 8px;
+}
+`;
+
 
 const AddContactButton = () => {
 
@@ -47,7 +56,7 @@ const AddContactButton = () => {
     const history = useHistory();
  
   const onSubmit = (data) => {
-     console.log(data)
+/*      console.log(data) */
      dispatch(addContact(data))
   
       /* setVisible(false) */
@@ -57,9 +66,9 @@ const AddContactButton = () => {
     return (
 
     <div>
-        <Button onClick={handler}>
-            Add Contact
-        </Button>
+        <StyledButton auto onClick={handler}>
+            <PersonAdd className="icon" width="22px" />
+        </StyledButton>
        
         <StyledModal
             closeButton
@@ -115,7 +124,7 @@ const AddContactButton = () => {
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close
                 </Button>
-                <Button auto type="submit">
+                <Button  type="submit">
                      Add
                 </Button>
             </Modal.Footer>

@@ -4,8 +4,10 @@ import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
+
 import styled from "styled-components";
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
+
 import AddContactButton from './AddContact/AddContactButton';
 import DeleteContactButton from './DeleteContact/DeleteContactButton';
 
@@ -33,6 +35,12 @@ const ContactRow = styled.div`
   :last-child {
     margin-bottom: 0;
   }
+  button{
+   background-color:transparent;
+    border:none;
+    cursor:pointer;
+
+  }
 `;
 
 const Action = styled.div`
@@ -46,16 +54,18 @@ const Action = styled.div`
 
 
 
-const ContactModal = () => {
+const ContactModal = ({handleInputChange}) => {
+    
     const dispatch= useDispatch();
 
     const contacts = useSelector(state => state.contacts.contactList)
-    console.log(contacts)
+    const loggedInUser = useSelector(state => state.user.loggedInUser)
+    
+    
 
-    /* useEffect(() => {
-            dispatch(getContacts())
-    }, [])
- */
+  
+
+
    
 
 
@@ -66,10 +76,12 @@ const ContactModal = () => {
 
     const handler = () => {
         setVisible(true)
-        dispatch(getContacts())
+       
     
         
     };
+
+
 
     const closeHandler = () => {
         setVisible(false);
@@ -89,6 +101,12 @@ const ContactModal = () => {
       setVisible(false)
       
   }
+  useEffect(() => {
+    if (loggedInUser) {
+      dispatch(getContacts());
+    }
+  
+  }, [dispatch, loggedInUser]);
 
     return (
 
@@ -110,10 +128,10 @@ const ContactModal = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
 
             <Modal.Body >
-                {contacts && contacts
+                {contacts ? contacts
                 .map(contact =>(
                     <ContactRow key={`contact-id-${contact._id}`}>
-                        <span> {contact.description}</span>
+                        <button  value={contact.description} onClick={handleInputChange}> {contact.description}</button>
                         <Action>
                       {/*   <UpdateContactButton contactId={goal.id} /> */}
                         <DeleteContactButton contact={contact}/>
@@ -121,7 +139,9 @@ const ContactModal = () => {
 
                     </ContactRow>
 
-                ))}
+                )) : <>
+                 <p>loading</p>
+                </>}
                
 
             </Modal.Body>

@@ -113,7 +113,8 @@ export default function Transfer() {
    
   }
 
-const myRef = useRef(null)
+
+const myHistory = useHistory()
 
 const [state, setState] = useState(defaultForm)
 
@@ -121,15 +122,27 @@ const [error,setError] = useState('')
 
 
 const [status, setStatus] =useState(0)
+/* const [input, setInput] = useState(null)
+console.log(input) */
 
+function handleInputChange(e){
+
+  setState({
+    ...state,
+    to: e.target.value
+})
+}
 
 function handleChange(e){
+  
   setState({
       ...state,
       [e.target.name]: e.target.value
   })
   
 }
+
+
 
 function handleAmount(e){
   setState({
@@ -140,7 +153,7 @@ function handleAmount(e){
 const handleBranch = () => {
   setState({
     ...state,
-    branch: myRef.current.value
+    branch: myHistory.current.value
   })
   
 }
@@ -190,7 +203,7 @@ let {username} = jwt.decode(token)
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal/>} width="300px"/>
+            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal handleInputChange={handleInputChange}/>} width="300px"/>
          
           </ToContainer>
        
@@ -207,7 +220,7 @@ let {username} = jwt.decode(token)
        </DetailContainer>   
        <BranchContainer>
         <Text>Why?</Text>
-          <Select ref={myRef} onChange={handleBranch}>
+          <Select ref={myHistory} onChange={handleBranch}>
           <option  value="Branch">select reason</option>
                     <option value="Travel">Travel</option>
                     <option value="Food">Food</option>

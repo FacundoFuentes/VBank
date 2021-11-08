@@ -52,7 +52,7 @@ user.post("/register", async (req, res) => {
       const accountCreated = await Account.create({
         cvu: utils.generarCbu(),
         state: true,
-        balance: 10000,
+        balance: 100,
         type: "Caja de ahorro en pesos",
         card: cardCreated._id,
         transactions: accountTrans._id,
@@ -230,7 +230,10 @@ user.post('/newContact', async (req, res) => {
       contactUser = await User.findOne({_id: contactAccount.user}).populate('account')
     } else{
       contactUser = await User.findOne({ username: data}).populate('account')
-      contactAccount = await Account.findOne({_id: contactUser.account})
+      contactAccount = await Account.findOne({_id: contactUser.account}).populate({
+        path: 'user',
+        model: 'User'
+      })
     } 
 
     if(username === contactUser.username)return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver
@@ -244,24 +247,22 @@ user.post('/newContact', async (req, res) => {
     // console.log(account)
 
     const contact = await Contact.create({
-        account: contactAccount,
-        description: description
+        // account: contactAccount.,
+        description: description,
+        cvu: contactAccount.cvu,
+        username: contactAccount.user.username,
     })
 
 
-    const response = {
-      cvu: contact.account.cvu,
-      username: contact.account.user.username,
-      firstName: contact.account.user.firstName,
-      lastName: contact.account.user.lastName
-
-
-    }
+    // const response = {
+    //   firstName: contact.account.user.firstName,
+    //   lastName: contact.account.user.lastName
+    // }
     
     user.contacts.push(contact)
     user.save()
 
-    res.status(200).json({status: 'ok', response})
+    res.status(200).json({status: 'ok', contact})
   }catch(err){
     let error = err.message
     res.status(400).json({status: 'failed', error})

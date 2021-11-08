@@ -1,14 +1,13 @@
-import React, {useState, useRef} from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
-
+import {Contact} from "@styled-icons/boxicons-solid/Contact"
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
 import jwt from 'jsonwebtoken'
 import {useHistory} from 'react-router-dom'
 
 import success from "../../img/success.gif"
-import ContactModal from '../../components/Contact/Contact';
 
 
 const Container= styled.div`
@@ -18,7 +17,7 @@ flex-direction: column;
 align-items: center;
 height: 450px;
 width: 700px;
-background-color: white;
+background-color: #F6F6F6;
 border-radius: 10px;
 `
 const MaxContainer=styled.div`
@@ -29,78 +28,42 @@ align-items: center;
 justify-content: center;
 `
 const TitleContainer= styled.div`
-margin-right: 85px;
+margin-right: 280px;
 margin-bottom: 10px;
-padding: 5px;
 `
 
 const TextContainer = styled.div`
 `
 const ToContainer= styled.div`
 margin-top:10px;
-padding:5px;
-margin-bottom: 10px;
-.input-content.jsx-1792023292{
- 
- width: 30px;
-  padding-right: calc(8.0976pt);
-  padding-left: 0;
- 
 
-}
+margin-bottom: 10px;
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
-padding:5px
 `
 const DetailContainer = styled.div `
-margin-top: 10px;
-margin-bottom: 10px;
-padding:5px
-`
-const BranchContainer = styled.div`
-margin-top:10px;
-margin-bottom:10px;
-padding:5px
+margin-bottom: 0px;
 `
 const ButtonContainer = styled.div`
-margin-left:155px;
-padding: 5px;
+margin-left:450px;
 
 `
-/* const ContactBlack = styled(Contact)`
+const ContactBlack = styled(Contact)`
   color: black;
   height: 50px;
   
-` */
-
-
+`
 const DivCheck = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
 
 `
-const Select = styled.select`
-    color:#333;
-    width: 300px;
-    height: 35px;
-    margin-bottom: 10px;
-    border: none;
-    background-color: #eaeaea;
-    border-radius: 10px;
-    padding:5px 10px;
-`
 
-const defaultForm = {
-  to: '',
-  amount: '',
-  description: '',
-  type: 'TRANSFER',
-  cvv:'',
-  branch:'',
-}
+
+
 
 
 
@@ -113,12 +76,18 @@ export default function Transfer() {
    
   }
 
-const myRef = useRef(null)
+const myHistory = useHistory()
 
-const [state, setState] = useState(defaultForm)
+  const [state, setState] = useState({
+    to: '',
+    amount: '',
+    description: '',
+    type: 'TRANSFER',
+    cvv:''
+})
 
 const [error,setError] = useState('')
-
+console.log(error)
 
 const [status, setStatus] =useState(0)
 
@@ -137,19 +106,10 @@ function handleAmount(e){
       amount: parseInt(e.target.value)
   })
 }
-const handleBranch = () => {
-  setState({
-    ...state,
-    branch: myRef.current.value
-  })
-  
-}
-
-
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
-
+console.log(username)
 
  function handleSubmit(e){
   e.preventDefault()
@@ -167,11 +127,7 @@ let {username} = jwt.decode(token)
    })
   }
   
-  function HandleCloseSucces(e){
-    e.preventDefault()
-    setState(defaultForm)
-    closeHandler()
-  }
+
 
 
     return (
@@ -190,36 +146,21 @@ let {username} = jwt.decode(token)
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal/>} width="300px"/>
+            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text >How much?</Text>
-           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
+           <Text weight='bold'>How much?</Text>
+           <Input name="amount" type="number" step="0.01" width="300px" size="xlarge" onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
-           <Text >Note</Text>
-           <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
- 
+           <Text weight='bold'>Note</Text>
+           <Textarea name="description" maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
+       
        </DetailContainer>   
-       <BranchContainer>
-        <Text>Why?</Text>
-          <Select ref={myRef} onChange={handleBranch}>
-          <option  value="Branch">select reason</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Food">Food</option>
-                    <option value="Shopping">Shopping</option>
-                    <option value="Games">Games</option>
-                    <option value="Sport">Sport</option>
-                    <option value="Tech">Tech</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
-          </Select>
- 
-       </BranchContainer>   
        
        </TextContainer>
        
@@ -242,14 +183,14 @@ let {username} = jwt.decode(token)
         <Modal.Body> 
          
          <Text>To Username: {` ${state.to}`} </Text>
-         <Text>How much?: {` $${state.amount}`} </Text>
+         <Text>How much: {` ${state.amount}`} </Text>
          <Text>Note:{` ${state.description}`}</Text>
-         <Text>Why?:{`  ${state.branch}`}</Text>
-         <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
+         <Input name="cvv"label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
         <Modal.Footer>
-           { error?.length > 1  ? 
+           { error
+            ?
             <>
             <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
@@ -267,10 +208,13 @@ let {username} = jwt.decode(token)
             <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
+            {status == 200 &&<Modal>
+              Hola!
+            </Modal> }
             
             </>
             }
-          </Modal.Footer>
+        </Modal.Footer>
           </>
           :
           <>
@@ -278,7 +222,7 @@ let {username} = jwt.decode(token)
           <img src={success} alt='loading gif' />
           </DivCheck>
           
-          <Button  color="#2CA1DE" onClick={(e)=> HandleCloseSucces(e) }> Ok! </Button>
+          <Button  color="#2CA1DE" onClick={()=> myHistory.push("/home")}> Ok! </Button>
           </>
           }  
         </Modal> 

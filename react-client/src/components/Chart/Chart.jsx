@@ -18,7 +18,7 @@ export default function Chart({data}) {
         padAngle={0.7}
         cornerRadius={3}
         activeOuterRadiusOffset={8}
-        colors={{ scheme: 'paired' }}
+        colors={{ scheme: 'blues' }}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.2 ] ] }}
         arcLinkLabelsSkipAngle={10}

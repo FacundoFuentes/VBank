@@ -19,8 +19,7 @@ const initUserState={
     signinState: {loading: "idle", error:null, currentRequestID: undefined},
     userInfo: {info:null, loading: "idle", error:null, currentRequestID: undefined},
     userAccountInfo: {info:null, loading: "idle", error:null, currentRequestID: undefined},
-    userBalance: {info:null, loading: "idle", error:null, currentRequestID: undefined},
-    contacts:[]
+    userBalance: {info:null, loading: "idle", error:null, currentRequestID: undefined}
     
 }
 
@@ -98,9 +97,6 @@ export const signinUser= createAsyncThunk("user/login", async (userInfo,thunkAPI
         return rejectWithValue(error.response.data);
     }
 })
-
-
-
 
 
 const userSlice = createSlice({

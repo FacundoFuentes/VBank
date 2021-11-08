@@ -1,4 +1,4 @@
-import React, {useState}from 'react'
+import React, {useState, useRef, useEffect}from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Modal, Card} from '@nextui-org/react';
 import Sidebar from '../../components/Sidebars/Sidebar';
@@ -49,12 +49,11 @@ padding: 5px;
 
 `
 
-const defaultForm = {
-    amount: '',
-    days: ''
-  }
 
 export default function FixedTerm() {
+
+    
+
     const [visible, setVisible] = useState(false);
     const handler = () => setVisible(true);
     const closeHandler = () => {
@@ -62,9 +61,16 @@ export default function FixedTerm() {
         
      
     }
+    
+    const defaultForm = {
+      amount: '',
+      days: '',
+      due: '',
+      interestRate:''
+    }
 
     const [state, setState] = useState(defaultForm)
-
+  
     function handleChange(e){
         setState({
             ...state,
@@ -74,8 +80,9 @@ export default function FixedTerm() {
       }
 
 
+
       let date1 = new Date();  
-      let date2 = new Date (state.days);  
+      let date2 = new Date (state.due);  
 
       //calculate total number of seconds between two dates  
       var total_seconds = Math.abs(date2 - date1) / 1000;  
@@ -93,6 +100,26 @@ export default function FixedTerm() {
       let rate40xdays= ((parseFloat(state.amount)*rate40))
       let rate40Total = (rate40xdays + monto).toFixed(2) 
 
+      
+      
+      useEffect(() => {
+        if (days_difference <90){
+          setState({
+            ...state,
+            interestRate:"37%"
+          })
+        } else {
+          setState({
+            ...state,
+            interestRate: "40%"
+          })
+        }
+      }, [days_difference])
+    
+  
+
+
+    
     return (
       <div>
       <Sidebar/>
@@ -115,7 +142,7 @@ export default function FixedTerm() {
        
        <MoneyContainer>
            <Text>How long?</Text>
-           <Input name="days" value={state.days} type="date" step="0.01" width="300px" onChange={(e)=>handleChange(e)} />
+           <Input name="due" value={state.due} type="date" step="0.01" width="300px" onChange={(e)=>handleChange(e)} />
        
        </MoneyContainer>
        
@@ -127,11 +154,11 @@ export default function FixedTerm() {
         </Card>
        
        </DetailContainer>   
-       
+ 
        </TextContainer>
        
        <ButtonContainer>
-       <Button disabled={!state.amount||!state.days} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Calculate</Button>   
+       <Button disabled={!state.amount||!state.due} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Calculate</Button>   
        </ButtonContainer> 
        
        <Modal  
@@ -149,11 +176,11 @@ export default function FixedTerm() {
         <Modal.Body> 
          
          <Text >How much: {` $ ${state.amount}`} </Text>
-         <Text >Due date: {` ${state.days}`} </Text>
+         <Text >Due date: {` ${state.due}`} </Text>
           
-               {
-                days_difference < 90 ? <Text > Interest rate: 37% </Text> : <Text > Interest rate: 40% </Text>
-               }
+                {
+                days_difference < 90 ? <Text > Interest rate:37% </Text> : <Text > Interest rate: 40%  </Text>
+                }  
           
          <Text >Period:{` ${days_difference} days`}</Text>
          {

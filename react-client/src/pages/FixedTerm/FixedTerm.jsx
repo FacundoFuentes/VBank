@@ -2,6 +2,9 @@ import React, {useState, useRef, useEffect}from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Modal, Card} from '@nextui-org/react';
 import Sidebar from '../../components/Sidebars/Sidebar';
+import axios from 'axios' 
+import jwt from 'jsonwebtoken'
+import success from "../../img/success.gif"
 
 const Container= styled.div`
 display: flex;
@@ -58,18 +61,20 @@ export default function FixedTerm() {
     const handler = () => setVisible(true);
     const closeHandler = () => {
         setVisible(false);
-        
+        setError('')
      
     }
     
     const defaultForm = {
-      amount: '',
-      days: '',
+      amount: 0,
       due: '',
-      interestRate:''
+      total:0
     }
 
     const [state, setState] = useState(defaultForm)
+    const [error,setError] = useState('')
+   const [status, setStatus] =useState(0)
+
   
     function handleChange(e){
         setState({
@@ -77,8 +82,13 @@ export default function FixedTerm() {
             [e.target.name]: e.target.value
         })
         
+      } 
+      function handleAmount(e){
+        setState({
+            ...state,
+            amount: parseInt(e.target.value)
+        })
       }
-
 
 
       let date1 = new Date();  
@@ -96,27 +106,42 @@ export default function FixedTerm() {
       let rate37xdays= ((parseFloat(state.amount)*rate37))
       let rate37Total = (rate37xdays + monto).toFixed(2)
 
-      let rate40 = ((40/365) * (days_difference))/100
-      let rate40xdays= ((parseFloat(state.amount)*rate40))
-      let rate40Total = (rate40xdays + monto).toFixed(2) 
 
       
+       useEffect(() => {
+        
+          setState({
+            ...state,
+            total:parseInt(rate37Total)
+          })
       
-      useEffect(() => {
-        if (days_difference <90){
-          setState({
-            ...state,
-            interestRate:"37%"
-          })
-        } else {
-          setState({
-            ...state,
-            interestRate: "40%"
-          })
-        }
-      }, [days_difference])
+      }, [rate37Total]) 
     
-  
+      const token = JSON.parse(localStorage.getItem("token")).data
+      let {username} = jwt.decode(token)
+      
+      
+       function handleSubmit(e){
+        e.preventDefault()
+        
+        axios.post('http://localhost:3001/fixedDeposit/new', state, {headers:{'Authorization':'Bearer ' + token}})
+        .then(response=> {
+          console.log(response)
+          setStatus(response.status)
+          console.log(response.status)
+          
+          }).catch(error=>{
+            setError(error.response.data.error)
+            setStatus(error.response.data.status)
+             
+          })
+         }
+        
+        function HandleCloseSucces(e){
+          e.preventDefault()
+          setState(defaultForm)
+          closeHandler()
+        }
 
 
     
@@ -136,21 +161,21 @@ export default function FixedTerm() {
          
           <ToContainer>
             <Text >How much?</Text>
-            <Input name="amount" value={state.amount} contentClickable="true" onChange={(e)=>handleChange(e)}  width="300px"/>
+            <Input name="amount" type="number" value={state.amount} contentClickable="true" onChange={(e)=>handleAmount(e)}  width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
            <Text>How long?</Text>
-           <Input name="due" value={state.due} type="date" step="0.01" width="300px" onChange={(e)=>handleChange(e)} />
+           <Input name="due" value={state.due} type="date"  width="300px" onChange={(e)=>handleChange(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
        <Card  color="#f3f3f3" bordered borderColor="#D8DBE2" >
            <Text  >Interest rate: </Text>
-           <Text > from 30 to 90 days: TNA 37% </Text>
-           <Text > from 90 to 365 days: TNA 40% </Text>
+           <Text > from 30 to 365 days: TNA 37% </Text>
+          
         </Card>
        
        </DetailContainer>   
@@ -168,8 +193,11 @@ export default function FixedTerm() {
          open={visible}
          onClose={closeHandler}>
       
- 
+      {
+         status !== 200 ?
+         <>
          <Modal.Header>
+ 
            <Text  h3>Check before send!</Text>
          </Modal.Header>
         
@@ -177,34 +205,46 @@ export default function FixedTerm() {
          
          <Text >How much: {` $ ${state.amount}`} </Text>
          <Text >Due date: {` ${state.due}`} </Text>
-          
-                {
-                days_difference < 90 ? <Text > Interest rate:37% </Text> : <Text > Interest rate: 40%  </Text>
-                }  
-          
+          <Text>Interest Rate: TNA 37%</Text>
          <Text >Period:{` ${days_difference} days`}</Text>
-         {
-             days_difference < 90 ?
-              <Text color="#2CA1DE" size="20px">Total credit: {`$ ${rate37Total}`} </Text>
-              :
-              <Text color="#2CA1DE" size="20px">Total credit: {`$ ${rate40Total}`} </Text>
-         }
+         <Text color="#2CA1DE" size="20px">Total credit: {`$ ${rate37Total}`} </Text>
          
         </Modal.Body>
        
         <Modal.Footer>
-           
+        { error?.length > 1  ? 
+            <>
+            <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" >
+            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+            Ok!
+            </Button>
+            </>
+            :
+            <>
+            <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
+            Close
+            </Button>
+            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Confirm!
             </Button>
-           
+            
+            </>
+            }
           </Modal.Footer>
-
-        </Modal> 
-      
+          </>
+          :
+          <>
+          <DivCheck>
+          <img src={success} alt='loading gif' />
+          </DivCheck>
+          
+          <Button  color="#2CA1DE" onClick={(e)=> HandleCloseSucces(e) }> Ok! </Button>
+          </>
+          }  
+          </Modal>
       </Container>
       
        </form>

@@ -4,6 +4,8 @@ import Sidebar from '../../components/Sidebars/Sidebar';
 import { getUserInfo} from "../../redux/reducers/userSlice";
 import { useEffect } from "react";
 import{useSelector, useDispatch} from "react-redux"
+import {Link} from 'react-router-dom';
+
 
 const Container= styled.div`
 padding: 100px;
@@ -98,40 +100,39 @@ export default function Profile() {
     <Sidebar/>
     <Container>
     <Information>
-    <H2> Pirulo Profile</H2>    
+    <H2> Profile </H2>   
     <In>
     <Info>
       <span>DNI:</span> 
-      {userInfo &&
+     { userInfo &&
       <User> {`${userInfo.dni}`} </User>}
-      <Edit>Edit</Edit>
+     {/*  <Edit>Edit</Edit> */}
       </Info>
     <Info>
     <span>Firts Name:</span> 
     {userInfo &&
     <User>  {`${userInfo.firstname}`} </User>}
-      <Edit>Edit</Edit>
+    {/*   <Edit>Edit</Edit> */}
     </Info>
     <Info>
     <span>Last Name:</span> 
     {userInfo &&
     <User> {`${userInfo.lastname}`} </User>}
-      <Edit>Edit</Edit>
+     {/*  <Edit>Edit</Edit> */}
    </Info>
-    <Info> 
+    {/* <Info> 
     <span>Password:</span> 
-    <User> 1659 </User>
-      <Edit>Edit</Edit>
-    </Info>
+    <User>  </User>
+    </Info> */}
     <Info>
     <span>Email:</span> 
     {userInfo &&
-    <User>{`${userInfo.email}`}  </User>}
-      <Edit>Edit</Edit>
+    <User>{`${userInfo.email}`} </User>}
+     {/*  <Edit>Edit</Edit> */}
     </Info>
-    <Button> Load
-      <span></span>
-    </Button>
+    <Link to='/home'>
+    <Button> Back </Button>
+    </Link>
     </In>
     </Information>
     </Container>

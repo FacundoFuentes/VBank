@@ -153,7 +153,7 @@ function handleAmount(e){
 const handleBranch = () => {
   setState({
     ...state,
-    branch: myRef.current.value
+    branch: myHistory.current.value
   })
   
 }
@@ -220,7 +220,7 @@ let {username} = jwt.decode(token)
        </DetailContainer>   
        <BranchContainer>
         <Text>Why?</Text>
-          <Select ref={myRef} onChange={handleBranch}>
+          <Select ref={myHistory} onChange={handleBranch}>
           <option  value="Branch">select reason</option>
                     <option value="Travel">Travel</option>
                     <option value="Food">Food</option>

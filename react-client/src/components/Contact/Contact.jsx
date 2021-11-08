@@ -61,7 +61,7 @@ const ContactModal = ({handleInputChange}) => {
     const contacts = useSelector(state => state.contacts.contactList)
     const loggedInUser = useSelector(state => state.user.loggedInUser)
     
-    
+    console.log(contacts[0])
 
   
 
@@ -130,13 +130,12 @@ const ContactModal = ({handleInputChange}) => {
             <Modal.Body >
                 {contacts ? contacts
                 .map(contact =>(
-                    <ContactRow key={`contact-id-${contact._id}`}>
-                        <button  value={contact.description} onClick={handleInputChange}> {contact.description}</button>
+                  <ContactRow key={`contact-id-${contact._id}`}>
+                        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
                         <Action>
                       {/*   <UpdateContactButton contactId={goal.id} /> */}
                         <DeleteContactButton contact={contact}/>
                         </Action>
-
                     </ContactRow>
 
                 )) : <>

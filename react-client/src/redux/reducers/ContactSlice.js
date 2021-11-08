@@ -105,12 +105,13 @@ const contactsSlice = createSlice({
         state.error = action.payload;
       }
     },
-    [addContact.fulfilled]: (state, action) => {
+    /*  [addContact.fulfilled]: (state, action) => {
+      console.log("action", action.payload);
       if (state.loading === "pending") {
         state.loading = "idle";
         state.contactList.push(action.payload);
       }
-    },
+    },  */
     [addContact.pending]: (state) => {
       if (state.loading === "idle") {
         state.loading = "pending";

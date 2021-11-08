@@ -90,15 +90,27 @@ const [error,setError] = useState('')
 console.log(error)
 
 const [status, setStatus] =useState(0)
+/* const [input, setInput] = useState(null)
+console.log(input) */
 
+function handleInputChange(e){
+
+  setState({
+    ...state,
+    to: e.target.value
+})
+}
 
 function handleChange(e){
+  
   setState({
       ...state,
       [e.target.name]: e.target.value
   })
   
 }
+
+
 
 function handleAmount(e){
   setState({
@@ -146,7 +158,7 @@ console.log(username)
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input name="to" contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactBlack />} width="300px"/>
+            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal handleInputChange={handleInputChange}/>} width="300px"/>
          
           </ToContainer>
        

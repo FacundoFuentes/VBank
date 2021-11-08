@@ -4,20 +4,20 @@ const FixedDeposit = require("../models/FixedDeposit.js");
 const User = require("../models/User.js");
 const Transaction = require("../models/Transaction");
 const AccountTransaction = require("../models/AccountTransaction");
+const JwtStrategy = require('../utils/strategy/jwt.strategy')
+const passport = require ('passport')
+const {ExtractJwt} = require('passport-jwt')
+const jwtDecode = require('jwt-decode')
+passport.use(JwtStrategy)
 
 const fixedDeposit = express.Router();
 
-//
-//ACCOUNT TIENE QUE TENER ARRAY CON PLAZOS
-//
-// TRANSACTION TIENE QUE TENER OPCIÓN PARA PLAZO FIJO
-//
-
 fixedDeposit.post("/new", async (req, res) => {
-  const { username, days, amount, interestRate } = req.body;
-  // const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req) //Extraigo el token que me llega por head
-  // const decodedToken = jwtDecode(authToken) // Decodeo el token
-  // const username = decodedToken.username;
+  let { days, amount, interestRate } = req.body;
+  interestRate = Number(interestRate.trim().replace('%',''))
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req) //Extraigo el token que me llega por head
+  const decodedToken = jwtDecode(authToken) // Decodeo el token
+  const username = decodedToken.username;
   try {
     const foundUser = await User.findOne({ username });
     const foundAccount = await Account.findOne({ _id: foundUser.account });
@@ -57,7 +57,7 @@ fixedDeposit.post("/new", async (req, res) => {
     const fixedDepositCreated = await FixedDeposit.create({
       account: foundAccount,
       amount,
-      interestRate,
+      interestRate:interestRate/100,
       finishDate
     });
     foundAccount.balance -= amount;
@@ -69,46 +69,21 @@ fixedDeposit.post("/new", async (req, res) => {
       data: error,
     });
   }
-  const todayDate = new Date();
-  if (days && days > 0) {
-    // Add the days amount of days to date
-  }
 });
 
-fixedDeposit.get("/", async (req, res) => {
-  const { cvu } = req.body;
-
-  // Popular y traer el array con todos los plazos
-
+fixedDeposit.post("/", async (req, res) => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req) //Extraigo el token que me llega por head
+  const decodedToken = jwtDecode(authToken) // Decodeo el token
+  const username = decodedToken.username;
+  
   try {
-    let plazos = await Account.findOne({ cvu });
-    const todayDate = new Date();
-    plazos = plazos.map((p) => {
-      if (p.finishDate <= todayDate) p.status = "Finished";
-    });
-    res.json({ plazos });
+    const foundUser = await User.findOne({ username });
+    const account = await Account.findOne({ _id: foundUser.account });
+    let fixedDeposits = await FixedDeposit.find({account})
+    res.json({ fixedDeposits });
   } catch (error) {
+    console.log("ERROR ", error)
     res.status(400).json({ status: "failed", data: error });
-  }
-});
-
-fixedDeposit.post("/cobrar", async (req, res) => {
-  const { fixedDepositId } = req.body;
-
-  try {
-    const fixedDepositFound = await FixedDeposit.findOne({ _id: fixedDepositId });
-    if (fixedDepositFound && fixedDepositFound.status === "Finished") {
-      const accountFound = await Account.findOne({
-        cvu: fixedDepositFound.account.cvu,
-      });
-      accountFound.balance += fixedDepositFound.amount * (1 + fixedDepositFound.interes);
-      fixedDepositFound.status = "Cobraded";
-      accountFound.save();
-      fixedDepositFound.save();
-    } else
-      res.status(400).json({ status: "failed", data: "Fixed Deposit does not exists" });
-  } catch (error) {
-    res.json({ status: "failed", data: error });
   }
 });
 

@@ -7,12 +7,6 @@ const AccountTransaction = require("../models/AccountTransaction");
 
 const fixedDeposit = express.Router();
 
-//
-//ACCOUNT TIENE QUE TENER ARRAY CON PLAZOS
-//
-// TRANSACTION TIENE QUE TENER OPCIÓN PARA PLAZO FIJO
-//
-
 fixedDeposit.post("/new", async (req, res) => {
   const { username, days, amount, interestRate } = req.body;
   // const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req) //Extraigo el token que me llega por head
@@ -68,10 +62,6 @@ fixedDeposit.post("/new", async (req, res) => {
       status: "failed",
       data: error,
     });
-  }
-  const todayDate = new Date();
-  if (days && days > 0) {
-    // Add the days amount of days to date
   }
 });
 

@@ -52,7 +52,7 @@ user.post("/register", async (req, res) => {
       const accountCreated = await Account.create({
         cvu: utils.generarCbu(),
         state: true,
-        balance: 10000,
+        balance: 100,
         type: "Caja de ahorro en pesos",
         card: cardCreated._id,
         transactions: accountTrans._id,
@@ -93,6 +93,7 @@ user.post("/register", async (req, res) => {
 
 user.post("/login", async (req, res) => {
   const {username, password, dni} = req.body
+  console.log(req.body)
 
   const userFound = await User.findOne({username, dni}).lean()
 
@@ -213,9 +214,10 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
 user.post('/newContact', async (req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
-  let contactAccount, contactUser;
 
   try{
+    let contactAccount, contactUser;
+
     const username = decodedToken.username
     const user = await User.findOne({username: decodedToken.username})
     const {description, data} = req.body
@@ -228,7 +230,10 @@ user.post('/newContact', async (req, res) => {
       contactUser = await User.findOne({_id: contactAccount.user}).populate('account')
     } else{
       contactUser = await User.findOne({ username: data}).populate('account')
-      contactAccount = await Account.findOne({_id: contactUser.account})
+      contactAccount = await Account.findOne({_id: contactUser.account}).populate({
+        path: 'user',
+        model: 'User'
+      })
     } 
 
     if(username === contactUser.username)return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver
@@ -242,33 +247,32 @@ user.post('/newContact', async (req, res) => {
     // console.log(account)
 
     const contact = await Contact.create({
-        account: contactAccount,
-        description: description
+        // account: contactAccount.,
+        description: description,
+        cvu: contactAccount.cvu,
+        username: contactAccount.user.username,
     })
 
 
-    const response = {
-      cvu: contact.account.cvu,
-      username: contact.account.user.username,
-      firstName: contact.account.user.firstName,
-      lastName: contact.account.user.lastName
-
-
-    }
+    // const response = {
+    //   firstName: contact.account.user.firstName,
+    //   lastName: contact.account.user.lastName
+    // }
     
     user.contacts.push(contact)
     user.save()
 
-    res.status(200).json({status: 'ok', response})
+    res.status(200).json({status: 'ok', contact})
   }catch(err){
     let error = err.message
     res.status(400).json({status: 'failed', error})
   }
 })
 
-user.post('/contacts', async(req, res) => {
+user.get('/contacts', async(req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
+  console.log(decodedToken)
 
   try{
     const username = decodedToken.username
@@ -299,10 +303,15 @@ user.patch('/updateContact', async(req, res) => {
   }
 })
 
-user.delete('/deleteContact', async(req, res) => {
-  const {_Id} = req.body
+
+//El delete no permite body, paso el id por param
+user.delete('/deleteContact/:id', async(req, res) => {
+  const {id} = req.params
+
+  console.log(req.params)
+
   try {
-    const obj = await Contact.deleteOne({_id: _Id});
+    const obj = await Contact.deleteOne({_id: id});
     res.status(200).json({status:'ok', obj})
   }catch(err) {
     res.status(400).send(err.message)

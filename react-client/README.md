@@ -1,2 +1,0 @@
-# VBank
-Value Bank

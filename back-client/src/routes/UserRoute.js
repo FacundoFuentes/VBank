@@ -217,14 +217,7 @@ user.post('/newContact', async (req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   console.log(authToken)
   const decodedToken = jwtDecode(authToken)
-<<<<<<< HEAD
-  console.log(decodedToken)
-
-
-
-=======
   let contactAccount, contactUser;
->>>>>>> parent of dd81e6e (Merge pull request #123 from FacundoFuentes/FacuFuentes)
 
   try{
     const username = decodedToken.username

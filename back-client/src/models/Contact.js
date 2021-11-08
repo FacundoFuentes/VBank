@@ -12,6 +12,12 @@ const contactSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    cvu: {
+      type: String
+    },
+    username: {
+      type:String
+    }
   }
 );
 

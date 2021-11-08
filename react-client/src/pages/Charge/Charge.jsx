@@ -88,9 +88,9 @@ const handleSubmit = ()=>{
         </Row>  
         <Row display="flex" justify="center">
         <Spacer x={1}/>
-        <Checkbox onClick={()=>{setPago1(true) ; setPago2(false)}} checked={pago1}>PagoFacil</Checkbox>
-        <Spacer x={5}/>
         <Checkbox onClick={()=>{setPago2(true) ; setPago1(false)}} checked={pago2}>RapiPago</Checkbox>
+        <Spacer x={5}/>
+        <Checkbox onClick={()=>{setPago1(true) ; setPago2(false)}} checked={pago1}>PagoFacil</Checkbox>
        </Row>
 
    
@@ -114,7 +114,7 @@ const handleSubmit = ()=>{
               <Text color="green" h2>Success</Text>
           </Modal.Header>
           <Modal.Body display="flex" justify="center">
-              <Text>{pago1 ? "Rapi Pago" : "Pago Facil"}</Text>
+              <Text>{pago2 ? "Rapi Pago" : "Pago Facil"}</Text>
               <Text> Payment Code: {`${paymentCode}`}</Text>
           </Modal.Body>
           <Modal.Footer>

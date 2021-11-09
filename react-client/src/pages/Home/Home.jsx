@@ -228,7 +228,7 @@ export default function Home() {
                 <Spacer x={2} />
               </LatestMovements>     
             </DateNameTotal>
-              <GridContainer>
+              <GridContainer style={{display:"flex" ,flexDirection:"column-reverse"}}>
 
               {userTransaction?.map((e, i) => 
               <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
@@ -246,7 +246,7 @@ export default function Home() {
           </Expeses>
         </GridS>
         <GridS>
-        <TextS>statistics</TextS>
+        <TextS>Statistics</TextS>
         {data2?.length > 0 ? 
         <ChartContainer >
         <Chart height="500px" data={data2}/>

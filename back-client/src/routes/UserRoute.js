@@ -186,6 +186,7 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
       date: new Date(),
       amount: Number(charge),
       description: 'Enjoy your money!',
+      status: 'PENDING',
       type: 'CHARGE',
       // status: 'PROCESSING',
       from: null,
@@ -197,10 +198,9 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
       transaction,
     });
 
-    account.balance += Number(charge)
     account.transactions.push(accountTransaction)
-
     account.save()
+    
     res.status(200).json({status: 'ok', transaction})
 
   }catch(err){

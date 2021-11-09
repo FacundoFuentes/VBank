@@ -22,11 +22,6 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
   let userFrom, userTo, accountFrom, accountTo; //Variables auxiliares
   
   try { 
-    // if(decodedToken.username === to) return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver 
-    //   status: "failed",
-    //   error:
-    //     "You can't receive money from yourself",
-    // })
 
     userFrom = await User.findOne({ username: decodedToken.username }); //Busco el usuario cuyo username es el del token
     accountFrom = await Account.findOne({_id: userFrom.account})

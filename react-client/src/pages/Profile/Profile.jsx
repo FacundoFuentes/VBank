@@ -120,11 +120,10 @@ export default function Profile() {
     <User> {`${userInfo.lastname}`} </User>}
      {/*  <Edit>Edit</Edit> */}
    </Info>
-    <Info> 
+    {/* <Info> 
     <span>Password:</span> 
     <User>  </User>
-     {/*  <Edit>Edit</Edit> */}
-    </Info>
+    </Info> */}
     <Info>
     <span>Email:</span> 
     {userInfo &&

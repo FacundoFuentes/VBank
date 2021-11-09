@@ -103,7 +103,7 @@ export default function Profile() {
       <span>DNI:</span> 
      { userInfo &&
       <User> {`${userInfo.dni}`} </User>}
-     {/*  <Edit>Edit</Edit> */}
+       <Edit>Edit</Edit> 
       </Info>
     <Info>
     <span>Firts Name:</span> 

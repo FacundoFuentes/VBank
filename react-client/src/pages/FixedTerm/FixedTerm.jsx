@@ -51,7 +51,12 @@ margin-left:155px;
 padding: 5px;
 
 `
+const DivCheck = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
 
+`
 
 export default function FixedTerm() {
 

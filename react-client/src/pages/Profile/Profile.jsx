@@ -5,7 +5,7 @@ import { getUserInfo} from "../../redux/reducers/userSlice";
 import { useEffect } from "react";
 import{useSelector, useDispatch} from "react-redux"
 import {Link} from 'react-router-dom';
-
+import { Modal } from '@nextui-org/react';
 
 const Container= styled.div`
 padding: 100px;
@@ -90,8 +90,16 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(getUserInfo())
-  }, [])
-
+  }, []);
+  
+  
+  () => {
+    const [visible, setVisible] = React.useState(false);
+    const handler = () => setVisible(true);
+    const closeHandler = () => {
+        setVisible(false);
+        console.log('closed');
+    };
   return (
     <>
     <Sidebar/>
@@ -103,13 +111,60 @@ export default function Profile() {
       <span>DNI:</span> 
      { userInfo &&
       <User> {`${userInfo.dni}`} </User>}
-       <Edit>Edit</Edit> 
+     <Edit auto shadow onClick={handler} >Edit</Edit> 
+     <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+    >
+        <Modal.Header>
+            <Text id="modal-title" size={18}>
+            Welcome to
+            <Text b size={18}>
+                Profile
+            </Text>
+            </Text>
+        </Modal.Header>
+        <Modal.Body>
+            <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="large"
+                placeholder="Email"
+            />
+            <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="large"
+                placeholder="Password"
+            />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button auto flat color="error" onClick={closeHandler}>
+            Back
+            </Button>
+            <Button auto onClick={closeHandler}>
+            Save
+            </Button>
+        </Modal.Footer>
+    </Modal>
+     
+     
+     
+     
+     
+     
       </Info>
     <Info>
     <span>Firts Name:</span> 
     {userInfo &&
     <User>  {`${userInfo.firstname}`} </User>}
-    {/*   <Edit>Edit</Edit> */}
+     {/* <Edit>Edit</Edit> */} 
     </Info>
     <Info>
     <span>Last Name:</span> 
@@ -117,16 +172,15 @@ export default function Profile() {
     <User> {`${userInfo.lastname}`} </User>}
      {/*  <Edit>Edit</Edit> */}
    </Info>
+    {/* <Info> 
+    <span>Password:</span> 
+    <User>  </User>
+    </Info> */}
     <Info>
     <span>Email:</span> 
     {userInfo &&
     <User>{`${userInfo.email}`} </User>}
      {/*  <Edit>Edit</Edit> */}
-    <Info> 
-    <span>Password:</span> 
-    <User>  </User>
-     {/*  <Edit>Edit</Edit> */}
-    </Info>
     </Info>
     <Link to='/home'>
     <Button> Back </Button>
@@ -136,4 +190,4 @@ export default function Profile() {
     </Container>
   </>
   );
-}
+}}

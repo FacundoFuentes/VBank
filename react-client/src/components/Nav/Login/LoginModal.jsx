@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { signinUser } from '../../../redux/reducers/userSlice';
+import { resetSigninState, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
@@ -69,6 +69,7 @@ const LoginModal = () => {
             username:"",
             password:""
         });
+        dispatch(resetSigninState())
     };
 
     

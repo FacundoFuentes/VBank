@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser, signinUser } from '../../../redux/reducers/userSlice';
+import { signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
@@ -91,12 +91,19 @@ const LoginModal = () => {
   
  
   const onSubmit = async(data) => {
-     console.log(data)
-      let response = await dispatch(signinUser(data)); 
-
-     if( response && !error){
-          setVisible(false) 
-     }
+     try {
+        const response= await dispatch(signinUser(data)).unwrap()
+        
+      } catch (error) {
+        // handle error here
+        /* console.log(error) */
+       let {status} = error
+       if (status === "failed"){
+         return <>
+         <p>{error.error}</p>  
+              </>
+       }
+      }
   }
 
     return (

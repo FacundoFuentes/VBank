@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useForm, Controller } from "react-hook-form";
-import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
-import { useHistory } from 'react-router';
+
+import { Modal, Button, Text} from '@nextui-org/react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
 
@@ -59,49 +59,19 @@ const ContactModal = ({handleInputChange}) => {
     const dispatch= useDispatch();
 
     const contacts = useSelector(state => state.contacts.contactList)
+    
     const loading = useSelector(state => state.contacts.loading)
-    const loggedInUser = useSelector(state => state.user.loggedInUser)
-    
-    
-
-  
-
-
-   
-
-
 
     const [visible, setVisible] = useState(false);
 
-    const { control, handleSubmit,reset, formState: { errors }} = useForm();
 
     const handler = () => {
         setVisible(true)
-       
-    
-        
     };
-
-
-
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
-        reset({
-            dni: "",
-            username:"",
-            password:""
-        });
     };
 
-    const history = useHistory();
- 
-  const onSubmit = (data) => {
-    // console.log(data)
-  
-      setVisible(false)
-      
-  }
   useEffect(() => {
     if (visible) {
       dispatch(getContacts());
@@ -126,7 +96,7 @@ const ContactModal = ({handleInputChange}) => {
                 <h2>My Contacts</h2>
                 </Text>
             </Modal.Header>
-            <form onSubmit={handleSubmit(onSubmit)}>
+           
 
             <Modal.Body >
             {loading === "pending" ? (
@@ -164,7 +134,6 @@ const ContactModal = ({handleInputChange}) => {
                 </Button>
                 <AddContactButton/>
             </Modal.Footer>
-            </form>
         </StyledModal>
     </div>
     );    

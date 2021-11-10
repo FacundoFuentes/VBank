@@ -75,16 +75,15 @@ grid-template-columns: 1fr 1fr;
   width: 200px;
 }
 .step {
-  width: 25px;
-  height: 25px;
-  background: #fff;
+  width: 30px;
+  height: 30px;
+  background: #95BEFE;
   border: 2px solid #ACACA6;
   border-radius: 50%;
   transition: background 1s;
   text-align: center;
-  span{
-    padding-bottom: 3px;
-  }
+  padding-bottom: 15px;
+
 
 
 
@@ -92,7 +91,7 @@ grid-template-columns: 1fr 1fr;
 }
 .step.selected {
   border: 2px solid #4B81BD; 
-  color:  #4B81BD; 
+  color:  #fff; 
 
 }
 .step.completed {
@@ -202,7 +201,7 @@ const SignupPage = () => {
   }
 }, [loggedInUser,history])
 
-  const { watch, control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
+  const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
    
 
   const onSubmit =async (data) => {

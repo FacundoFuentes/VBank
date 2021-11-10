@@ -90,7 +90,7 @@ const AddContactButton = () => {
         name="data"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -99,13 +99,14 @@ const AddContactButton = () => {
          color="#f5f5f5" {...field} />}
       />
       {errors.data?.type === 'required' && <p className="error">This field is required</p>}
+      {errors.data?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
  
             <Controller
         className="fields"
         name="description"
         control={control}
         defaultValue=""
-
+        rules={{maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -113,6 +114,7 @@ const AddContactButton = () => {
         labelPlaceholder="Ej: Alquiler"
          color="#f5f5f5" {...field} />}
       />
+      {errors.description?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
      
 
 

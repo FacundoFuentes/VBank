@@ -166,7 +166,7 @@ export default function FixedTerm() {
          
           <ToContainer>
             <Text >How much?</Text>
-            <Input name="amount" type="number" value={state.amount} contentClickable="true" onChange={(e)=>handleAmount(e)}  width="300px"/>
+            <Input name="amount" type="number" min="1"  step="0.01" value={state.amount} contentClickable="true" onChange={(e)=>handleAmount(e)}  width="300px"/>
          
           </ToContainer>
        

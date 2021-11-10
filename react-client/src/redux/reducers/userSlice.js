@@ -1,6 +1,8 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios' 
 import jwt from "jsonwebtoken"
+import { useHistory } from 'react-router';
+import {toast } from 'react-toastify';
 
 
 
@@ -60,10 +62,26 @@ export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (th
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username})
+    const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username},{
+      headers: {'Authorization': "Bearer "+ token }
+
+    })
     return response.data
   } catch (error) {
-    console.log(error)
+    let history= useHistory();
+   if (error.response.data.data === "Unauthorized"){
+     localStorage.removeItem('token')
+     toast.error(`Session expired, you must sign in again`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      onClose: () => ( history.push("/")  ), 
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      }); 
+   }
   }
 })
 export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{

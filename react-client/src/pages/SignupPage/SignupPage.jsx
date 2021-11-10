@@ -9,7 +9,7 @@ import { Input, Button } from '@nextui-org/react';
 import { registerUser } from '../../redux/reducers/userSlice';
 import Nav from '../../components/Nav/Nav';
 
-import { ToastContainer, toast } from 'react-toastify';
+import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 

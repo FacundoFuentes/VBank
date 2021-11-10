@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Modal, Button, Text} from '@nextui-org/react';
+import { Modal, Button, Text, Loading} from '@nextui-org/react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
@@ -100,7 +100,7 @@ const ContactModal = ({handleInputChange}) => {
 
             <Modal.Body >
             {loading === "pending" ? (
-        <div>Loading...</div>
+        <div><Loading type="gradient"/></div>
       ) : (
 
         <>

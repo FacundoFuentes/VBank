@@ -35,9 +35,6 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     try { 
 
         const response = await axios.post('http://localhost:3001/user/register', userInfo)
-    
-      /*   localStorage.setItem('token', JSON.stringify(response.data.token)) 
-        //cambie "token" por "token" y "response.data.data" por "response.data.token" */
         return response.data;
         
     } catch (error) {
@@ -52,7 +49,7 @@ export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{
 
   try {
     const response = await axios.post("http://localhost:3001/user/userinfo", {username:username},{
-      headers: {'Authorization': "Bearer "+ token }
+      headers: { Authorization: "Bearer "+ token }
 
     })
     return response.data
@@ -79,7 +76,7 @@ export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (th
 
   try {
     const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username},{
-      headers: {'Authorization': "Bearer "+ token }
+      headers: { Authorization: "Bearer "+ token }
 
     })
     return response.data
@@ -106,7 +103,7 @@ export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{
 
   try {
     const response = await axios.post("http://localhost:3001/transactions", {username:username},{
-      headers: {'Authorization': "Bearer "+ token }
+      headers: {Authorization: "Bearer "+ token }
 
     })
     return response.data

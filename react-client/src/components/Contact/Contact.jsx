@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useForm, Controller } from "react-hook-form";
-import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
-import { useHistory } from 'react-router';
+
+import { Modal, Button, Text} from '@nextui-org/react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
 
@@ -59,54 +59,25 @@ const ContactModal = ({handleInputChange}) => {
     const dispatch= useDispatch();
 
     const contacts = useSelector(state => state.contacts.contactList)
-    const loggedInUser = useSelector(state => state.user.loggedInUser)
     
-    console.log(contacts[0])
-
-  
-
-
-   
-
-
+    const loading = useSelector(state => state.contacts.loading)
 
     const [visible, setVisible] = useState(false);
 
-    const { control, handleSubmit,reset, formState: { errors }} = useForm();
 
     const handler = () => {
         setVisible(true)
-       
-    
-        
     };
-
-
-
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
-        reset({
-            dni: "",
-            username:"",
-            password:""
-        });
     };
 
-    const history = useHistory();
- 
-  const onSubmit = (data) => {
-    // console.log(data)
-  
-      setVisible(false)
-      
-  }
   useEffect(() => {
-    if (loggedInUser) {
+    if (visible) {
       dispatch(getContacts());
     }
   
-  }, [dispatch, loggedInUser]);
+  }, [dispatch, visible]);
 
     return (
 
@@ -125,22 +96,35 @@ const ContactModal = ({handleInputChange}) => {
                 <h2>My Contacts</h2>
                 </Text>
             </Modal.Header>
-            <form onSubmit={handleSubmit(onSubmit)}>
+           
 
             <Modal.Body >
-                {contacts ? contacts
-                .map(contact =>(
-                  <ContactRow key={`contact-id-${contact._id}`}>
-                        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
-                        <Action>
-                      {/*   <UpdateContactButton contactId={goal.id} /> */}
-                        <DeleteContactButton contact={contact}/>
-                        </Action>
-                    </ContactRow>
+            {loading === "pending" ? (
+        <div>Loading...</div>
+      ) : (
 
-                )) : <>
-                 <p>loading</p>
-                </>}
+        <>
+
+{contacts && contacts.length > 0 ? contacts
+.map(contact =>(
+    <ContactRow key={`contact-id-${contact._id}`}>
+        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
+        <Action>
+      {/*   <UpdateContactButton contactId={goal.id} /> */}
+        <DeleteContactButton contact={contact}/>
+        </Action>
+
+    </ContactRow>
+
+)):(
+  <p> Empty, Add One</p>
+)}
+
+        </>
+      )}
+              
+              
+              
                
 
             </Modal.Body>
@@ -150,7 +134,6 @@ const ContactModal = ({handleInputChange}) => {
                 </Button>
                 <AddContactButton/>
             </Modal.Footer>
-            </form>
         </StyledModal>
     </div>
     );    

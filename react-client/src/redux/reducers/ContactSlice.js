@@ -31,15 +31,15 @@ export const addContact = createAsyncThunk(
     }
     try {
       if (token){
-        const response = await axios.post("http://localhost:3001/user/newcontact",
-        payload,{
-          headers: { 'Authorization': "Bearer " + token },
-        })
-        console.log(response.data)
+        const response = await axios.post("http://localhost:3001/user/newcontact",payload,{
+          headers: { Authorization: "Bearer " + token },
+        })  
+        const { dispatch } = thunkAPI;
+        dispatch(getContacts(payload));
         return;
       }
       else{
-        console.log("no hay token culia")
+        console.log("No hay token")
       }
    
     } catch (error) {
@@ -77,12 +77,12 @@ export const deleteContact = createAsyncThunk(
 );
 
 const initContactsState = {
-  contactList: [],
+  contactList: [], 
   loading: "idle",
   error: null,
 };
 
-const contactsSlice = createSlice({
+const contactsSlice = createSlice({ 
   name: "contacts",
   initialState: initContactsState,
   reducers: {},

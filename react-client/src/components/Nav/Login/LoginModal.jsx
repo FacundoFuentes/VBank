@@ -191,7 +191,7 @@ const LoginModal = () => {
                 <Button auto  onClick={closeHandler}>
                 Close
                 </Button>
-                <Button auto  ghost type="submit">
+                <Button color="#2CA1DE" auto type="submit">
                 Sign in
                 </Button>
             </Modal.Footer>

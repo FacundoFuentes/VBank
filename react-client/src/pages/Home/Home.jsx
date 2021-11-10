@@ -1,11 +1,10 @@
-import {data, user } from "./user"
 import { useEffect } from "react";
 import styled from "styled-components"
 import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
-import { Grid, Spacer} from "@nextui-org/react"
+import { Grid, Spacer, Text} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
 import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
 
@@ -25,7 +24,7 @@ const TextS = styled.h2`
   justify-content: flex-start;
   margin-top:25px;
   margin-left: 0px;
-  margin-right: 27%;
+  margin-right: 32%;
   margin-bottom:0px;
   
 `;
@@ -67,11 +66,13 @@ const Expeses = styled.div`
   border-radius:20px;
   background-color: #F6F6F6;
   width: 90%;
-  height: 480px;
+  height: 320px;
   
 `;
 const ChartContainer = styled.div`
   display:flex;
+  justify-content: center;
+  align-items:center;
   margin-top:20px;
   background-color:#F6F6F6;
   border-radius:20px;
@@ -133,7 +134,6 @@ export default function Home() {
 
  
   
-
    useEffect(() => {
    if(!loggedInUser) history.push("/")
 
@@ -143,7 +143,48 @@ export default function Home() {
     dispatch(getUserInfo())
     dispatch(getUserAccountInfo())
     dispatch(getBalance())
-  }, [])
+  }, [dispatch])
+
+
+
+
+  let data2 = userTransaction?.map(e => {
+    return `${e.transaction.branch}`
+    }
+  )
+  data2 = data2?.filter((e,i)=> data2.indexOf(e) === i)
+
+  data2 = data2?.map(e => {
+    return{
+      id: e,
+      label: e,
+      value: 0
+    }
+  })
+
+  let arrayAmount = userTransaction?.map(e => {
+    return {
+      name: e.transaction.branch,
+      amount: e.transaction.amount,
+      role: e.role
+    }
+  })
+
+  for(let i = 0; i < data2?.length; i++){
+    for(let j = 0; j < arrayAmount?.length;j++){
+      if(data2[i].label === arrayAmount[j].name){
+          if(arrayAmount[j].role !== "RECEIVER"){
+          data2[i].value += arrayAmount[j].amount
+        }
+      }
+      
+    }
+  }
+  data2 = data2?.filter(e => e.value > 0)
+  
+
+
+
 
   return (
     <div>
@@ -177,21 +218,26 @@ export default function Home() {
            <TextS>Latest movements</TextS>
           <Expeses>
             <DateNameTotal>
-                <h3>Date</h3>
-                <h3>Name</h3>
-                <h3>Total</h3>
-                
+            <LatestMovements  gap={2} justify="space-around">
+                <Spacer x={4} />
+                <GridLatestMovents xs={2}>Date</GridLatestMovents>
+                <Spacer x={-5}/>
+                <GridLatestMovents justify="center" xs={4}>Name</GridLatestMovents>
+                <Spacer x={1}/>
+                <GridLatestMovents xs={1}>Total</GridLatestMovents>
+                <Spacer x={2} />
+              </LatestMovements>     
             </DateNameTotal>
-              <GridContainer>
+              <GridContainer style={{display:"flex" ,flexDirection:"column-reverse"}}>
 
               {userTransaction?.map((e, i) => 
-              <LatestMovements key={i} gap={2} justify="space-around">
+              <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
                 <Spacer x={3} />
                 <GridLatestMovents xs={2}>{` ${e.transaction.date.slice(0,10)} `} </GridLatestMovents>
                 <Spacer x={-4}/>
                 <GridLatestMovents justify="center" xs={4}>{` ${e.transaction.description} `} </GridLatestMovents>
                 <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? ` +$${e.transaction.amount}` : ` -$${e.transaction.amount}` } </GridLatestMovents>
+                <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? `+$${e.transaction.amount}` : `-$${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
               </LatestMovements>  
                   ) 
@@ -200,10 +246,23 @@ export default function Home() {
           </Expeses>
         </GridS>
         <GridS>
-        <TextS>statistics</TextS>
+        <TextS>Statistics</TextS>
+        {data2?.length > 0 ? 
         <ChartContainer >
-          <Chart height="500px" data={data}/>
-        </ChartContainer>
+        <Chart height="500px" data={data2}/>
+      </ChartContainer>
+      :
+      <ChartContainer >
+         <Text h2 style={{height:"500px"}}>
+         <Chart height="500px" data={[{
+           "id":"no movement ",
+           "laber":"no movement ",
+           "value":1
+         }]}/>
+         </Text>
+      </ChartContainer>
+        }
+        
         </GridS>
     </ContainerS>
         <Spacer y={3}/>

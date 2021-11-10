@@ -208,7 +208,7 @@ let {username} = jwt.decode(token)
        
        <MoneyContainer>
            <Text >How much?</Text>
-           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
+           <Input name="amount" value={state.amount} type="number" min="1" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        

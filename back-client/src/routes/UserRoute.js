@@ -180,7 +180,6 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
     const user = await User.findOne({username})
     const account_id = user.account
     const account = await Account.findById({_id: account_id})
-    console.log(user.account)
     const transaction = await Transaction.create({
       transactionCode: utils.generateCargeNumber(), //Random
       date: new Date(),
@@ -198,6 +197,9 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
       transaction,
     });
 
+    const QR = await utils.generateQR(`localhost:3001/transactions/authorize/${transaction.transactionCode}`)
+    console.log(QR)
+    emailUtils.chargeEmail(QR, user.email)
     account.transactions.push(accountTransaction)
     account.save()
     

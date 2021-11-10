@@ -9,8 +9,8 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true, // security for port 465 ( gmail host)
     auth: {
-        user:'servinchristianmanuel@gmail.com', // generated google user
-        pass: 'hugownzaqtznmliw' // generated google password
+        user:'vbank.noreply@gmail.com', // generated google user
+        pass: 'gxnmuzjwpiwthobz' // generated google password
     }
 })
 
@@ -32,7 +32,7 @@ transporter.verify().then(() => {
 
 const email = async (code,cvu,cardNumber,cvv,email) => {
     const mail = await transporter.sendMail({
-        from: "servinchristianmanuel@gmail.com",
+        from: "vbank.noreply@gmail.com",
         to: email, // recuperar desde user
         subject: "Verification Email",
         // template: 'verification',
@@ -57,6 +57,28 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
     return mail
 } 
 
+const chargeEmail = async (QR, email) => {
+    const mailOptions = {
+        from: "vbank.noreply@gmail.com",
+        to: email, // recuperar desde user
+        subject: "Charge Succesfull",
+        // template: 'verification',
+        // context: {
+        //     code: code
+        // }
+        html:`<img src='cid:qr'></img>`,
+        attachments: [{
+            filename: 'qr.png',
+            path: './src/utils/Qerres/qr.png',
+            cid: 'qr' //same cid value as in the html img src
+        }]
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+        if(error){
+            return console.log(error)
+        }
+    })
+} 
 
 
 
@@ -64,6 +86,7 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
 module.exports = {
     email,
     transporter,
+    chargeEmail
 }
 
 

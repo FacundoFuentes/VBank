@@ -28,6 +28,7 @@
     "nodemon": "^2.0.14",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
+    "qrcode": "^1.4.4",
     "simple-random-number-generator": "^1.2.0",
     "validator": "^13.6.0"
   }

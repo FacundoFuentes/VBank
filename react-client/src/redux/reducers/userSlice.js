@@ -111,6 +111,12 @@ const userSlice = createSlice({
           state.loggedInUser = null;
           localStorage.removeItem('token');
       },
+      resetRegisterState: (state) => {
+        state.registerState = initUserState.registerState;
+      },
+      resetSigninState: (state) => {
+        state.signinState = initUserState.signinState;
+      },
      
   },
   extraReducers: {
@@ -242,7 +248,7 @@ const userSlice = createSlice({
 })
 
 
-export const {logoutUser} = userSlice.actions;
+export const {logoutUser, resetSigninState} = userSlice.actions;
 export default  userSlice.reducer;
 
 

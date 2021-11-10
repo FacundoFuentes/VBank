@@ -15,6 +15,7 @@ function App() {
         <Route exact path="/home" component={Home} />
         <Route exact path="/home/transfer" component={Transfer}/>
         <Route exact path="/user/signUp"  component={SignupPage}/>  
+     
        </Switch>
     </Router>    
 

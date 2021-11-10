@@ -7,12 +7,40 @@ import { logoutUser, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
 const StyledModal = styled(Modal)`
+&.with-close-button.jsx-1754213264 {
+  
+    
+}
+.fields{
+    margin-top:10px;
+    margin-bottom:25px;
+
+    &
+    label{
+      color: #000;
+
+    }
+   .jsx-1698195688 { // lo saque del html 
+     width: 100%;
+    }
+    input.jsx-1698195688:-webkit-autofill, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:hover, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:active, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:focus, textarea.jsx-1698195688:-webkit-autofill, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:hover, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:active, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:focus {
+    -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+    -webkit-text-fill-color: #000 !important;
+}
+   input{
+     color:#000;
+   }
+   span{
+     color: #000;
+   }
+
 .error{
     margin:0;
      margin-top: 3px;
      margin-left: 5px;
      color:#dc3545;
      font-size: 15px;
+}
 }
 `;
 
@@ -62,11 +90,13 @@ const LoginModal = () => {
  
   
  
-  const onSubmit = (data) => {
-    // console.log(data)
-      dispatch(signinUser(data)); 
-      setVisible(false)
-      
+  const onSubmit = async(data) => {
+     console.log(data)
+      let response = await dispatch(signinUser(data)); 
+
+     if( response && !error){
+          setVisible(false) 
+     }
   }
 
     return (
@@ -81,84 +111,87 @@ const LoginModal = () => {
             open={visible}
             onClose={closeHandler}
         >
-            <Modal.Header>
-                <Text id="modal-title" size={18}>
+            <Modal.Header className="modal-header">
+                <Text id="modal-title" size="2em" color="#000" weight="bold">
                     Login
                
                 
                 </Text>
             </Modal.Header>
+           
             <form onSubmit={handleSubmit(onSubmit)}>
 
-            <Modal.Body >
+            <Modal.Body style={{ padding: '30px 20px' }}>
                
-            <Controller
+        <div  className="fields">
+          <Controller
         className="fields"
         name="dni"
+        rules={{ required: true, pattern: /^([0-9])*$/i , maxLength:9}}
         control={control}
         defaultValue=""
-        rules={{ required: true, pattern: /^([0-9])*$/i, maxLength:8 }}
-        render=
-        {({ field }) => <Input clearable
-        bordered
-        fullWidth
-        
-        size="large"
+        render={({ field }) => <Input className="input"
+      
+        underlined 
+       
         labelPlaceholder="DNI"
-         color="#f5f5f5" 
-         {...field} />}
+         color="#f5f5f5" {...field} />}
       />
       {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
       {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
-      {errors.dni?.type === 'maxLength' && <p className="error">it should only have a max of 8 characters</p>}
-            <Controller
+      {errors.dni?.type === 'maxLength' && <p className="error"> DNI cannot be longer than 8 caracters or shorter than 7</p>}
+
+            </div>
+            <div  className="fields">
+          <Controller
         className="fields"
         name="username"
         control={control}
         defaultValue=""
-        rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/}}
-        render={({ field }) => <Input clearable
-        bordered
-        fullWidth
-        
-        size="large"
+       rules={{required:true}}
+        render={({ field }) => <Input className="input"
+        underlined 
         labelPlaceholder="Username"
          color="#f5f5f5" {...field} />}
       />
-      {errors.username?.type === 'required' && <p className="error">This field is required</p>}
-      {errors.username?.type === 'pattern' && <p className="error">Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number</p>}
-            <Controller
+       {errors.username?.type === 'required' && <p className="error">This field is required</p>}
+       {errors.username?.type === 'pattern' && <p className="error">Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number</p>}
+
+       </div>
+       <div  className="fields">
+          <Controller
         className="fields"
         name="password"
         control={control}
         defaultValue=""
-        rules={{required:true, pattern:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/}}
-        render={({ field }) => <Input.Password clearable
-        bordered
-        fullWidth
-        type="password"
-        size="large"
-        labelPlaceholder="Password"
+        rules={{required:true}}
+        render={({ field }) => <Input.Password
+           underlined 
+           labelPlaceholder="Password"
+           
+             type="password" 
+             className="input"
          color="#f5f5f5" {...field} />}
       />
-       {errors.password?.type === 'required' && <p className="error">This field is required</p>}
-       {errors.password?.type === 'pattern' && <p className="error"> Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+     {errors.password?.type === 'required' && <p className="error">This field is required</p>}
+     {errors.password?.type === 'pattern' && <p className="error"> Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
 
-       {error && <p className="error">{error.error}</p>}
+     {error && <p className="error">{error.error}</p>}
+            </div>
       
       
                 <Row justify="space-between">
                
-                <Text size={14}>
+                <Text size={14} color="#000" style={{ padding: '20px 0 0 0' }}>
                     Forgot password?
                 </Text>
                 </Row>
             </Modal.Body>
-            <Modal.Footer>
-                <Button auto flat color="error" onClick={closeHandler}>
+            <Modal.Footer >
+                <Button auto  onClick={closeHandler}>
                 Close
                 </Button>
-                <Button auto type="submit">
+                <Button auto  ghost type="submit">
                 Sign in
                 </Button>
             </Modal.Footer>

@@ -9,6 +9,8 @@ import { Input, Button } from '@nextui-org/react';
 import { registerUser } from '../../redux/reducers/userSlice';
 import Nav from '../../components/Nav/Nav';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -45,8 +47,15 @@ grid-template-columns: 1fr 1fr;
    img{
      display:none;
    }
-   .form{
+
+   section{
      width: 100%;
+     
+     .form{
+       width: 100%;
+     }
+
+
    }
  }
  .progressbar {
@@ -83,11 +92,6 @@ grid-template-columns: 1fr 1fr;
   transition: background 1s;
   text-align: center;
   padding-bottom: 15px;
-
-
-
-
-  
 }
 .step.selected {
   border: 2px solid #4B81BD; 
@@ -138,16 +142,17 @@ form{
   .fields{
     margin-top:10px;
     margin-bottom:25px;
+    width: 100%;
 
     &
     label{
       color: #f5f5f5;
 
     }
-   .jsx-1698195688 { // lo saque del html 
+   .jsx-4281389978 { // lo saque del html 
      width: 100%;
     }
-    input.jsx-1698195688:-webkit-autofill, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:hover, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:active, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:focus, textarea.jsx-1698195688:-webkit-autofill, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:hover, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:active, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:focus {
+    input.jsx-4281389978:-webkit-autofill, input.jsx-4281389978:-webkit-autofill.jsx-4281389978:hover, input.jsx-4281389978:-webkit-autofill.jsx-4281389978:active, input.jsx-4281389978:-webkit-autofill.jsx-4281389978:focus, textarea.jsx-4281389978:-webkit-autofill, textarea.jsx-4281389978:-webkit-autofill.jsx-4281389978:hover, textarea.jsx-4281389978:-webkit-autofill.jsx-4281389978:active, textarea.jsx-4281389978:-webkit-autofill.jsx-4281389978:focus {
     box-shadow: 0 0 0 30px #95BEFE inset !important;
     -webkit-text-fill-color: #fff !important;
 }
@@ -194,6 +199,7 @@ const SignupPage = () => {
  const history= useHistory();
 
  useEffect(() => { 
+  
   if (loggedInUser){
       //redirect con el hook useHistory
       history.push("/home"); //esto me lleva hacia esta ventana
@@ -202,26 +208,39 @@ const SignupPage = () => {
 }, [loggedInUser,history])
 
   const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
+  const notify = () => toast("Wow so easy !");
    
 
   const onSubmit =async (data) => {
-     /* console.log(data)  */
     try {
       const response= await dispatch(registerUser(data)).unwrap()
       let {status} = response;
       if (status === "ok"){
-        alert("User Created Succefully, Check Your EmailBox 📫")
-         history.push("/")  
-        
+        toast.info('created succesfully, check Email!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          onClose: () => ( history.push("/")  ), 
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          });
       }
     } catch (error) {
       // handle error here
       console.log(error.data)
      let {status} = error
      if (status === "failed"){
-       return <>
-       <p>{error.data}</p>  
-            </>
+     /*  toast.error(`${error.data}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        }); */
      }
     }
   }

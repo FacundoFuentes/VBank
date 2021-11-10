@@ -20,10 +20,10 @@ const StyledModal = styled(Modal)`
       color: #000;
 
     }
-   .jsx-1698195688 { // lo saque del html 
+   .jsx-4281389978 { // lo saque del html 
      width: 100%;
     }
-    input.jsx-1698195688:-webkit-autofill, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:hover, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:active, input.jsx-1698195688:-webkit-autofill.jsx-1698195688:focus, textarea.jsx-1698195688:-webkit-autofill, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:hover, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:active, textarea.jsx-1698195688:-webkit-autofill.jsx-1698195688:focus {
+    input.jsx-4281389978:-webkit-autofill, input.jsx-4281389978:-webkit-autofill.jsx-4281389978:hover, input.jsx-4281389978:-webkit-autofill.jsx-4281389978:active, input.jsx-4281389978:-webkit-autofill.jsx-4281389978:focus, textarea.jsx-4281389978:-webkit-autofill, textarea.jsx-4281389978:-webkit-autofill.jsx-4281389978:hover, textarea.jsx-4281389978:-webkit-autofill.jsx-4281389978:active, textarea.jsx-4281389978:-webkit-autofill.jsx-4281389978:focus {
     -webkit-box-shadow: 0 0 0 30px #fff inset !important;
     -webkit-text-fill-color: #000 !important;
 }

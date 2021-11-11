@@ -189,7 +189,7 @@ let history= useHistory();
         autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
-        onClose: () => ( history.push("/")  ), 
+        onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
         pauseOnHover: false,
         draggable: true,
         progress: undefined,

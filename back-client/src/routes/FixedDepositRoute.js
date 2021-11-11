@@ -32,10 +32,14 @@ const checkFixedDeposit = async () => {
         // Si no la encuentra sigue con el siguiente (pasa cuando borras la cuenta y no sus plazos fijos)
         if (!accountFound) continue;
         accountFound.balance += fixedDeposits[i].total;
+        // Busco el usuario dueño de la cuenta
+        const userFound = await User.findOne({ _id: accountFound.user });
         // Crea la transaction y la accTransaction
         const transactionCreated = await Transaction.create({
           date: todayDate,
           amount: fixedDeposits[i].total,
+          from: userFound,
+          to: userFound,
           description: `Fixed Deposit profits on ${todayDate.getMonth()}/${todayDate.getDay()}/${todayDate.getFullYear()}`,
           type: "FIXED DEPOSIT",
           transactionCode: generateCargeNumber(),
@@ -44,6 +48,7 @@ const checkFixedDeposit = async () => {
           transaction: transactionCreated,
           role: "RECEIVER",
         });
+        accountFound.transactions.push(accountTransactionCreated)
         // Si llegó al último paso correctamente, actualiza los datos en DB sino los descarta
         if (accountTransactionCreated) {
           await accountFound.save();
@@ -74,12 +79,10 @@ fixedDeposit.post("/new", async (req, res) => {
   const todayDate = new Date();
   let finishDate = new Date(due);
   if (finishDate < todayDate)
-    res
-      .status(400)
-      .json({
-        status: "failed",
-        data: "Finish date cannot be earlier than the start date",
-      });
+    res.status(400).json({
+      status: "failed",
+      data: "Finish date cannot be earlier than the start date",
+    });
 
   // DEMO
   //
@@ -97,15 +100,18 @@ fixedDeposit.post("/new", async (req, res) => {
   const username = decodedToken.username;
   try {
     const foundUser = await User.findOne({ username });
-    const foundAccount = await Account.findOne({ _id: foundUser.account });
-    if (foundAccount.balance < amount)
+    const accountFound = await Account.findOne({ _id: foundUser.account });
+    if (accountFound.balance < amount)
       return res.status(400).json({
         status: "failed",
         data: "You dont have enough in your account",
       });
+      const userFound = await User.findOne({ _id: accountFound.user });
     const transactionCreated = await Transaction.create({
       date: todayDate,
       amount,
+      from: userFound,
+      to: userFound,
       description: `Fixed Deposit on ${todayDate.getMonth()}/${todayDate.getDay()}/${todayDate.getFullYear()}`,
       type: "FIXED DEPOSIT",
       transactionCode: generateCargeNumber(),
@@ -115,19 +121,20 @@ fixedDeposit.post("/new", async (req, res) => {
       role: "SENDER",
     });
     const fixedDepositCreated = await FixedDeposit.create({
-      account: foundAccount,
+      account: accountFound,
       amount,
       total,
       finishDate,
     });
-    foundAccount.fixedDeposit.push(fixedDepositCreated);
-    if (!foundAccount || !accountTransactionCreated || !fixedDepositCreated) {
+    accountFound.transactions.push(accountTransactionCreated)
+    accountFound.fixedDeposit.push(fixedDepositCreated);
+    if (!accountFound || !accountTransactionCreated || !fixedDepositCreated) {
       return res
         .status(400)
         .json({ status: "failed", data: "An unknown error ocurred" });
     }
-    foundAccount.balance -= amount;
-    foundAccount.save();
+    accountFound.balance -= amount;
+    accountFound.save();
     res.json({ status: "ok", data: fixedDepositCreated });
   } catch (error) {
     res.status(400).json({

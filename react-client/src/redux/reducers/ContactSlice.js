@@ -31,7 +31,7 @@ export const addContact = createAsyncThunk(
     }
     try {
       if (token){
-        const response = await axios.post("http://localhost:3001/user/newcontact",payload,{
+         await axios.post("http://localhost:3001/user/newcontact",payload,{
           headers: { Authorization: "Bearer " + token },
         })  
         const { dispatch } = thunkAPI;

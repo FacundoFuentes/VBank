@@ -1,6 +1,8 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios' 
 import jwt from "jsonwebtoken"
+import { useHistory } from 'react-router';
+import {toast } from 'react-toastify';
 
 
 
@@ -49,10 +51,26 @@ export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("http://localhost:3001/user/userinfo", {username:username})
+    const response = await axios.post("http://localhost:3001/user/userinfo", {username:username},{
+      headers: {'Authorization': "Bearer "+ token }
+
+    })
     return response.data
   } catch (error) {
-    console.log(error)
+    let history= useHistory();
+   if (error.response.data.data === "Unauthorized"){
+     localStorage.removeItem('token')
+     toast.error(`Session expired, you must sign in again`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      onClose: () => ( history.push("/")  ), 
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      }); 
+   }
   }
 })
 export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (thunkAPI) =>{
@@ -60,10 +78,26 @@ export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (th
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username})
+    const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username},{
+      headers: {'Authorization': "Bearer "+ token }
+
+    })
     return response.data
   } catch (error) {
-    console.log(error)
+    let history= useHistory();
+   if (error.response.data.data === "Unauthorized"){
+     localStorage.removeItem('token')
+     toast.error(`Session expired, you must sign in again`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      onClose: () => ( history.push("/")  ), 
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      }); 
+   }
   }
 })
 export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{
@@ -71,10 +105,26 @@ export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("http://localhost:3001/transactions", {username:username})
+    const response = await axios.post("http://localhost:3001/transactions", {username:username},{
+      headers: {'Authorization': "Bearer "+ token }
+
+    })
     return response.data
   } catch (error) {
-    console.log(error)
+    let history= useHistory();
+    if (error.response.data.data === "Unauthorized"){
+      localStorage.removeItem('token')
+      toast.error(`Session expired, you must sign in again`, {
+       position: "top-right",
+       autoClose: 5000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       onClose: () => ( history.push("/")  ), 
+       pauseOnHover: false,
+       draggable: true,
+       progress: undefined,
+       }); 
+    }
   }
 })
 
@@ -110,6 +160,12 @@ const userSlice = createSlice({
       logoutUser: (state) => {
           state.loggedInUser = null;
           localStorage.removeItem('token');
+      },
+      resetRegisterState: (state) => {
+        state.registerState = initUserState.registerState;
+      },
+      resetSigninState: (state) => {
+        state.signinState = initUserState.signinState;
       },
      
   },
@@ -242,7 +298,7 @@ const userSlice = createSlice({
 })
 
 
-export const {logoutUser} = userSlice.actions;
+export const {logoutUser, resetSigninState} = userSlice.actions;
 export default  userSlice.reducer;
 
 

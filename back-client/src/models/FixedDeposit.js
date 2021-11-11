@@ -19,7 +19,7 @@ const fixedDepositSchema = new mongoose.Schema({
     enum: ["Active", "Received"],
     default: "Active"
   },
-  interestRate: {
+  total: {
       type: Number,
       required: true
   },

@@ -1,11 +1,12 @@
-import React from "react";
+import React,{ useState } from 'react'
 import styled from "styled-components"
 import Sidebar from '../../components/Sidebars/Sidebar';
 import { getUserInfo} from "../../redux/reducers/userSlice";
 import { useEffect } from "react";
 import{useSelector, useDispatch} from "react-redux"
 import {Link} from 'react-router-dom';
-
+import { Text, Input, Modal } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 
 const Container= styled.div`
 padding: 100px;
@@ -14,7 +15,7 @@ text-align:center;
  const Information= styled.div`
  display: flex;
  flex-direction: column;
- max-width: 500px;  
+ max-width: 700px;  
  margin:0px auto;
  border-radius: 20px;
  position: center;
@@ -54,7 +55,7 @@ font-weight: bold;
 }
 `
 const Edit = styled.a`
-font-size: 15px;
+font-size: 18px;
 float: right;
 text-decoration: underline;
 `
@@ -85,17 +86,53 @@ background-color: #2CA1DE;
 `
 
 export default function Profile() {
+  //me traigo la info del usuario
   const userInfo = useSelector(state => state.user.userInfo.info)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getUserInfo())
-  }, [])
+    const fetchData = async() => {
+      try{
+   await dispatch(getUserInfo()).unwrap()
+    } catch (error) {
+      // handle error here
+      
+      if (error.data === "Unauthorized"){
+        localStorage.removeItem('token')
+        toast.error('Session expired, sign in again!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          onClose: () => ( window.location.href = 'http://localhost:3000/'), 
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          });
+       }
+      }
+
+    }
+    fetchData()
+  }, []);
+  //---------------------Modal-----------------------------
+    const [visible, setVisible] = useState(false);
+    const handler = () => setVisible(true);
+    const closeHandlers = () => {
+      setVisible(false);
+    };
+    const closeHandler = () => {
+        setVisible(false);
+    };
+  //----------------------Validaciones---------------------------------
 
 
 
 
-  return (
+
+
+return (
     <>
     <Sidebar/>
     <Container>
@@ -105,30 +142,75 @@ export default function Profile() {
     <Info>
       <span>DNI:</span> 
      { userInfo &&
-      <User> {`${userInfo.dni}`} </User>}
-     {/*  <Edit>Edit</Edit> */}
+      <User> {`${userInfo.dni}`} </User>}     
       </Info>
     <Info>
     <span>Firts Name:</span> 
     {userInfo &&
     <User>  {`${userInfo.firstname}`} </User>}
-    {/*   <Edit>Edit</Edit> */}
     </Info>
     <Info>
     <span>Last Name:</span> 
     {userInfo &&
     <User> {`${userInfo.lastname}`} </User>}
-     {/*  <Edit>Edit</Edit> */}
    </Info>
-    {/* <Info> 
-    <span>Password:</span> 
-    <User>  </User>
-    </Info> */}
     <Info>
     <span>Email:</span> 
     {userInfo &&
     <User>{`${userInfo.email}`} </User>}
      {/*  <Edit>Edit</Edit> */}
+    </Info>
+    <Info>
+    <span>Phone Number:</span> 
+    {userInfo &&
+    <User>{`${userInfo.phoneNumber}`} </User>}
+     {/*  <Edit>Edit</Edit> */}
+    </Info>
+    <Info>
+    <span>Adress:</span> 
+    {userInfo &&
+    <User>{`${userInfo.adress}`} </User>}
+      <Edit>Edit</Edit> 
+    </Info>
+    <Info>
+    <span>Zipcode:</span> 
+    {userInfo &&
+    <User>{`${userInfo.zipCode}`} </User>}
+     <Edit auto shadow onClick={handler} >Edit</Edit> 
+     <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+    >
+        <Modal.Header>
+            <Text id="modal-title" size={18}>
+            change your.. 
+            <Text b size={18}>
+            Zipcode
+            </Text>
+            </Text>
+        </Modal.Header>
+        <Modal.Body>
+            <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="large"
+                placeholder="Zipcode..."
+               
+            />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button auto flat color="error" onClick={closeHandlers}>
+            Back
+            </Button>
+            <Button auto onClick={closeHandler}>
+            Save
+            </Button>
+        </Modal.Footer>
+    </Modal>
     </Info>
     <Link to='/home'>
     <Button> Back </Button>
@@ -137,5 +219,6 @@ export default function Profile() {
     </Information>
     </Container>
   </>
-  );
-}
+  )
+  }
+

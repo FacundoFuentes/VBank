@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useForm, Controller } from "react-hook-form";
-import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
-import { useHistory } from 'react-router';
+
+import { Modal, Button, Text, Loading} from '@nextui-org/react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
 
 import styled from "styled-components";
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
+import { useForm} from "react-hook-form";
 
 import AddContactButton from './AddContact/AddContactButton';
 import DeleteContactButton from './DeleteContact/DeleteContactButton';
+import { toast } from 'react-toastify';
 
 const StyledModal = styled(Modal)`
 .error{
@@ -59,54 +61,52 @@ const ContactModal = ({handleInputChange}) => {
     const dispatch= useDispatch();
 
     const contacts = useSelector(state => state.contacts.contactList)
-    const loggedInUser = useSelector(state => state.user.loggedInUser)
     
-    console.log(contacts[0])
-
-  
-
-
-   
-
-
+    const loading = useSelector(state => state.contacts.loading)
 
     const [visible, setVisible] = useState(false);
-
-    const { control, handleSubmit,reset, formState: { errors }} = useForm();
+    const { handleSubmit} = useForm();
+    
+  const onSubmit = ()=>{
+    setVisible(false)
+  }
 
     const handler = () => {
         setVisible(true)
-       
-    
-        
     };
-
-
-
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
-        reset({
-            dni: "",
-            username:"",
-            password:""
-        });
     };
 
-    const history = useHistory();
- 
-  const onSubmit = (data) => {
-    // console.log(data)
-  
-      setVisible(false)
-      
-  }
   useEffect(() => {
-    if (loggedInUser) {
-      dispatch(getContacts());
+    if (visible) {
+      const fetchData = async() => {
+        try{
+     await dispatch(getContacts()).unwrap()
+      } catch (error) {
+        // handle error here
+        
+        if (error.data === "Unauthorized"){
+          localStorage.removeItem('token')
+          toast.error('Session expired, sign in again!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            onClose: () => ( window.location.href = 'http://localhost:3000/'), 
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            });
+         }
+        }
+  
+      }
+      fetchData()
+      
     }
   
-  }, [dispatch, loggedInUser]);
+  }, [dispatch, visible]);
 
     return (
 
@@ -125,32 +125,46 @@ const ContactModal = ({handleInputChange}) => {
                 <h2>My Contacts</h2>
                 </Text>
             </Modal.Header>
+           
             <form onSubmit={handleSubmit(onSubmit)}>
-
             <Modal.Body >
-                {contacts ? contacts
-                .map(contact =>(
-                  <ContactRow key={`contact-id-${contact._id}`}>
-                        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
-                        <Action>
-                      {/*   <UpdateContactButton contactId={goal.id} /> */}
-                        <DeleteContactButton contact={contact}/>
-                        </Action>
-                    </ContactRow>
+            
+            {loading === "pending" ? (
+        <div><Loading type="gradient"/></div>
+      ) : (
 
-                )) : <>
-                 <p>loading</p>
-                </>}
+        <>
+
+{contacts && contacts.length > 0 ? contacts
+.map(contact =>(
+    <ContactRow key={`contact-id-${contact._id}`}>
+        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
+        <Action>
+      {/*   <UpdateContactButton contactId={goal.id} /> */}
+        <DeleteContactButton contact={contact}/>
+        </Action>
+
+    </ContactRow>
+
+)):(
+  <p> Empty, Add One</p>
+)}
+
+        </>
+      )}
+              
+              
+              
                
 
             </Modal.Body>
+            </form>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close
                 </Button>
                 <AddContactButton/>
             </Modal.Footer>
-            </form>
         </StyledModal>
     </div>
     );    

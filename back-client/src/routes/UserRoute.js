@@ -274,7 +274,6 @@ user.post('/newContact', async (req, res) => {
 user.get('/contacts', async(req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
   const decodedToken = jwtDecode(authToken)
-  console.log(decodedToken)
 
   try{
     const username = decodedToken.username

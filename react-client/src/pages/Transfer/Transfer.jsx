@@ -9,7 +9,7 @@ import {useHistory} from 'react-router-dom'
 
 import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
-
+import {toast } from 'react-toastify';
 
 const Container= styled.div`
 display: flex;
@@ -20,6 +20,7 @@ height: 450px;
 width: 700px;
 background-color: white;
 border-radius: 10px;
+
 `
 const MaxContainer=styled.div`
 height: 800px;
@@ -48,21 +49,21 @@ margin-bottom: 10px;
  
 
 }
-`
+`;
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
-padding:5px
-`
+padding:5px;
+`;
 const DetailContainer = styled.div `
 margin-top: 10px;
 margin-bottom: 10px;
-padding:5px
+padding:5px;
 `
 const BranchContainer = styled.div`
 margin-top:10px;
 margin-bottom:10px;
-padding:5px
+padding:5px;
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
@@ -104,6 +105,7 @@ const defaultForm = {
 
 
 
+
 export default function Transfer() {
   const [visible, setVisible] = useState(false);
   const handler = () => setVisible(true);
@@ -120,10 +122,11 @@ const [state, setState] = useState(defaultForm)
 
 const [error,setError] = useState('')
 
-
 const [status, setStatus] =useState(0)
 /* const [input, setInput] = useState(null)
 console.log(input) */
+const [btnLoading, setBtnLoading] = useState(false)
+const [btnValidate, setBtnValidate] = useState(true)
 
 function handleInputChange(e){
 
@@ -162,21 +165,40 @@ const handleBranch = () => {
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
-
+let history= useHistory();
 
  function handleSubmit(e){
   e.preventDefault()
   
-  axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
+  axios.post('http://localhost:3001/transactions/new', state, {headers:{Authorization:'Bearer ' + token}})
   .then(response=> {
    console.log(response)
    setStatus(response.status)
    console.log(response.status)
+   setBtnLoading(false)
    
    }).catch(error=>{
-     setError(error.response.data.error)
-     setStatus(error.response.data.status)
-      
+    setError(error.response.data.error)
+    setStatus(error.response.data.status)
+    setBtnLoading(false)
+     if (error.response.data.data === "Unauthorized"){
+       localStorage.removeItem('token')
+       toast.error(`Session expired, you must sign in again`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        }); 
+     }
+     else{
+
+     }
+    
+    
    })
   }
   
@@ -209,7 +231,7 @@ let {username} = jwt.decode(token)
        
        <MoneyContainer>
            <Text >How much?</Text>
-           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
+           <Input name="amount" value={state.amount} type="number" min="1" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
@@ -237,7 +259,7 @@ let {username} = jwt.decode(token)
        </TextContainer>
        
        <ButtonContainer>
-       <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
        
        <Modal  

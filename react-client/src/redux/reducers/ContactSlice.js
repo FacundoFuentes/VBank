@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const getContacts = createAsyncThunk(
   "contacts/get",
-  async (thunkAPI) => {
+  async (payload,thunkAPI) => {
     // call the api for get /goals
     const token = JSON.parse(localStorage.getItem("token")).data
    
@@ -31,7 +31,7 @@ export const addContact = createAsyncThunk(
     }
     try {
       if (token){
-        const response = await axios.post("http://localhost:3001/user/newcontact",payload,{
+         await axios.post("http://localhost:3001/user/newcontact",payload,{
           headers: { Authorization: "Bearer " + token },
         })  
         const { dispatch } = thunkAPI;

@@ -7,6 +7,7 @@ import img from "../../img/card-home.png"
 import { Grid, Spacer, Text} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
 import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
+import { toast} from "react-toastify";
 
 
 
@@ -140,9 +141,32 @@ export default function Home() {
   }, [loggedInUser,history]);
   
   useEffect(() => {
-    dispatch(getUserInfo())
-    dispatch(getUserAccountInfo())
-    dispatch(getBalance())
+    const fetchData = async() => {
+      try{
+   await dispatch(getUserAccountInfo()).unwrap()
+   await dispatch(getUserInfo()).unwrap()
+    await dispatch(getBalance()).unwrap()
+    } catch (error) {
+      // handle error here
+      if (error.data === "Unauthorized"){
+        localStorage.removeItem('token')
+        toast.error('Session expired, sign in again!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          onClose: () => ( window.location.href = 'http://localhost:3000/'), 
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          });
+          console.log(error) 
+       }
+      }
+
+    }
+    fetchData()
+    
   }, [dispatch])
 
 

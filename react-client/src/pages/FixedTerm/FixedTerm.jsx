@@ -136,8 +136,9 @@ export default function FixedTerm() {
           console.log(response.status)
           
           }).catch(error=>{
-            setError(error.response.data.error)
+            setError(error.response.data.data)
             setStatus(error.response.data.status)
+            
              
           })
          }

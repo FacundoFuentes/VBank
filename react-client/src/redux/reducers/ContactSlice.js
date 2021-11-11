@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const getContacts = createAsyncThunk(
   "contacts/get",
-  async (thunkAPI) => {
+  async (payload,thunkAPI) => {
     // call the api for get /goals
     const token = JSON.parse(localStorage.getItem("token")).data
    

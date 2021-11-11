@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import { Modal, Button, Text} from '@nextui-org/react';
+import { Modal, Button, Text, Loading} from '@nextui-org/react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
 
 import styled from "styled-components";
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
+import { useForm} from "react-hook-form";
 
 import AddContactButton from './AddContact/AddContactButton';
 import DeleteContactButton from './DeleteContact/DeleteContactButton';
@@ -63,7 +64,11 @@ const ContactModal = ({handleInputChange}) => {
     const loading = useSelector(state => state.contacts.loading)
 
     const [visible, setVisible] = useState(false);
-
+    const { handleSubmit} = useForm();
+    
+  const onSubmit = ()=>{
+    setVisible(false)
+  }
 
     const handler = () => {
         setVisible(true)
@@ -97,10 +102,11 @@ const ContactModal = ({handleInputChange}) => {
                 </Text>
             </Modal.Header>
            
-
+            <form onSubmit={handleSubmit(onSubmit)}>
             <Modal.Body >
+            
             {loading === "pending" ? (
-        <div>Loading...</div>
+        <div><Loading type="gradient"/></div>
       ) : (
 
         <>
@@ -128,6 +134,7 @@ const ContactModal = ({handleInputChange}) => {
                
 
             </Modal.Body>
+            </form>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close

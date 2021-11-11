@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
-import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
-import { useHistory } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { Modal, Button, Text, Input} from '@nextui-org/react';
+import { useDispatch } from 'react-redux';
 
 import styled from "styled-components";
 import {PersonAdd} from "@styled-icons/evaicons-solid/PersonAdd"
@@ -30,11 +29,11 @@ const StyledButton = styled(Button)`
 const AddContactButton = () => {
 
     const dispatch= useDispatch();
-    const userState = useSelector(state => state.user);
+  
 
-    const {loggedInUser} =userState; 
+   
 
-    const error = useSelector(state => state.user.signinState.error);
+   
    
 
 
@@ -46,14 +45,13 @@ const AddContactButton = () => {
     const handler = () => setVisible(true);
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
         reset({
             data: "",
             description:"",
         });
     };
 
-    const history = useHistory();
+
  
   const onSubmit = (data) => {
 /*      console.log(data) */
@@ -91,7 +89,7 @@ const AddContactButton = () => {
         name="data"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -100,13 +98,14 @@ const AddContactButton = () => {
          color="#f5f5f5" {...field} />}
       />
       {errors.data?.type === 'required' && <p className="error">This field is required</p>}
+      {errors.data?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
  
             <Controller
         className="fields"
         name="description"
         control={control}
         defaultValue=""
-
+        rules={{maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -114,6 +113,7 @@ const AddContactButton = () => {
         labelPlaceholder="Ej: Alquiler"
          color="#f5f5f5" {...field} />}
       />
+      {errors.description?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
      
 
 

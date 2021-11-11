@@ -25,6 +25,9 @@ const SideNav = styled.div`
   background-color:#2CA1DE;
   margin:0px;
   padding:0px;
+
+
+
   `; 
 const LogoMenu = styled.img`
   margin-top:30px;

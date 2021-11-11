@@ -33,9 +33,6 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     try { 
 
         const response = await axios.post('http://localhost:3001/user/register', userInfo)
-    
-      /*   localStorage.setItem('token', JSON.stringify(response.data.token)) 
-        //cambie "token" por "token" y "response.data.data" por "response.data.token" */
         return response.data;
         
     } catch (error) {
@@ -44,7 +41,7 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     }
 })
 
-export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{//////
+export const getUserInfo = createAsyncThunk("user/Info", async (payload, thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
@@ -54,10 +51,12 @@ export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{///
     })
     return response.data
   } catch (error) {
-    console.log(error)
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
+   
   }
 })
-export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (thunkAPI) =>{//////
+export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (payload, thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
@@ -66,16 +65,20 @@ export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (th
       headers: { Authorization: "Bearer " + token },
     })
     return response.data
+
   } catch (error) {
-    if(error.response.data.data === 'Unauthorized') {
+    console.log(error.response.data.data)
+    console.log("entro al catch")
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
+    /* if(error.response.data.data === 'Unauthorized') {
       localStorage.removeItem('token')
       alert('Session expired, You must sign in again')
       window.location.href = 'http://localhost:3000/'
-  }
-    console.log(error.response.data.data)
+  } */
   }
 })
-export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{//////
+export const getBalance = createAsyncThunk("user/balance", async (payload,thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
@@ -85,7 +88,8 @@ export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{/
     })
     return response.data
   } catch (error) {
-    console.log(error)
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
   }
 })
 
@@ -121,6 +125,12 @@ const userSlice = createSlice({
       logoutUser: (state) => {
           state.loggedInUser = null;
           localStorage.removeItem('token');
+      },
+      resetRegisterState: (state) => {
+        state.registerState = initUserState.registerState;
+      },
+      resetSigninState: (state) => {
+        state.signinState = initUserState.signinState;
       },
      
   },
@@ -253,7 +263,7 @@ const userSlice = createSlice({
 })
 
 
-export const {logoutUser} = userSlice.actions;
+export const {logoutUser, resetSigninState} = userSlice.actions;
 export default  userSlice.reducer;
 
 

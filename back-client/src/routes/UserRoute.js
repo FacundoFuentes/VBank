@@ -219,7 +219,7 @@ user.post('/newContact', async (req, res) => {
     let contactAccount, contactUser;
 
     const username = decodedToken.username
-    const user = await User.findOne({username: decodedToken.username})
+    const user = await User.findOne({username: decodedToken.username}).populate('contacts')
     const {description, data} = req.body
 
     if(data.length > 16){ //Si es CVU
@@ -227,14 +227,25 @@ user.post('/newContact', async (req, res) => {
         path: 'user',
         model:  'User'
       })//Busco la cuenta del usuario RECEIVER
+      if(!contactAccount) return res.status(404).json({status: 'failed', error: 'Account not found'})
+
       contactUser = await User.findOne({_id: contactAccount.user}).populate('account')
+
     } else{
       contactUser = await User.findOne({ username: data}).populate('account')
+      if(!contactUser) return res.status(404).json({status: 'failed', error: 'User not found'})
       contactAccount = await Account.findOne({_id: contactUser.account}).populate({
         path: 'user',
         model: 'User'
       })
-    } 
+    }
+    console.log(user.contacts)
+    user.contacts.forEach(element => {
+      if(element.username === contactUser.username) return res.status(301).json(
+        {status: 'failed', error: 'Contact already in your list'})
+    });
+
+
 
     if(username === contactUser.username)return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver
       status: "failed",
@@ -242,22 +253,11 @@ user.post('/newContact', async (req, res) => {
         "You can't create a contact of yourself",
     })
 
-    // const  account =  await Account.findOne({cvu: cvu})
-    // const  user = await User.findOne({username})
-    // console.log(account)
-
     const contact = await Contact.create({
-        // account: contactAccount.,
         description: description,
         cvu: contactAccount.cvu,
         username: contactAccount.user.username,
     })
-
-
-    // const response = {
-    //   firstName: contact.account.user.firstName,
-    //   lastName: contact.account.user.lastName
-    // }
     
     user.contacts.push(contact)
     user.save()

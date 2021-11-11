@@ -57,6 +57,28 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
     return mail
 } 
 
+const chargeEmail = async (email) => {
+    const mailOptions = {
+        from: "vbank.noreply@gmail.com",
+        to: email, // recuperar desde user
+        subject: "Charge Succesfull",
+        // template: 'verification',
+        // context: {
+        //     code: code
+        // }
+        html:`<img src='cid:qr'></img>`,
+        attachments: [{
+            filename: 'qr.png',
+            path: './src/utils/Qerres/qr.png',
+            cid: 'qr' //same cid value as in the html img src
+        }]
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+        if(error){
+            return console.log(error)
+        }
+    })
+} 
 
 
 
@@ -64,6 +86,7 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
 module.exports = {
     email,
     transporter,
+    chargeEmail
 }
 
 

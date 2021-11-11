@@ -155,23 +155,20 @@ user.post("/login", async (req, res) => {
       userFound.banDate = null;
       userFound.status = "ACTIVE";
       userFound.save();
-    } else return res
-    .status(400)
-    .json({
-      status: "failed",
-      data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
-    });
-
-  if (userFound.failedAccessAtemps > 2) {
-    userFound.banDate = todayDate
-    userFound.banDate.setDate(todayDate.getDate() + 1);
-    userFound.save();
-    return res
-      .status(400)
-      .json({
+    } else
+      return res.status(400).json({
         status: "failed",
         data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
       });
+
+  if (userFound.failedAccessAtemps > 2) {
+    userFound.banDate = todayDate;
+    userFound.banDate.setDate(todayDate.getDate() + 1);
+    userFound.save();
+    return res.status(400).json({
+      status: "failed",
+      data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+    });
   }
 
   if (!userFound)
@@ -184,8 +181,8 @@ user.post("/login", async (req, res) => {
       id: userFound._id,
       username: userFound.username,
     });
-    userFound.failedAccessAtemps = 0
-    userFound.save()
+    userFound.failedAccessAtemps = 0;
+    userFound.save();
     return res.status(200).json({ status: "ok", data: token });
   }
 
@@ -336,10 +333,6 @@ user.post("/newContact", async (req, res) => {
         status: "failed",
         error: "You can't create a contact of yourself",
       });
-
-    // const  account =  await Account.findOne({cvu: cvu})
-    // const  user = await User.findOne({username})
-    // console.log(account)
 
     const contact = await Contact.create({
       // account: contactAccount.,

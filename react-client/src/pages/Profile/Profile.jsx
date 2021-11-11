@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import{useSelector, useDispatch} from "react-redux"
 import {Link} from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 
 const Container= styled.div`
 padding: 100px;
@@ -91,6 +92,29 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(getUserInfo())
+    const fetchData = async() => {
+      try{
+   await dispatch(getUserInfo()).unwrap()
+    } catch (error) {
+      // handle error here
+      
+      if (error.data === "Unauthorized"){
+        localStorage.removeItem('token')
+        toast.error('Session expired, sign in again!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          onClose: () => ( window.location.href = 'http://localhost:3000/'), 
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          });
+       }
+      }
+
+    }
+    fetchData()
   }, []);
   //---------------------Modal-----------------------------
     const [visible, setVisible] = useState(false);

@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
-
-import { Modal, Button, Text} from '@nextui-org/react';
-
-import { useDispatch } from 'react-redux';
+import { useForm, Controller } from "react-hook-form";
+import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
+import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styled from "styled-components";
 
@@ -40,6 +40,7 @@ const DeleteContactButton = ({contact}) => {
 
     };
 
+    const history = useHistory();
 
     const handleSubmit = () => {
         // 

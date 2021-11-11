@@ -9,8 +9,8 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true, // security for port 465 ( gmail host)
     auth: {
-        user:'vbank.noreply@gmail.com', // generated google user
-        pass: 'gxnmuzjwpiwthobz' // generated google password
+        user:'servinchristianmanuel@gmail.com', // generated google user
+        pass: 'hugownzaqtznmliw' // generated google password
     }
 })
 
@@ -32,7 +32,7 @@ transporter.verify().then(() => {
 
 const email = async (code,cvu,cardNumber,cvv,email) => {
     const mail = await transporter.sendMail({
-        from: "vbank.noreply@gmail.com",
+        from: "servinchristianmanuel@gmail.com",
         to: email, // recuperar desde user
         subject: "Verification Email",
         // template: 'verification',

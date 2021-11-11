@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-
-import { Modal, Button, Text, Loading} from '@nextui-org/react';
-
+import { useForm, Controller } from "react-hook-form";
+import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
+import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {getContacts} from "../../redux/reducers/ContactSlice"
 
 import styled from "styled-components";
 import {Contact} from "@styled-icons/boxicons-solid/Contact"
-import { useForm} from "react-hook-form";
 
 import AddContactButton from './AddContact/AddContactButton';
 import DeleteContactButton from './DeleteContact/DeleteContactButton';
@@ -60,29 +59,54 @@ const ContactModal = ({handleInputChange}) => {
     const dispatch= useDispatch();
 
     const contacts = useSelector(state => state.contacts.contactList)
+    const loggedInUser = useSelector(state => state.user.loggedInUser)
     
-    const loading = useSelector(state => state.contacts.loading)
+    console.log(contacts[0])
+
+  
+
+
+   
+
+
 
     const [visible, setVisible] = useState(false);
-    const { handleSubmit} = useForm();
-    
-  const onSubmit = ()=>{
-    setVisible(false)
-  }
+
+    const { control, handleSubmit,reset, formState: { errors }} = useForm();
 
     const handler = () => {
         setVisible(true)
-    };
-    const closeHandler = () => {
-        setVisible(false);
+       
+    
+        
     };
 
+
+
+    const closeHandler = () => {
+        setVisible(false);
+        console.log('closed');
+        reset({
+            dni: "",
+            username:"",
+            password:""
+        });
+    };
+
+    const history = useHistory();
+ 
+  const onSubmit = (data) => {
+    // console.log(data)
+  
+      setVisible(false)
+      
+  }
   useEffect(() => {
-    if (visible) {
+    if (loggedInUser) {
       dispatch(getContacts());
     }
   
-  }, [dispatch, visible]);
+  }, [dispatch, loggedInUser]);
 
     return (
 
@@ -101,46 +125,32 @@ const ContactModal = ({handleInputChange}) => {
                 <h2>My Contacts</h2>
                 </Text>
             </Modal.Header>
-           
             <form onSubmit={handleSubmit(onSubmit)}>
+
             <Modal.Body >
-            
-            {loading === "pending" ? (
-        <div><Loading type="gradient"/></div>
-      ) : (
+                {contacts ? contacts
+                .map(contact =>(
+                  <ContactRow key={`contact-id-${contact._id}`}>
+                        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
+                        <Action>
+                      {/*   <UpdateContactButton contactId={goal.id} /> */}
+                        <DeleteContactButton contact={contact}/>
+                        </Action>
+                    </ContactRow>
 
-        <>
-
-{contacts && contacts.length > 0 ? contacts
-.map(contact =>(
-    <ContactRow key={`contact-id-${contact._id}`}>
-        <button  value={contact.username} onClick={handleInputChange}> {contact.description}</button>
-        <Action>
-      {/*   <UpdateContactButton contactId={goal.id} /> */}
-        <DeleteContactButton contact={contact}/>
-        </Action>
-
-    </ContactRow>
-
-)):(
-  <p> Empty, Add One</p>
-)}
-
-        </>
-      )}
-              
-              
-              
+                )) : <>
+                 <p>loading</p>
+                </>}
                
 
             </Modal.Body>
-            </form>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close
                 </Button>
                 <AddContactButton/>
             </Modal.Footer>
+            </form>
         </StyledModal>
     </div>
     );    

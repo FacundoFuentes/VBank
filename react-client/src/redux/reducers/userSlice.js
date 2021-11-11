@@ -1,8 +1,6 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios' 
 import jwt from "jsonwebtoken"
-import { useHistory } from 'react-router';
-import {toast } from 'react-toastify';
 
 
 
@@ -43,7 +41,7 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     }
 })
 
-export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{//////
+export const getUserInfo = createAsyncThunk("user/Info", async (payload, thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
@@ -53,23 +51,12 @@ export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{///
     })
     return response.data
   } catch (error) {
-    let history= useHistory();
-   if (error.response.data.data === "Unauthorized"){
-     localStorage.removeItem('token')
-     toast.error(`Session expired, you must sign in again`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      onClose: () => ( history.push("/")  ), 
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      }); 
-   }
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
+   
   }
 })
-export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (thunkAPI) =>{//////
+export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (payload, thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
@@ -78,16 +65,20 @@ export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (th
       headers: { Authorization: "Bearer " + token },
     })
     return response.data
+
   } catch (error) {
-    if(error.response.data.data === 'Unauthorized') {
+    console.log(error.response.data.data)
+    console.log("entro al catch")
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
+    /* if(error.response.data.data === 'Unauthorized') {
       localStorage.removeItem('token')
       alert('Session expired, You must sign in again')
       window.location.href = 'http://localhost:3000/'
-  }
-    console.log(error.response.data.data)
+  } */
   }
 })
-export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{//////
+export const getBalance = createAsyncThunk("user/balance", async (payload,thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
@@ -97,20 +88,8 @@ export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{/
     })
     return response.data
   } catch (error) {
-    let history= useHistory();
-    if (error.response.data.data === "Unauthorized"){
-      localStorage.removeItem('token')
-      toast.error(`Session expired, you must sign in again`, {
-       position: "top-right",
-       autoClose: 5000,
-       hideProgressBar: false,
-       closeOnClick: true,
-       onClose: () => ( history.push("/")  ), 
-       pauseOnHover: false,
-       draggable: true,
-       progress: undefined,
-       }); 
-    }
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
   }
 })
 

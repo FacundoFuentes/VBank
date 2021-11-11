@@ -197,7 +197,7 @@ const SignupPage = () => {
 }, [loggedInUser,history])
 
   const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
-  const notify = () => toast("Wow so easy !");
+
    
 
   const onSubmit =async (data) => {

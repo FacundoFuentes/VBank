@@ -9,7 +9,7 @@ import {useHistory} from 'react-router-dom'
 
 import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
-
+import {toast } from 'react-toastify';
 
 const Container= styled.div`
 display: flex;
@@ -20,6 +20,7 @@ height: 450px;
 width: 700px;
 background-color: white;
 border-radius: 10px;
+
 `
 const MaxContainer=styled.div`
 height: 800px;
@@ -104,6 +105,7 @@ const defaultForm = {
 
 
 
+
 export default function Transfer() {
   const [visible, setVisible] = useState(false);
   const handler = () => setVisible(true);
@@ -123,6 +125,8 @@ const [error,setError] = useState('')
 const [status, setStatus] =useState(0)
 /* const [input, setInput] = useState(null)
 console.log(input) */
+const [btnLoading, setBtnLoading] = useState(false)
+const [btnValidate, setBtnValidate] = useState(true)
 
 function handleInputChange(e){
 
@@ -161,7 +165,7 @@ const handleBranch = () => {
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
-
+let history= useHistory();
 
  function handleSubmit(e){
   e.preventDefault()
@@ -171,11 +175,27 @@ let {username} = jwt.decode(token)
    console.log(response)
    setStatus(response.status)
    console.log(response.status)
+   setBtnLoading(false)
    
    }).catch(error=>{
      setError(error.response.data.error)
      setStatus(error.response.data.status)
-      
+     setBtnLoading(false)
+     
+     if (error.response.data.data === "Unauthorized"){
+       localStorage.removeItem('token')
+       toast.error(`Session expired, you must sign in again`, {
+        position: "top-right",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        onClose: () => ( history.push("/")  ), 
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        }); 
+     }
+    
    })
   }
   
@@ -236,7 +256,7 @@ let {username} = jwt.decode(token)
        </TextContainer>
        
        <ButtonContainer>
-       <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
        
        <Modal  

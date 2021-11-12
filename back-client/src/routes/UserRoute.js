@@ -116,10 +116,12 @@ user.post("/changePassword", async (req, res) => {
   const { prevPassword, newPassword } = req.body;
 
   if (prevPassword === newPassword)
-    return res.status(400).json({
-      status: "failed",
-      data: "The new password cant be equal to the old password",
-    });
+    return res
+      .status(400)
+      .json({
+        status: "failed",
+        data: "The new password cant be equal to the old password",
+      });
 
   try {
     const userFound = await User.findOne({ username });
@@ -130,15 +132,19 @@ user.post("/changePassword", async (req, res) => {
         .json({ status: "failed", data: "Invalid username" });
 
     if (!(await bcrypt.compare(prevPassword, userFound.password)))
-      return res.status(400).json({
-        status: "failed",
-        data: "The previous password does not match ",
-      });
+      return res
+        .status(400)
+        .json({
+          status: "failed",
+          data: "The previous password does not match ",
+        });
+
     else userFound.password = await bcrypt.hash(newPassword, 10);
 
     userFound.save();
 
     res.status(200).json({ status: "ok", data: "Password changed succesfull" });
+
   } catch (error) {
     res.status(400).json({ status: "failed", data: "Error " + error });
   }
@@ -146,30 +152,9 @@ user.post("/changePassword", async (req, res) => {
 
 user.post("/login", async (req, res) => {
   const { username, password, dni } = req.body;
+  console.log(req.body);
 
-  const userFound = await User.findOne({ username, dni });
-  todayDate = new Date();
-
-  if (userFound.status === "BANED")
-    if (userFound.banDate < todayDate) {
-      userFound.banDate = null;
-      userFound.status = "ACTIVE";
-      userFound.save();
-    } else
-      return res.status(400).json({
-        status: "failed",
-        data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
-      });
-
-  if (userFound.failedAccessAtemps > 2) {
-    userFound.banDate = todayDate;
-    userFound.banDate.setDate(todayDate.getDate() + 1);
-    userFound.save();
-    return res.status(400).json({
-      status: "failed",
-      data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
-    });
-  }
+  const userFound = await User.findOne({ username, dni }).lean();
 
   if (!userFound)
     return res
@@ -181,13 +166,8 @@ user.post("/login", async (req, res) => {
       id: userFound._id,
       username: userFound.username,
     });
-    userFound.failedAccessAtemps = 0;
-    userFound.save();
     return res.status(200).json({ status: "ok", data: token });
   }
-
-  userFound.failedAccessAtemps += 1;
-  userFound.save();
 
   return res
     .status(404)
@@ -205,7 +185,7 @@ user.post("/userInfo", async (req, res) => {
         .status(404)
         .json({ status: "failed", error: "Invalid username" });
 
-    return res.status(200).json({
+    res.status(200).json({
       firstname: user.firstName,
       lastname: user.lastName,
       email: user.email,

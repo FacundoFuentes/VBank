@@ -116,10 +116,12 @@ user.post("/changePassword", async (req, res) => {
   const { prevPassword, newPassword } = req.body;
 
   if (prevPassword === newPassword)
-    return res.status(400).json({
-      status: "failed",
-      data: "The new password cant be equal to the old password",
-    });
+    return res
+      .status(400)
+      .json({
+        status: "failed",
+        data: "The new password cant be equal to the old password",
+      });
 
   try {
     const userFound = await User.findOne({ username });
@@ -130,15 +132,19 @@ user.post("/changePassword", async (req, res) => {
         .json({ status: "failed", data: "Invalid username" });
 
     if (!(await bcrypt.compare(prevPassword, userFound.password)))
-      return res.status(400).json({
-        status: "failed",
-        data: "The previous password does not match ",
-      });
+      return res
+        .status(400)
+        .json({
+          status: "failed",
+          data: "The previous password does not match ",
+        });
+
     else userFound.password = await bcrypt.hash(newPassword, 10);
 
     userFound.save();
 
     res.status(200).json({ status: "ok", data: "Password changed succesfull" });
+
   } catch (error) {
     res.status(400).json({ status: "failed", data: "Error " + error });
   }
@@ -146,6 +152,7 @@ user.post("/changePassword", async (req, res) => {
 
 user.post("/login", async (req, res) => {
   const { username, password, dni } = req.body;
+  console.log(req.body);
 
   const userFound = await User.findOne({ username, dni });
   todayDate = new Date();
@@ -158,7 +165,7 @@ user.post("/login", async (req, res) => {
     } else
       return res.status(400).json({
         status: "failed",
-        data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+        error: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
       });
 
   if (userFound.failedAccessAtemps > 2) {
@@ -167,7 +174,7 @@ user.post("/login", async (req, res) => {
     userFound.save();
     return res.status(400).json({
       status: "failed",
-      data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+      error: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
     });
   }
 
@@ -181,13 +188,8 @@ user.post("/login", async (req, res) => {
       id: userFound._id,
       username: userFound.username,
     });
-    userFound.failedAccessAtemps = 0;
-    userFound.save();
     return res.status(200).json({ status: "ok", data: token });
   }
-
-  userFound.failedAccessAtemps += 1;
-  userFound.save();
 
   return res
     .status(404)
@@ -205,7 +207,7 @@ user.post("/userInfo", async (req, res) => {
         .status(404)
         .json({ status: "failed", error: "Invalid username" });
 
-    return res.status(200).json({
+    res.status(200).json({
       firstname: user.firstName,
       lastname: user.lastName,
       email: user.email,
@@ -253,25 +255,45 @@ user.post("/userAccountInfo", async (req, res) => {
   } catch (error) {
     res.status(400).json({ status: "failed", error: error.message });
   }
-});
+} )
+
+
+user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req, res) => {
+
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+  const decodedToken = jwtDecode(authToken)
+  const {charge} = req.body
+
+  try{
+    const username = decodedToken.username
+    const user = await User.findOne({username})
+    const account_id = user.account
+    const account = await Account.findById({_id: account_id})
+    console.log(user.account)
+    const transaction = await Transaction.create({
+      transactionCode: utils.generateCargeNumber(), //Random
+      date: new Date(),
+      amount: Number(charge),
+      description: 'Enjoy your money!',
+      status: 'PENDING',
+      type: 'CHARGE',
+      // status: 'PROCESSING',
+      from: null,
+      to: user,
+    });
+
+    const accountTransaction = await AccountTransaction.create({
+      role: "RECEIVER",
+      transaction,
+    });
 
     const QR = await utils.generateQR(`localhost:3001/transactions/authorize/${transaction.transactionCode}`)
-    console.log(QR)
-    emailUtils.chargeEmail(QR, user.email)
+    emailUtils.chargeEmail(user.email)
+
     account.transactions.push(accountTransaction)
     account.save()
     
-    res.status(200).json({status: 'ok', transaction})
-
-      const accountTransaction = await AccountTransaction.create({
-        role: "RECEIVER",
-        transaction,
-      });
-
-      account.transactions.push(accountTransaction);
-      account.save();
-
-      res.status(200).json({ status: "ok", transaction });
+      res.status(200).json({ status: "ok", transaction, QR });
     } catch (err) {
       console.log(err.message);
       res.status(400).json({ status: "failed", err });
@@ -287,20 +309,23 @@ user.post("/newContact", async (req, res) => {
     let contactAccount, contactUser;
 
     const username = decodedToken.username;
-    const user = await User.findOne({ username: decodedToken.username });
+    const user = await User.findOne({username: decodedToken.username}).populate('contacts')
     const { description, data } = req.body;
 
-    if (data.length > 16) {
-      //Si es CVU
-      contactAccount = await Account.findOne({ cvu: data }).populate({
+    if (data.length > 16) {//Si es CVU
+      contactAccount = await Account.findOne({ cvu: data }).populate({ //Busco la cuenta del usuario RECEIVER
         path: "user",
         model: "User",
-      }); //Busco la cuenta del usuario RECEIVER
+      }); 
+
+      if(!contactAccount) return res.status(404).json({status: 'failed', error: 'Account not found'})
+
       contactUser = await User.findOne({ _id: contactAccount.user }).populate(
         "account"
       );
     } else {
       contactUser = await User.findOne({ username: data }).populate("account");
+      if(!contactUser) return res.status(404).json({status: 'failed', error: 'User not found'})
       contactAccount = await Account.findOne({
         _id: contactUser.account,
       }).populate({
@@ -308,33 +333,36 @@ user.post("/newContact", async (req, res) => {
         model: "User",
       });
     }
+    let existingContact
+    user.contacts.forEach(element => {
+      if(element.username === contactUser.username){
+        existingContact = true
+        return
+      }
+    })
+
+    if(existingContact) return res.status(301).json({
+      status: 'failed', error: 'User already exists in your contacts'})
 
     if (username === contactUser.username)
       return res.status(400).json({
-        //Si el usuario logeado es el mismo que el receiver
         status: "failed",
         error: "You can't create a contact of yourself",
       });
 
     const contact = await Contact.create({
-      // account: contactAccount.,
       description: description,
       cvu: contactAccount.cvu,
       username: contactAccount.user.username,
     });
 
-    // const response = {
-    //   firstName: contact.account.user.firstName,
-    //   lastName: contact.account.user.lastName
-    // }
-
     user.contacts.push(contact);
     user.save();
 
-    res.status(200).json({ status: "ok", contact });
+    return res.status(200).json({ status: "ok", contact });
   } catch (err) {
     let error = err.message;
-    res.status(400).json({ status: "failed", error });
+    return res.status(400).json({ status: "failed", error });
   }
 });
 

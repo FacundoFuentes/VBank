@@ -7,6 +7,8 @@ const pdf = require('html-pdf');
 const random = require("simple-random-number-generator");
 const QRCode = require('qrcode')
 
+
+
 require('dotenv').config()
 
 
@@ -172,12 +174,14 @@ const generateCargeNumber = () => {
 const generateQR = async (text) => {
     try {
     
-        let qr;
-        qr = await QRCode.toFile('./src/utils/Qerres/qr.png',text, function (err) {
+      let qrImage, qrUrl;
+
+      qrUrl = await QRCode.toDataURL(text)
+      qrImage = await QRCode.toFile('./src/utils/Qerres/qr.png',text, function (err) {
           if (err) throw err
         })
-        return qr 
-    } catch (err) {
+        return qrUrl
+      } catch (err) {
       console.error(err)
     }
 }

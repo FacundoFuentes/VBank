@@ -11,7 +11,6 @@ import { useForm} from "react-hook-form";
 
 import AddContactButton from './AddContact/AddContactButton';
 import DeleteContactButton from './DeleteContact/DeleteContactButton';
-import { toast } from 'react-toastify';
 
 const StyledModal = styled(Modal)`
 .error{
@@ -80,30 +79,7 @@ const ContactModal = ({handleInputChange}) => {
 
   useEffect(() => {
     if (visible) {
-      const fetchData = async() => {
-        try{
-     await dispatch(getContacts()).unwrap()
-      } catch (error) {
-        // handle error here
-        
-        if (error.data === "Unauthorized"){
-          localStorage.removeItem('token')
-          toast.error('Session expired, sign in again!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            onClose: () => ( window.location.href = 'http://localhost:3000/'), 
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            });
-         }
-        }
-  
-      }
-      fetchData()
-      
+      dispatch(getContacts());
     }
   
   }, [dispatch, visible]);

@@ -49,21 +49,21 @@ margin-bottom: 10px;
  
 
 }
-`;
+`
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
-padding:5px;
-`;
+padding:5px
+`
 const DetailContainer = styled.div `
 margin-top: 10px;
 margin-bottom: 10px;
-padding:5px;
+padding:5px
 `
 const BranchContainer = styled.div`
 margin-top:10px;
 margin-bottom:10px;
-padding:5px;
+padding:5px
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
@@ -170,7 +170,7 @@ let history= useHistory();
  function handleSubmit(e){
   e.preventDefault()
   
-  axios.post('http://localhost:3001/transactions/new', state, {headers:{Authorization:'Bearer ' + token}})
+  axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
    setStatus(response.status)
@@ -178,14 +178,15 @@ let history= useHistory();
    setBtnLoading(false)
    
    }).catch(error=>{
-    setError(error.response.data.error)
-    setStatus(error.response.data.status)
-    setBtnLoading(false)
+     setError(error.response.data.error)
+     setStatus(error.response.data.status)
+     setBtnLoading(false)
+     
      if (error.response.data.data === "Unauthorized"){
        localStorage.removeItem('token')
        toast.error(`Session expired, you must sign in again`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
@@ -194,10 +195,6 @@ let history= useHistory();
         progress: undefined,
         }); 
      }
-     else{
-
-     }
-    
     
    })
   }

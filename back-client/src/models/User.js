@@ -30,8 +30,7 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      trim: true,
-      unique: true
+      trim: true
     },
 
 
@@ -87,21 +86,7 @@ const userSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Contact'
       }
-    ],
-
-    failedAccessAtemps: {
-      type: Number,
-      default: 0
-    },
-
-    banDate: {
-      type: Date,
-    },
-
-    status: {
-      type: String,
-      enum: ['ACTIVE', 'WAITINGFOREMAILVERIFICATION', 'BANED']
-    }
+    ] 
     
   },
   { timestamps: true }

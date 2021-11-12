@@ -5,7 +5,7 @@ import { getUserInfo} from "../../redux/reducers/userSlice";
 import { useEffect } from "react";
 import{useSelector, useDispatch} from "react-redux"
 import {Link} from 'react-router-dom';
-import { Text, Input, Modal } from '@nextui-org/react';
+import { Text, Input, Modal} from '@nextui-org/react';
 
 const Container= styled.div`
 padding: 100px;
@@ -34,7 +34,7 @@ const H2 = styled.h2`
 font-weight: bold;
 text-align:left;
 padding-bottom: 15px;
-background-color:#2CA1DE;
+background-color:#95BEFE;
 padding-left: 20px;
 border-top-left-radius: 20px;
 border-top-right-radius: 20px;
@@ -54,6 +54,7 @@ font-weight: bold;
 }
 `
 const Edit = styled.a`
+color:#95BEFE;
 font-size: 18px;
 float: right;
 text-decoration: underline;
@@ -73,14 +74,14 @@ font-size: 15px;
 border-radius: 20px;
 user-select: none;
 overflow: hidden;
-color: #2CA1DE;
+color: #95BEFE;
 z-index: 1;
 border: none;
 font-weight: 500;
 cursor: pointer;
 &:hover {
 color: white;
-background-color: #2CA1DE;
+background-color: #95BEFE;
 } 
 `
 
@@ -139,19 +140,45 @@ return (
     <span>Phone Number:</span> 
     {userInfo &&
     <User>{`${userInfo.phoneNumber}`} </User>}
-     {/*  <Edit>Edit</Edit> */}
+     <Edit auto shadow onClick={handler} >Edit</Edit> 
+     <Modal
+        closeButton
+        aria-labelledby="moal"
+        open={visible}
+        onClose={closeHandler}>
+        <Modal.Header>
+            <Text id="moal" size={18}>
+            change your.. 
+            <Text b size={18}>
+            Phone Number
+            </Text>
+            </Text>
+        </Modal.Header>
+        <Modal.Body>
+            <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="large"
+                placeholder="PhoneNumber..."
+               />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button auto flat color="error" onClick={closeHandlers}>
+            Back
+            </Button>
+            <Button auto onClick={closeHandler}>
+            Save
+            </Button>
+        </Modal.Footer>
+    </Modal>
     </Info>
     <Info>
     <span>Adress:</span> 
     {userInfo &&
     <User>{`${userInfo.adress}`} </User>}
-      <Edit>Edit</Edit> 
-    </Info>
-    <Info>
-    <span>Zipcode:</span> 
-    {userInfo &&
-    <User>{`${userInfo.zipCode}`} </User>}
-     <Edit auto shadow onClick={handler} >Edit</Edit> 
+       <Edit auto shadow onClick={handler} >Add</Edit> 
      <Modal
         closeButton
         aria-labelledby="modal-title"
@@ -173,7 +200,50 @@ return (
                 fullWidth
                 color="primary"
                 size="large"
-                placeholder="Zipcode..."
+                    
+            />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button auto flat color="error" onClick={closeHandlers}>
+            Back
+            </Button>
+            <Button auto onClick={closeHandler}>
+            Save
+            </Button>
+        </Modal.Footer>
+    </Modal>
+
+
+
+
+    </Info>
+    <Info>
+    <span>Zipcode:</span> 
+    {userInfo &&
+    <User>{`${userInfo.zipCode}`} </User>}
+     <Edit auto shadow onClick={handler} >Add</Edit> 
+     <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+    >
+        <Modal.Header>
+            <Text id="modal-title" size={18}>
+            change your.. 
+            <Text b size={18}>
+            Zipcode
+            </Text>
+            </Text>
+        </Modal.Header>
+        <Modal.Body>
+            <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="large"
+               
                
             />
         </Modal.Body>

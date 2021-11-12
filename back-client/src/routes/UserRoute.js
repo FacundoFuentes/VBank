@@ -265,6 +265,9 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
       transaction,
     });
 
+    const QR = await utils.generateQR(`localhost:3001/transactions/authorize/${transaction.transactionCode}`)
+    console.log(QR)
+    emailUtils.chargeEmail(QR, user.email)
     account.transactions.push(accountTransaction)
     account.save()
     

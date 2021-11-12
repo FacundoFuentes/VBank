@@ -165,6 +165,27 @@ const generateCargeNumber = () => {
 }
 
 
+ 
+  // QRCode.toDataURL('I am a pony!', function (err, url) {
+  //   console.log(url)
+  // }) 
+const generateQR = async (text) => {
+    try {
+    
+        let qr;
+        qr = await QRCode.toFile('./src/utils/Qerres/qr.png',text, function (err) {
+          if (err) throw err
+        })
+        return qr 
+    } catch (err) {
+      console.error(err)
+    }
+}
+
+
+
+
+
 function validateRegisterData({
   lastName,
   firstName,

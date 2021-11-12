@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react'
 import { Grid, Text, Container, Input, Button, Modal, Checkbox, Row, Spacer} from "@nextui-org/react"
 import Sidebar from '../../components/Sidebars/Sidebar'
@@ -7,9 +6,19 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import rapiPago from "../../img/rapi-pago.png"
 import pagoFacil from "../../img/pago-facil.png"
+import styled from "styled-components"
 
 
 
+const GridS = styled(Grid.Container)`
+  border:solid 0.5px #03030349;
+  border-radius:10px;
+  display:flex;
+  justify-content :center;
+  width:61%;
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+`;
 
 
 export default function Charge() {
@@ -74,10 +83,15 @@ const handleSubmit = ()=>{
 
   return (
     <div >
-    <Sidebar/>
-    <Container display="flex" direction="column" justify="center" alignItems="center" style={{height:"100vh",width:"100vh"}} >
+    
+    <Container display="flex" direction="column" justify="center" alignItems="center" style={{height:"100vh",width:"100vh",
+    
+
+  
+  
+  }} >
       <Text style={{position:"relative", left:"-24%", marginBottom:"10px"}} h3>Charge</Text>  
-    <Grid.Container gap={2} display="flex" justify="center"  alignItems="center" style={{backgroundColor:"#F6F6F6" , width:"60%", height:"350px",borderRadius:"10px"}}>
+    <GridS gap={2} display="flex" justify="center"  alignItems="center" style={{backgroundColor:"#F6F6F6" , width:"60%", height:"350px",borderRadius:"10px"}}>
 
       
         <Row display="flex" justify="center">
@@ -99,7 +113,7 @@ const handleSubmit = ()=>{
       
 
       <Grid >
-          <Input value={ input.charge }  onChange={handleChange}   min="0"   width="250px" labelPlaceholder ="To Many" type="number"></Input>
+          <Input value={ input.charge }  onChange={handleChange}   min="0"   width="250px" labelPlaceholder ="Amount" type="number"></Input>
       </Grid>
         
       <Grid>
@@ -121,7 +135,7 @@ const handleSubmit = ()=>{
               <Button onClick={closeHandler} size="small">ok</Button>
           </Modal.Footer>
         </Modal>
-    </Grid.Container>
+    </GridS>
     </Container>
     </div>       
   )

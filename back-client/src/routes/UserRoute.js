@@ -9,18 +9,29 @@ const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
 const Contact = require("../models/Contact");
 
-const {ExtractJwt} = require('passport-jwt')
-const user = express.Router()
-const JwtStrategy = require('../utils/strategy/jwt.strategy')
-const passport = require ('passport')
-const jwtDecode = require('jwt-decode')
+const { ExtractJwt } = require("passport-jwt");
+const user = express.Router();
+const JwtStrategy = require("../utils/strategy/jwt.strategy");
+const passport = require("passport");
+const jwtDecode = require("jwt-decode");
 const emailUtils = require("../utils/email");
 const utils = require("../utils/utils.js");
 
 require("dotenv").config();
 
 user.post("/register", async (req, res) => {
-  const { lastName, firstName, email, username, password, dni, adress, birthDate, phoneNumber, zipCode } = req.body;
+  const {
+    lastName,
+    firstName,
+    email,
+    username,
+    password,
+    dni,
+    adress,
+    birthDate,
+    phoneNumber,
+    zipCode,
+  } = req.body;
 
   const HashedPassword = await bcrypt.hash(password, 10);
 
@@ -29,7 +40,7 @@ user.post("/register", async (req, res) => {
   if (validation.status) {
     try {
       const transaction = await Transaction.create({
-        transactionCode:  utils.generateCargeNumber(), //Random
+        transactionCode: utils.generateCargeNumber(), //Random
         date: new Date(),
         amount: 100,
         description: "Welcome to VBank !",
@@ -79,77 +90,153 @@ user.post("/register", async (req, res) => {
       accountCreated.user = userCreated._id;
       await accountCreated.save();
 
-      emailUtils.email(userCreated.validationCode, accountCreated.cvu, cardCreated.cardNumber, cardCreated.cvv, userCreated.email)
+      emailUtils.email(
+        userCreated.validationCode,
+        accountCreated.cvu,
+        cardCreated.cardNumber,
+        cardCreated.cvv,
+        userCreated.email
+      );
 
       res.json({ status: "ok", data: userCreated });
     } catch (error) {
       console.log(error);
       res.json({ status: "failed", error: error });
     }
-  } else { 
+  } else {
     res.status(400).json({ status: "failed", data: validation.error });
   }
 });
 
-user.post("/login", async (req, res) => {
-  const {username, password, dni} = req.body
-  console.log(req.body)
+user.post("/changePassword", async (req, res) => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req); //Extraigo el token que me llega por head
+  const decodedToken = jwtDecode(authToken); // Decodeo el token
+  const username = decodedToken.username;
 
-  const userFound = await User.findOne({username, dni}).lean()
+  const { prevPassword, newPassword } = req.body;
 
-  if(!userFound) return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
+  if (prevPassword === newPassword)
+    return res.status(400).json({
+      status: "failed",
+      data: "The new password cant be equal to the old password",
+    });
 
-  if(await bcrypt.compare(password, userFound.password)){
+  try {
+    const userFound = await User.findOne({ username });
 
-    const token = utils.signToken({id: userFound._id, username: userFound.username})
+    if (!userFound)
+      return res
+        .status(400)
+        .json({ status: "failed", data: "Invalid username" });
 
-    return res.status(200).json({status: 'ok', data: token})
+    if (!(await bcrypt.compare(prevPassword, userFound.password)))
+      return res.status(400).json({
+        status: "failed",
+        data: "The previous password does not match ",
+      });
+    else userFound.password = await bcrypt.hash(newPassword, 10);
 
-  } 
+    userFound.save();
 
-  return res.status(404).json({status: 'failed', error: 'Invalid Credentials'})
-
+    res.status(200).json({ status: "ok", data: "Password changed succesfull" });
+  } catch (error) {
+    res.status(400).json({ status: "failed", data: "Error " + error });
+  }
 });
 
-user.post('/userInfo', async (req, res) => {
-  const {username} = req.body // add token
+user.post("/login", async (req, res) => {
+  const { username, password, dni } = req.body;
 
-  try {
-    
-    const user = await User.findOne({username})
+  const userFound = await User.findOne({ username, dni });
+  todayDate = new Date();
 
-    if(!user) return res.status(404).json({status: 'failed', error: 'Invalid username'})
+  if (userFound.status === "BANED")
+    if (userFound.banDate < todayDate) {
+      userFound.banDate = null;
+      userFound.status = "ACTIVE";
+      userFound.save();
+    } else
+      return res.status(400).json({
+        status: "failed",
+        data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+      });
 
-    res.status(200).json({
-        firstname: user.firstName,
-        lastname: user.lastName,
-        email: user.email,
-        dni: user.dni,
-        adress: user.adress, //Recently added
-        phoneNumber: user.phoneNumber, //Recently added
-        zipCode: user.zipCode, //Recently added
-        birthDate: user.birthDate, //Recently added
-    })
-      
-  } catch (error) {
-    res.status(400).json({status: 'failed', error: error.message})
+  if (userFound.failedAccessAtemps > 2) {
+    userFound.banDate = todayDate;
+    userFound.banDate.setDate(todayDate.getDate() + 1);
+    userFound.save();
+    return res.status(400).json({
+      status: "failed",
+      data: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+    });
   }
-})
 
-user.post('/userAccountInfo', async (req, res) =>{
-  const {username} = req.body // add token
+  if (!userFound)
+    return res
+      .status(404)
+      .json({ status: "failed", error: "Invalid Credentials" });
+
+  if (await bcrypt.compare(password, userFound.password)) {
+    const token = utils.signToken({
+      id: userFound._id,
+      username: userFound.username,
+    });
+    userFound.failedAccessAtemps = 0;
+    userFound.save();
+    return res.status(200).json({ status: "ok", data: token });
+  }
+
+  userFound.failedAccessAtemps += 1;
+  userFound.save();
+
+  return res
+    .status(404)
+    .json({ status: "failed", error: "Invalid Credentials" });
+});
+
+user.post("/userInfo", async (req, res) => {
+  const { username } = req.body; // add token
 
   try {
-    const user = await User.findOne({username}).populate({
-      path: 'account',
-      model: 'Account',
-      populate: {
-        path: 'card',
-        model: 'Card'
-      }
-    })
+    const user = await User.findOne({ username });
 
-    if(!user) return res.status(404).json({status: 'failed', error: 'Invalid username'})
+    if (!user)
+      return res
+        .status(404)
+        .json({ status: "failed", error: "Invalid username" });
+
+    return res.status(200).json({
+      firstname: user.firstName,
+      lastname: user.lastName,
+      email: user.email,
+      dni: user.dni,
+      adress: user.adress, //Recently added
+      phoneNumber: user.phoneNumber, //Recently added
+      zipCode: user.zipCode, //Recently added
+      birthDate: user.birthDate, //Recently added
+    });
+  } catch (error) {
+    res.status(400).json({ status: "failed", error: error.message });
+  }
+});
+
+user.post("/userAccountInfo", async (req, res) => {
+  const { username } = req.body; // add token
+
+  try {
+    const user = await User.findOne({ username }).populate({
+      path: "account",
+      model: "Account",
+      populate: {
+        path: "card",
+        model: "Card",
+      },
+    });
+
+    if (!user)
+      return res
+        .status(404)
+        .json({ status: "failed", error: "Invalid username" });
 
     res.status(200).json({
       cvu: user.account.cvu,
@@ -161,161 +248,158 @@ user.post('/userAccountInfo', async (req, res) =>{
         startDate: user.account.card.startDate,
         dueDate: user.account.card.dueDate,
         status: user.account.card.status,
-      }
-    })
+      },
+    });
   } catch (error) {
-    res.status(400).json({status: 'failed', error: error.message})
+    res.status(400).json({ status: "failed", error: error.message });
   }
-} )
+});
 
+user.patch(
+  "/charge",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+    const decodedToken = jwtDecode(authToken);
+    const { charge } = req.body;
 
-user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    try {
+      const username = decodedToken.username;
+      const user = await User.findOne({ username });
+      const account_id = user.account;
+      const account = await Account.findById({ _id: account_id });
+      console.log(user.account);
+      const transaction = await Transaction.create({
+        transactionCode: utils.generateCargeNumber(), //Random
+        date: new Date(),
+        amount: Number(charge),
+        description: "Enjoy your money!",
+        status: "PENDING",
+        type: "CHARGE",
+        // status: 'PROCESSING',
+        from: null,
+        to: user,
+      });
 
-  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
-  const decodedToken = jwtDecode(authToken)
-  const {charge} = req.body
+      const accountTransaction = await AccountTransaction.create({
+        role: "RECEIVER",
+        transaction,
+      });
 
-  try{
-    const username = decodedToken.username
-    const user = await User.findOne({username})
-    const account_id = user.account
-    const account = await Account.findById({_id: account_id})
-    console.log(user.account)
-    const transaction = await Transaction.create({
-      transactionCode: utils.generateCargeNumber(), //Random
-      date: new Date(),
-      amount: Number(charge),
-      description: 'Enjoy your money!',
-      status: 'PENDING',
-      type: 'CHARGE',
-      // status: 'PROCESSING',
-      from: null,
-      to: user,
-    });
+      account.transactions.push(accountTransaction);
+      account.save();
 
-    const accountTransaction = await AccountTransaction.create({
-      role: "RECEIVER",
-      transaction,
-    });
-
-    account.transactions.push(accountTransaction)
-    account.save()
-    
-    res.status(200).json({status: 'ok', transaction})
-
-  }catch(err){
-    console.log(err.message)
-    res.status(400).json({status: 'failed', err})
+      res.status(200).json({ status: "ok", transaction });
+    } catch (err) {
+      console.log(err.message);
+      res.status(400).json({ status: "failed", err });
+    }
   }
-})
+);
 
+user.post("/newContact", async (req, res) => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+  const decodedToken = jwtDecode(authToken);
 
-
-user.post('/newContact', async (req, res) => {
-  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
-  const decodedToken = jwtDecode(authToken)
-
-  try{
+  try {
     let contactAccount, contactUser;
 
-    const username = decodedToken.username
-    const user = await User.findOne({username: decodedToken.username})
-    const {description, data} = req.body
+    const username = decodedToken.username;
+    const user = await User.findOne({ username: decodedToken.username });
+    const { description, data } = req.body;
 
-    if(data.length > 16){ //Si es CVU
-      contactAccount= await Account.findOne({cvu: data}).populate({
-        path: 'user',
-        model:  'User'
-      })//Busco la cuenta del usuario RECEIVER
-      contactUser = await User.findOne({_id: contactAccount.user}).populate('account')
-    } else{
-      contactUser = await User.findOne({ username: data}).populate('account')
-      contactAccount = await Account.findOne({_id: contactUser.account}).populate({
-        path: 'user',
-        model: 'User'
-      })
-    } 
+    if (data.length > 16) {
+      //Si es CVU
+      contactAccount = await Account.findOne({ cvu: data }).populate({
+        path: "user",
+        model: "User",
+      }); //Busco la cuenta del usuario RECEIVER
+      contactUser = await User.findOne({ _id: contactAccount.user }).populate(
+        "account"
+      );
+    } else {
+      contactUser = await User.findOne({ username: data }).populate("account");
+      contactAccount = await Account.findOne({
+        _id: contactUser.account,
+      }).populate({
+        path: "user",
+        model: "User",
+      });
+    }
 
-    if(username === contactUser.username)return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver
-      status: "failed",
-      error:
-        "You can't create a contact of yourself",
-    })
-
-    // const  account =  await Account.findOne({cvu: cvu})
-    // const  user = await User.findOne({username})
-    // console.log(account)
+    if (username === contactUser.username)
+      return res.status(400).json({
+        //Si el usuario logeado es el mismo que el receiver
+        status: "failed",
+        error: "You can't create a contact of yourself",
+      });
 
     const contact = await Contact.create({
-        // account: contactAccount.,
-        description: description,
-        cvu: contactAccount.cvu,
-        username: contactAccount.user.username,
-    })
-
+      // account: contactAccount.,
+      description: description,
+      cvu: contactAccount.cvu,
+      username: contactAccount.user.username,
+    });
 
     // const response = {
     //   firstName: contact.account.user.firstName,
     //   lastName: contact.account.user.lastName
     // }
-    
-    user.contacts.push(contact)
-    user.save()
 
-    res.status(200).json({status: 'ok', contact})
-  }catch(err){
-    let error = err.message
-    res.status(400).json({status: 'failed', error})
+    user.contacts.push(contact);
+    user.save();
+
+    res.status(200).json({ status: "ok", contact });
+  } catch (err) {
+    let error = err.message;
+    res.status(400).json({ status: "failed", error });
   }
-})
+});
 
-user.get('/contacts', async(req, res) => {
-  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req)
-  const decodedToken = jwtDecode(authToken)
+user.get("/contacts", async (req, res) => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+  const decodedToken = jwtDecode(authToken);
 
-  try{
-    const username = decodedToken.username
-    const  user = await User.findOne({username}).populate({
-      path: 'contacts',
-      model: 'Contact'
-    })
-    const contacts = user.contacts
-    res.status(200).json({status: 'ok', contacts})
-  }catch(err){
-    error = err.message
-    res.status(400).json({status:'failed', error})
-  }
-})
-
-user.patch('/updateContact', async(req, res) => {
-  const {_Id, description} = req.body
   try {
-    const contact= await Contact.findOne({_Id})
-    contact.description = description
-    contact.save() 
-
-    res.status(200).json({status: 'ok', contact})
-
-  }catch(err){
-    error = err.message
-    res.status(400).json({status:'failed', error})
+    const username = decodedToken.username;
+    const user = await User.findOne({ username }).populate({
+      path: "contacts",
+      model: "Contact",
+    });
+    const contacts = user.contacts;
+    res.status(200).json({ status: "ok", contacts });
+  } catch (err) {
+    error = err.message;
+    res.status(400).json({ status: "failed", error });
   }
-})
+});
 
+user.patch("/updateContact", async (req, res) => {
+  const { _Id, description } = req.body;
+  try {
+    const contact = await Contact.findOne({ _Id });
+    contact.description = description;
+    contact.save();
+
+    res.status(200).json({ status: "ok", contact });
+  } catch (err) {
+    error = err.message;
+    res.status(400).json({ status: "failed", error });
+  }
+});
 
 //El delete no permite body, paso el id por param
-user.delete('/deleteContact/:id', async(req, res) => {
-  const {id} = req.params
+user.delete("/deleteContact/:id", async (req, res) => {
+  const { id } = req.params;
 
-  console.log(req.params)
+  console.log(req.params);
 
   try {
-    const obj = await Contact.deleteOne({_id: id});
-    res.status(200).json({status:'ok', obj})
-  }catch(err) {
-    res.status(400).send(err.message)
+    const obj = await Contact.deleteOne({ _id: id });
+    res.status(200).json({ status: "ok", obj });
+  } catch (err) {
+    res.status(400).send(err.message);
   }
-})
+});
 
-module.exports = user
-
+module.exports = user;

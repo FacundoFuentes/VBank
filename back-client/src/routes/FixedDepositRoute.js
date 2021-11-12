@@ -48,6 +48,7 @@ const checkFixedDeposit = async () => {
           transaction: transactionCreated,
           role: "RECEIVER",
         });
+        accountFound.transactions.push(accountTransactionCreated)
         // Si llegó al último paso correctamente, actualiza los datos en DB sino los descarta
         if (accountTransactionCreated) {
           await accountFound.save();
@@ -125,6 +126,7 @@ fixedDeposit.post("/new", async (req, res) => {
       total,
       finishDate,
     });
+    accountFound.transactions.push(accountTransactionCreated)
     accountFound.fixedDeposit.push(fixedDepositCreated);
     if (!accountFound || !accountTransactionCreated || !fixedDepositCreated) {
       return res

@@ -45,7 +45,6 @@ const AddContactButton = () => {
     const handler = () => setVisible(true);
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
         reset({
             data: "",
             description:"",

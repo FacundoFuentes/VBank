@@ -49,21 +49,21 @@ margin-bottom: 10px;
  
 
 }
-`
+`;
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
-padding:5px
-`
+padding:5px;
+`;
 const DetailContainer = styled.div `
 margin-top: 10px;
 margin-bottom: 10px;
-padding:5px
+padding:5px;
 `
 const BranchContainer = styled.div`
 margin-top:10px;
 margin-bottom:10px;
-padding:5px
+padding:5px;
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
@@ -178,15 +178,14 @@ let history= useHistory();
    setBtnLoading(false)
    
    }).catch(error=>{
-     setError(error.response.data.error)
-     setStatus(error.response.data.status)
-     setBtnLoading(false)
-     
+    setError(error.response.data.error)
+    setStatus(error.response.data.status)
+    setBtnLoading(false)
      if (error.response.data.data === "Unauthorized"){
        localStorage.removeItem('token')
        toast.error(`Session expired, you must sign in again`, {
         position: "top-right",
-        autoClose: 500,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
@@ -195,6 +194,10 @@ let history= useHistory();
         progress: undefined,
         }); 
      }
+     else{
+
+     }
+    
     
    })
   }
@@ -208,7 +211,7 @@ let history= useHistory();
 
     return (
       <div>
-      <Sidebar/>
+      
        <MaxContainer>
         
         <TitleContainer>

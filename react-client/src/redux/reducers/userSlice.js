@@ -1,8 +1,6 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios' 
 import jwt from "jsonwebtoken"
-import { useHistory } from 'react-router';
-import {toast } from 'react-toastify';
 
 
 
@@ -35,9 +33,6 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     try { 
 
         const response = await axios.post('http://localhost:3001/user/register', userInfo)
-    
-      /*   localStorage.setItem('token', JSON.stringify(response.data.token)) 
-        //cambie "token" por "token" y "response.data.data" por "response.data.token" */
         return response.data;
         
     } catch (error) {
@@ -46,85 +41,55 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     }
 })
 
-export const getUserInfo = createAsyncThunk("user/Info", async (thunkAPI) =>{
+export const getUserInfo = createAsyncThunk("user/Info", async (payload, thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
   try {
     const response = await axios.post("http://localhost:3001/user/userinfo", {username:username},{
-      headers: {'Authorization': "Bearer "+ token }
-
+      headers: { Authorization: "Bearer " + token },
     })
     return response.data
   } catch (error) {
-    let history= useHistory();
-   if (error.response.data.data === "Unauthorized"){
-     localStorage.removeItem('token')
-     toast.error(`Session expired, you must sign in again`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      onClose: () => ( history.push("/")  ), 
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      }); 
-   }
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
+   
   }
 })
-export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (thunkAPI) =>{
+export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (payload, thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
   try {
     const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username},{
-      headers: {'Authorization': "Bearer "+ token }
-
+      headers: { Authorization: "Bearer " + token },
     })
     return response.data
+
   } catch (error) {
-    let history= useHistory();
-   if (error.response.data.data === "Unauthorized"){
-     localStorage.removeItem('token')
-     toast.error(`Session expired, you must sign in again`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      onClose: () => ( history.push("/")  ), 
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      }); 
-   }
+    console.log(error.response.data.data)
+    console.log("entro al catch")
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
+    /* if(error.response.data.data === 'Unauthorized') {
+      localStorage.removeItem('token')
+      alert('Session expired, You must sign in again')
+      window.location.href = 'http://localhost:3000/'
+  } */
   }
 })
-export const getBalance = createAsyncThunk("user/balance", async (thunkAPI) =>{
+export const getBalance = createAsyncThunk("user/balance", async (payload,thunkAPI) =>{//////
   const token = JSON.parse(localStorage.getItem("token")).data
   let {username} = jwt.decode(token)
 
   try {
     const response = await axios.post("http://localhost:3001/transactions", {username:username},{
-      headers: {'Authorization': "Bearer "+ token }
-
+      headers: { Authorization: "Bearer " + token },
     })
     return response.data
   } catch (error) {
-    let history= useHistory();
-    if (error.response.data.data === "Unauthorized"){
-      localStorage.removeItem('token')
-      toast.error(`Session expired, you must sign in again`, {
-       position: "top-right",
-       autoClose: 5000,
-       hideProgressBar: false,
-       closeOnClick: true,
-       onClose: () => ( history.push("/")  ), 
-       pauseOnHover: false,
-       draggable: true,
-       progress: undefined,
-       }); 
-    }
+    const {rejectWithValue}= thunkAPI;
+    return rejectWithValue(error.response.data);
   }
 })
 

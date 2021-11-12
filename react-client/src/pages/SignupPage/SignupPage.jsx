@@ -22,6 +22,9 @@ display: flex;
 justify-content: center;
 align-items: center;
 margin-top:30px;
+@media only screen and (max-width:725px){
+  margin-top:15px;
+}
 
 `;
 
@@ -40,6 +43,7 @@ grid-template-columns: 1fr 1fr;
    display:block
   }
   @media only screen and (max-width:725px){
+    height: auto;
    
    grid-template-columns: 1fr;
 
@@ -58,21 +62,6 @@ grid-template-columns: 1fr 1fr;
 
    }
  }
- .progressbar {
-  width: 60%;
-  height: 10px;
-  background-color: white;
-  margin-bottom: 50px;
-  border-radius: 10px;
-}
-
-.progressbar div {
-  width: 33.3%;
-  height: 100%;
-  border-radius: 10px;
-  background-color: #0070f3;
-}
-
 .container-steps {
 
   transform: translate(-1%, -1%);
@@ -208,7 +197,7 @@ const SignupPage = () => {
 }, [loggedInUser,history])
 
   const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
-  const notify = () => toast("Wow so easy !");
+
    
 
   const onSubmit =async (data) => {

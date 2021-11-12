@@ -4,27 +4,33 @@ import{useSelector, useDispatch} from "react-redux"
 import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
-import { Grid, Spacer, Text} from "@nextui-org/react"
+import { Grid, Spacer, Text, Divider} from "@nextui-org/react"
 import SideBar from "../../components/Sidebars/Sidebar"
 import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
+import { toast} from "react-toastify";
+import gold from "../../img/oro.png"
+
+
+
+
 
 
 
 const ContainerS = styled.div`
   margin: 0px 300px;
- 
   display:flex;
   flex-direction: column;
   width: 100%;
   justify-content:center;
-  overflow-y:scroll;
+  
   `;
 const TextS = styled.h2`
   font-weight: bold;
-  justify-content: flex-start;
+  position:relative;
+  left:20px;
+  justify-content: center;
   margin-top:25px;
-  margin-left: 0px;
-  margin-right: 32%;
+ 
   margin-bottom:0px;
   
 `;
@@ -34,23 +40,25 @@ const GridS = styled.div`
   flex-wrap:wrap;
   width: 70%;
   height:100%;
+  
 `;
 const CardBalance = styled.div`
   display:flex;
   width:90%;
-  
-  background-color: #F6F6F6;
   border-radius: 20px;
   padding: 50px;
 `;
 const Balance = styled.div`
-  background-color: #ebe4e4a5;
+  
   border-radius:20px;
   display:flex;
   width:100%;
   height:100%;
   justify-content: center;
   align-items: center;
+
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
 
 `;
 const Line = styled.div`
@@ -64,7 +72,6 @@ const Expeses = styled.div`
   display:flex;
   flex-direction:column;
   border-radius:20px;
-  background-color: #F6F6F6;
   width: 90%;
   height: 320px;
   
@@ -74,7 +81,7 @@ const ChartContainer = styled.div`
   justify-content: center;
   align-items:center;
   margin-top:20px;
-  background-color:#F6F6F6;
+  
   border-radius:20px;
   justify-content:center;
   width:90%;
@@ -109,10 +116,12 @@ const LatestMovements = styled(Grid.Container)`
   color:black;
   width:100%;
   padding-bottom:10px;
+  
 
 `;
 const GridLatestMovents = styled(Grid)`
   border-radius:10px;
+  
 `;
 const GridContainer = styled.div`
   border-radius:10px;
@@ -122,17 +131,32 @@ const GridContainer = styled.div`
   overflow-x:hidden;
   
 `;
+const BoderShadow = styled(GridS)`
+  border:solid 0.5px #03030349;
+  border-radius:10px;
+  display:flex;
+  justify-content :center;
+  width:61%;
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+`;
 
 
 export default function Home() {
   const loggedInUser = useSelector(state => state.user.loggedInUser)
   const userInfo = useSelector(state => state.user.userInfo.info)
   const userAccountInfo = useSelector(state => state.user.userAccountInfo.info)
-  const userTransaction = useSelector(state => state.user.userBalance.info)
+  let userTransaction = useSelector(state => state.user.userBalance.info)
   const dispatch = useDispatch()
   const history= useHistory();
 
  
+  useEffect(()=>{
+    if(document.getElementsByTagName("body").style){
+
+    }
+    
+  },[])
   
    useEffect(() => {
    if(!loggedInUser) history.push("/")
@@ -140,9 +164,32 @@ export default function Home() {
   }, [loggedInUser,history]);
   
   useEffect(() => {
-    dispatch(getUserInfo())
-    dispatch(getUserAccountInfo())
-    dispatch(getBalance())
+    const fetchData = async() => {
+      try{
+   await dispatch(getUserAccountInfo()).unwrap()
+   await dispatch(getUserInfo()).unwrap()
+    await dispatch(getBalance()).unwrap()
+    } catch (error) {
+      // handle error here
+      if (error.data === "Unauthorized"){
+        localStorage.removeItem('token')
+        toast.error('Session expired, sign in again!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          onClose: () => ( window.location.href = 'http://localhost:3000/'), 
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          });
+          console.log(error) 
+       }
+      }
+
+    }
+    fetchData()
+    
   }, [dispatch])
 
 
@@ -166,7 +213,8 @@ export default function Home() {
     return {
       name: e.transaction.branch,
       amount: e.transaction.amount,
-      role: e.role
+      role: e.role,
+      status: e.transaction.status
     }
   })
 
@@ -180,42 +228,46 @@ export default function Home() {
       
     }
   }
-  data2 = data2?.filter(e => e.value > 0)
+
+
+data2 = data2?.filter(e => e.value > 0 )
+   
+userTransaction = userTransaction?.map(e => e).reverse()
   
-
-
 
 
   return (
     <div>
-    <SideBar/>
-    <ContainerS>
-        <GridS>
+    
+    <ContainerS style={{overflow:"hidden"}} >
+         
         <TextS>My Card</TextS>
-        <TextS>Found</TextS>
-        </GridS>  
-        <GridS>
-            <CardBalance>
-            <img height="200px" src={img} alt="" />
-
-            
+        <BoderShadow  >
+            <CardBalance >
+              
+              <img width={"300px"} height={"200px"} src={img} alt="" />
+             
             {userInfo && userAccountInfo &&
-            <><CardNnumber>
+            <>
+            <CardNnumber>
                 {`**** **** **** ${userAccountInfo.card.cardNumber}`}
-              </CardNnumber><CardName>
+              </CardNnumber>
+              <CardName >
                   {`${userInfo.firstname} ${userInfo.lastname}`}
-                </CardName></>}
+              </CardName>
+              </>}
            
             <Line/>
             {userAccountInfo && 
-            <Balance>
-                <h1>${`${userAccountInfo.balance}`}</h1>
+            <Balance  >
+              <img width={"50px"} src={gold} alt="" />
+              <h1>${`${userAccountInfo.balance}`}</h1>
             </Balance> }
            
             </CardBalance>
-        </GridS>
-        <GridS>
+        </BoderShadow >
            <TextS>Latest movements</TextS>
+        <BoderShadow style={{height:"350px"}} >
           <Expeses>
             <DateNameTotal>
             <LatestMovements  gap={2} justify="space-around">
@@ -228,10 +280,12 @@ export default function Home() {
                 <Spacer x={2} />
               </LatestMovements>     
             </DateNameTotal>
-              <GridContainer style={{display:"flex" ,flexDirection:"column-reverse"}}>
-
-              {userTransaction?.map((e, i) => 
-              <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
+              <Divider x={0} y={1} />
+              <GridContainer >
+              {userTransaction?.map((e, i) => {
+                if(!e.transaction?.status){
+                  return (
+                    <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
                 <Spacer x={3} />
                 <GridLatestMovents xs={2}>{` ${e.transaction.date.slice(0,10)} `} </GridLatestMovents>
                 <Spacer x={-4}/>
@@ -239,31 +293,38 @@ export default function Home() {
                 <Spacer x={1}/>
                 <GridLatestMovents xs={1}>{e.role === 'RECEIVER' ? `+$${e.transaction.amount}` : `-$${e.transaction.amount}` } </GridLatestMovents>
                 <Spacer x={2} />
-              </LatestMovements>  
-                  ) 
+                <Divider x={0} y={0} />
+              </LatestMovements>
+                  )
+                
                 }
+              }
+              )}
+
               </GridContainer>
           </Expeses>
-        </GridS>
-        <GridS>
+        </BoderShadow>
         <TextS>Statistics</TextS>
+        <BoderShadow>
         {data2?.length > 0 ? 
         <ChartContainer >
-        <Chart height="500px" data={data2}/>
+        <Chart height="500px" data={data2} enableArcLinkLabels={true} label={true} interactive={true}/>
       </ChartContainer>
       :
-      <ChartContainer >
+      <ChartContainer  >
          <Text h2 style={{height:"500px"}}>
-         <Chart height="500px" data={[{
-           "id":"no movement ",
-           "laber":"no movement ",
-           "value":1
+         <Chart height="500px" enableArcLinkLabels={false} interactive={false} label={false} data={[{
+           "id":"No Movement ",
+           "laber":"No Movement ",
+           "value": 1
+           
          }]}/>
-         </Text>
+         </Text >
+         
       </ChartContainer>
         }
         
-        </GridS>
+        </BoderShadow>
     </ContainerS>
         <Spacer y={3}/>
   </div> 

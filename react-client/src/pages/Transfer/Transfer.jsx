@@ -169,7 +169,7 @@ let history= useHistory();
 
  function handleSubmit(e){
   e.preventDefault()
-  
+  setBtnLoading(true)
   axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
@@ -287,7 +287,7 @@ let history= useHistory();
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+            <Button auto loading={btnLoading} rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
             </>
@@ -296,7 +296,7 @@ let history= useHistory();
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
+            <Button auto loading={btnLoading} rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
             

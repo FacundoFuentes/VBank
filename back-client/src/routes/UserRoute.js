@@ -333,11 +333,16 @@ user.post("/newContact", async (req, res) => {
         model: "User",
       });
     }
-
+    let existingContact
     user.contacts.forEach(element => {
-      if(element.username === contactUser.username) return res.status(301).json(
-        {status: 'failed', error: 'Contact already in your list'})
-    });
+      if(element.username === contactUser.username){
+        existingContact = true
+        return
+      }
+    })
+
+    if(existingContact) return res.status(301).json({
+      status: 'failed', error: 'User already exists in your contacts'})
 
     if (username === contactUser.username)
       return res.status(400).json({
@@ -357,7 +362,7 @@ user.post("/newContact", async (req, res) => {
     return res.status(200).json({ status: "ok", contact });
   } catch (err) {
     let error = err.message;
-    res.status(400).json({ status: "failed", error });
+    return res.status(400).json({ status: "failed", error });
   }
 });
 

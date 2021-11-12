@@ -271,16 +271,6 @@ user.patch('/charge', passport.authenticate('jwt', {session: false}), async (req
     account.transactions.push(accountTransaction)
     account.save()
     
-    res.status(200).json({status: 'ok', transaction})
-
-      const accountTransaction = await AccountTransaction.create({
-        role: "RECEIVER",
-        transaction,
-      });
-
-      account.transactions.push(accountTransaction);
-      account.save();
-
       res.status(200).json({ status: "ok", transaction, QR });
     } catch (err) {
       console.log(err.message);

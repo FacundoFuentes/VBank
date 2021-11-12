@@ -86,6 +86,7 @@ const chargeEmail = async (email) => {
 module.exports = {
     email,
     transporter,
+    chargeEmail
 }
 
 

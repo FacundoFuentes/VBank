@@ -5,6 +5,8 @@ const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
 const pdf = require('html-pdf');
 const random = require("simple-random-number-generator");
+const QRCode = require('qrcode')
+
 
 
 require('dotenv').config()
@@ -230,4 +232,5 @@ module.exports = {
   signToken,
   verifyToken,
   generateCargeNumber,
+  generateQR
 };

@@ -151,7 +151,8 @@ const generateCode = () => {
     length: 6,
     uppercase: false,
   });
-  return validationCode;
+  const encryptCode = encrypt(validationCode)
+  return encryptCode;
 };
 
 
@@ -228,6 +229,7 @@ module.exports = {
   generarCvv,
   validateRegisterData,
   generateCode,
+  encrypt,
   decrypt,
   signToken,
   verifyToken,

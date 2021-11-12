@@ -1,17 +1,19 @@
-import React,{ useState } from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import Sidebar from '../../components/Sidebars/Sidebar';
-import { getUserInfo} from "../../redux/reducers/userSlice";
+import { getUserInfo } from "../../redux/reducers/userSlice";
 import { useEffect } from "react";
-import{useSelector, useDispatch} from "react-redux"
-import {Link} from 'react-router-dom';
-import { Text, Input, Modal} from '@nextui-org/react';
+import { useSelector, useDispatch } from "react-redux"
+import { Link } from 'react-router-dom';
+import { Text, Input, Modal } from '@nextui-org/react';
 
-const Container= styled.div`
-padding: 100px;
+
+
+const Container = styled.div`
+padding: 50px;
 text-align:center;
 `
- const Information= styled.div`
+const Information = styled.div`
  display: flex;
  flex-direction: column;
  max-width: 700px;  
@@ -40,7 +42,9 @@ border-top-left-radius: 20px;
 border-top-right-radius: 20px;
 `
 
-const Info= styled.div`
+
+
+const Info = styled.div`
 font-size: 20px;
 text-align: left;
 list-style:none;
@@ -93,177 +97,146 @@ export default function Profile() {
   useEffect(() => {
     dispatch(getUserInfo())
   }, []);
-  //---------------------Modal-----------------------------
-    const [visible, setVisible] = useState(false);
-    const handler = () => setVisible(true);
-    const closeHandlers = () => {
-      setVisible(false);
-    };
-    const closeHandler = () => {
-        setVisible(false);
-    };
+  //---------------------Modales-----------------------------
+  const [visible1, setVisible1] = useState(false);
+  const handler1 = () => setVisible1(true);
+  const closeHandlers1 = () => {
+    setVisible1(false);
+  };
+  const closeHandler1 = () => {
+    setVisible1(false);
+  };
+  const [visible2, setVisible2] = useState(false);
+  const handler2 = () => setVisible2(true);
+  const closeHandlers2 = () => {
+    setVisible2(false);
+  };
+  const closeHandler2 = () => {
+    setVisible2(false);
+  };
+
+
+
   //----------------------Validaciones---------------------------------
 
 
-
-
-
-
-return (
+  return (
     <>
-    <Container>
-    <Information>
-    <H2> Profile </H2>   
-    <In>
-    <Info>
-      <span>DNI:</span> 
-     { userInfo &&
-      <User> {`${userInfo.dni}`} </User>}     
-      </Info>
-    <Info>
-    <span>Firts Name:</span> 
-    {userInfo &&
-    <User>  {`${userInfo.firstname}`} </User>}
-    </Info>
-    <Info>
-    <span>Last Name:</span> 
-    {userInfo &&
-    <User> {`${userInfo.lastname}`} </User>}
-   </Info>
-    <Info>
-    <span>Email:</span> 
-    {userInfo &&
-    <User>{`${userInfo.email}`} </User>}
-     {/*  <Edit>Edit</Edit> */}
-    </Info>
-    <Info>
-    <span>Phone Number:</span> 
-    {userInfo &&
-    <User>{`${userInfo.phoneNumber}`} </User>}
-     <Edit auto shadow onClick={handler} >Edit</Edit> 
-     <Modal
-        closeButton
-        aria-labelledby="moal"
-        open={visible}
-        onClose={closeHandler}>
-        <Modal.Header>
-            <Text id="moal" size={18}>
-            change your.. 
-            <Text b size={18}>
-            Phone Number
-            </Text>
-            </Text>
-        </Modal.Header>
-        <Modal.Body>
-            <Input
-                clearable
-                bordered
-                fullWidth
-                color="primary"
-                size="large"
-                placeholder="PhoneNumber..."
-               />
-        </Modal.Body>
-        <Modal.Footer>
-            <Button auto flat color="error" onClick={closeHandlers}>
-            Back
-            </Button>
-            <Button auto onClick={closeHandler}>
-            Save
-            </Button>
-        </Modal.Footer>
-    </Modal>
-    </Info>
-    <Info>
-    <span>Adress:</span> 
-    {userInfo &&
-    <User>{`${userInfo.adress}`} </User>}
-       <Edit auto shadow onClick={handler} >Add</Edit> 
-     <Modal
-        closeButton
-        aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}
-    >
-        <Modal.Header>
-            <Text id="modal-title" size={18}>
-            change your.. 
-            <Text b size={18}>
-            Zipcode
-            </Text>
-            </Text>
-        </Modal.Header>
-        <Modal.Body>
-            <Input
-                clearable
-                bordered
-                fullWidth
-                color="primary"
-                size="large"
-                    
-            />
-        </Modal.Body>
-        <Modal.Footer>
-            <Button auto flat color="error" onClick={closeHandlers}>
-            Back
-            </Button>
-            <Button auto onClick={closeHandler}>
-            Save
-            </Button>
-        </Modal.Footer>
-    </Modal>
-
-
-
-
-    </Info>
-    <Info>
-    <span>Zipcode:</span> 
-    {userInfo &&
-    <User>{`${userInfo.zipCode}`} </User>}
-     <Edit auto shadow onClick={handler} >Add</Edit> 
-     <Modal
-        closeButton
-        aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}
-    >
-        <Modal.Header>
-            <Text id="modal-title" size={18}>
-            change your.. 
-            <Text b size={18}>
-            Zipcode
-            </Text>
-            </Text>
-        </Modal.Header>
-        <Modal.Body>
-            <Input
-                clearable
-                bordered
-                fullWidth
-                color="primary"
-                size="large"
-               
-               
-            />
-        </Modal.Body>
-        <Modal.Footer>
-            <Button auto flat color="error" onClick={closeHandlers}>
-            Back
-            </Button>
-            <Button auto onClick={closeHandler}>
-            Save
-            </Button>
-        </Modal.Footer>
-    </Modal>
-    </Info>
-    <Link to='/home'>
-    <Button> Back </Button>
-    </Link>
-    </In>
-    </Information>
-    </Container>
-  </>
+      <Container>
+        <Information>
+          <H2> Profile </H2>
+          <In>
+          <Info>
+              <span>Birthdate:</span>
+              {userInfo &&
+                <User> {`${userInfo.birthDate}`} </User>}
+            </Info>
+            <Info>
+              <span>DNI:</span>
+              {userInfo &&
+                <User> {`${userInfo.dni}`} </User>}
+            </Info>
+            <Info>
+              <span>Firts Name:</span>
+              {userInfo &&
+                <User>  {`${userInfo.firstname}`} </User>}
+            </Info>
+            <Info>
+              <span>Last Name:</span>
+              {userInfo &&
+                <User> {`${userInfo.lastname}`} </User>}
+            </Info>
+            <Info>
+              <span>Email:</span>
+              {userInfo &&
+                <User>{`${userInfo.email}`} </User>}
+            </Info>
+            <Info>
+              <span>Phone Number:</span>
+              {userInfo &&
+                <User>{`${userInfo.phoneNumber}`} </User>}
+            </Info>
+            <Info>
+              <span>Adress:</span>
+                <User>  </User>
+              <Edit auto shadow onClick={handler1}>+Add </Edit>
+              <Modal
+                closeButton
+                aria-labelledby="modal-title"
+                open={visible1}
+                onClose={closeHandler1}>
+                <Modal.Header>
+                  <Text id="modal-title" size={18}>
+                    change your..
+                    <Text b size={18}>
+                      Adress
+                    </Text>
+                  </Text>
+                </Modal.Header>
+                <Modal.Body>
+                  <Input
+                    clearable
+                    bordered
+                    fullWidth
+                    color="primary"
+                    size="large"
+                    placeholder="Adress..."
+                  />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button auto flat color="error" onClick={closeHandlers1}>
+                    Back
+                  </Button>
+                  <Button auto onClick={closeHandler1}>
+                    Save
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </Info>
+            <Info>
+              <span>Zipcode:</span>
+                <User> </User>
+              <Edit auto shadow onClick={handler2} >+Add</Edit>
+              <Modal
+                closeButton
+                aria-labelledby="modal"
+                open={visible2}
+                onClose={closeHandler2}>
+                <Modal.Header>
+                  <Text id="modal" size={18}>
+                    change your..
+                    <Text b size={18}>
+                      Zipcode
+                    </Text>
+                  </Text>
+                </Modal.Header>
+                <Modal.Body>
+                  <Input
+                    clearable
+                    bordered
+                    fullWidth
+                    color="primary"
+                    size="large"
+                    placeholder="Zipcode..."
+                  />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button auto flat color="error" onClick={closeHandlers2}>
+                    Back
+                  </Button>
+                  <Button auto onClick={closeHandler2}>
+                    Save
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </Info>
+            <Link to='/home'>
+              <Button> Back </Button>
+            </Link>
+          </In>
+        </Information>
+      </Container>
+    </>
   )
-  }
+}
 

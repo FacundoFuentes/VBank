@@ -46,8 +46,6 @@ grid-template-columns: 1fr 1fr;
     height: auto;
    
    grid-template-columns: 1fr;
-
-
    img{
      display:none;
    }
@@ -58,8 +56,6 @@ grid-template-columns: 1fr 1fr;
      .form{
        width: 100%;
      }
-
-
    }
  }
 .container-steps {

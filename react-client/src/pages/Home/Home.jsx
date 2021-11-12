@@ -12,13 +12,17 @@ import gold from "../../img/oro.png"
 
 
 
+
+
+
+
 const ContainerS = styled.div`
   margin: 0px 300px;
   display:flex;
   flex-direction: column;
   width: 100%;
   justify-content:center;
-  overflow-y:scroll;
+  
   `;
 const TextS = styled.h2`
   font-weight: bold;
@@ -147,6 +151,12 @@ export default function Home() {
   const history= useHistory();
 
  
+  useEffect(()=>{
+    if(document.getElementsByTagName("body").style){
+
+    }
+    
+  },[])
   
    useEffect(() => {
    if(!loggedInUser) history.push("/")
@@ -255,9 +265,9 @@ userTransaction = userTransaction?.map(e => e).reverse()
             </Balance> }
            
             </CardBalance>
-        </BoderShadow>
+        </BoderShadow >
            <TextS>Latest movements</TextS>
-        <BoderShadow >
+        <BoderShadow style={{height:"350px"}} >
           <Expeses>
             <DateNameTotal>
             <LatestMovements  gap={2} justify="space-around">

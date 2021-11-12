@@ -154,7 +154,29 @@ user.post("/login", async (req, res) => {
   const { username, password, dni } = req.body;
   console.log(req.body);
 
-  const userFound = await User.findOne({ username, dni }).lean();
+  const userFound = await User.findOne({ username, dni });
+  todayDate = new Date();
+
+  if (userFound.status === "BANED")
+    if (userFound.banDate < todayDate) {
+      userFound.banDate = null;
+      userFound.status = "ACTIVE";
+      userFound.save();
+    } else
+      return res.status(400).json({
+        status: "failed",
+        error: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+      });
+
+  if (userFound.failedAccessAtemps > 2) {
+    userFound.banDate = todayDate;
+    userFound.banDate.setDate(todayDate.getDate() + 1);
+    userFound.save();
+    return res.status(400).json({
+      status: "failed",
+      error: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
+    });
+  }
 
   if (!userFound)
     return res
@@ -287,20 +309,23 @@ user.post("/newContact", async (req, res) => {
     let contactAccount, contactUser;
 
     const username = decodedToken.username;
-    const user = await User.findOne({ username: decodedToken.username });
+    const user = await User.findOne({username: decodedToken.username}).populate('contacts')
     const { description, data } = req.body;
 
-    if (data.length > 16) {
-      //Si es CVU
-      contactAccount = await Account.findOne({ cvu: data }).populate({
+    if (data.length > 16) {//Si es CVU
+      contactAccount = await Account.findOne({ cvu: data }).populate({ //Busco la cuenta del usuario RECEIVER
         path: "user",
         model: "User",
-      }); //Busco la cuenta del usuario RECEIVER
+      }); 
+
+      if(!contactAccount) return res.status(404).json({status: 'failed', error: 'Account not found'})
+
       contactUser = await User.findOne({ _id: contactAccount.user }).populate(
         "account"
       );
     } else {
       contactUser = await User.findOne({ username: data }).populate("account");
+      if(!contactUser) return res.status(404).json({status: 'failed', error: 'User not found'})
       contactAccount = await Account.findOne({
         _id: contactUser.account,
       }).populate({
@@ -308,33 +333,36 @@ user.post("/newContact", async (req, res) => {
         model: "User",
       });
     }
+    let existingContact
+    user.contacts.forEach(element => {
+      if(element.username === contactUser.username){
+        existingContact = true
+        return
+      }
+    })
+
+    if(existingContact) return res.status(301).json({
+      status: 'failed', error: 'User already exists in your contacts'})
 
     if (username === contactUser.username)
       return res.status(400).json({
-        //Si el usuario logeado es el mismo que el receiver
         status: "failed",
         error: "You can't create a contact of yourself",
       });
 
     const contact = await Contact.create({
-      // account: contactAccount.,
       description: description,
       cvu: contactAccount.cvu,
       username: contactAccount.user.username,
     });
 
-    // const response = {
-    //   firstName: contact.account.user.firstName,
-    //   lastName: contact.account.user.lastName
-    // }
-
     user.contacts.push(contact);
     user.save();
 
-    res.status(200).json({ status: "ok", contact });
+    return res.status(200).json({ status: "ok", contact });
   } catch (err) {
     let error = err.message;
-    res.status(400).json({ status: "failed", error });
+    return res.status(400).json({ status: "failed", error });
   }
 });
 

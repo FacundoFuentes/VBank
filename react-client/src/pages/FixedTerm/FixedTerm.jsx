@@ -5,6 +5,7 @@ import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
 import jwt from 'jsonwebtoken'
 import success from "../../img/success.gif"
+import {toast } from 'react-toastify';
 
 const Container= styled.div`
 display: flex;
@@ -138,7 +139,19 @@ export default function FixedTerm() {
           }).catch(error=>{
             setError(error.response.data.data)
             setStatus(error.response.data.status)
-            
+            if (error.response.data.data === "Unauthorized"){
+              localStorage.removeItem('token')
+              toast.error(`Session expired, you must sign in again`, {
+               position: "top-right",
+               autoClose: 500,
+               hideProgressBar: false,
+               closeOnClick: true,
+               onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+               pauseOnHover: false,
+               draggable: true,
+               progress: undefined,
+               }); 
+            }
              
           })
          }

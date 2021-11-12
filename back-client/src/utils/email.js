@@ -57,7 +57,7 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
     return mail
 } 
 
-const chargeEmail = async (email) => {
+const chargeEmail = async (QR, email) => {
     const mailOptions = {
         from: "vbank.noreply@gmail.com",
         to: email, // recuperar desde user

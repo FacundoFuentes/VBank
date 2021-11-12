@@ -172,21 +172,18 @@ const generateCargeNumber = () => {
 const generateQR = async (text) => {
     try {
     
-        let qrImage, qrUrl;
-
-        qrUrl = await QRCode.toDataURL(text)
-        qrImage = await QRCode.toFile('./src/utils/Qerres/qr.png',text, function (err) {
+        let qr;
+        qr = await QRCode.toFile('./src/utils/Qerres/qr.png',text, function (err) {
           if (err) throw err
         })
-
-        return qrUrl
+        return qr 
     } catch (err) {
       console.error(err)
     }
 }
 
 
-generateQR('HOLA')
+
 
 
 function validateRegisterData({

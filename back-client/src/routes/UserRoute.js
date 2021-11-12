@@ -255,31 +255,13 @@ user.post("/userAccountInfo", async (req, res) => {
   }
 });
 
-user.patch(
-  "/charge",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
-    const decodedToken = jwtDecode(authToken);
-    const { charge } = req.body;
-
-    try {
-      const username = decodedToken.username;
-      const user = await User.findOne({ username });
-      const account_id = user.account;
-      const account = await Account.findById({ _id: account_id });
-      console.log(user.account);
-      const transaction = await Transaction.create({
-        transactionCode: utils.generateCargeNumber(), //Random
-        date: new Date(),
-        amount: Number(charge),
-        description: "Enjoy your money!",
-        status: "PENDING",
-        type: "CHARGE",
-        // status: 'PROCESSING',
-        from: null,
-        to: user,
-      });
+    const QR = await utils.generateQR(`localhost:3001/transactions/authorize/${transaction.transactionCode}`)
+    console.log(QR)
+    emailUtils.chargeEmail(QR, user.email)
+    account.transactions.push(accountTransaction)
+    account.save()
+    
+    res.status(200).json({status: 'ok', transaction})
 
       const accountTransaction = await AccountTransaction.create({
         role: "RECEIVER",

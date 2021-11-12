@@ -11,6 +11,7 @@ import FixedTerm from "./pages/FixedTerm/FixedTerm";
 import Profile from "./pages/Profile/Profile";
 import Charge from "./pages/Charge/Charge";
 import { ToastContainer } from "react-toastify";
+import Sidebar from "./components/Sidebars/Sidebar";
 
 function App() {
   return (
@@ -18,13 +19,13 @@ function App() {
           <ToastContainer/>
         <Switch>
         <Route exact path="/" component={LandingPage} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/home/transfer" component={Transfer}/>
-        <Route exact path="/home/charge" component={Charge}/>
-        <Route exact path="/user/signUp"  component={SignupPage}/>  
+        <Route exact path={["/home","/user"]} render={()=>( <> <Sidebar/> <Home/> </> )} />
+        <Route exact path="/home/transfer" render={()=> (<> <Sidebar/> <Transfer/> </>)}/>
+        <Route exact path="/home/charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/>
+        <Route exact path="/user/signUp"  render={()=> (<> <Sidebar/> <SignupPage/> </>)}/>  
         <Route exact path="/fixedTerm" component={FixedTerm}/>
-        <Route exact path="/user/profile"  component={Profile}/>
-        <Route exact path="/Charge" component={Charge} />
+        <Route exact path="/user/profile"  render={()=> (<> <Sidebar/> <Profile/> </>)}/>
+        <Route exact path="/Charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/> 
        </Switch>
     </Router>    
 

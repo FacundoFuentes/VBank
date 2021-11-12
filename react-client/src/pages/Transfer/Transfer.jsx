@@ -211,7 +211,7 @@ let history= useHistory();
 
     return (
       <div>
-      <Sidebar/>
+      
        <MaxContainer>
         
         <TitleContainer>

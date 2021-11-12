@@ -134,7 +134,6 @@ export default function Profile() {
 
 return (
     <>
-    <Sidebar/>
     <Container>
     <Information>
     <H2> Profile </H2>   

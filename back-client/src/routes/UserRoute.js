@@ -75,7 +75,7 @@ user.post("/register", async (req, res) => {
         email,
         username,
         password: HashedPassword,
-        validationCode: await bcrypt.hash(utils.generateCode(), 10),
+        validationCode:utils.generateCode(),
         dni,
         account: accountCreated._id,
         adress, //Recently added
@@ -91,6 +91,7 @@ user.post("/register", async (req, res) => {
       await accountCreated.save();
 
       emailUtils.email(
+        userCreated.username,
         userCreated.validationCode,
         accountCreated.cvu,
         cardCreated.cardNumber,
@@ -156,6 +157,9 @@ user.post("/login", async (req, res) => {
 
   const userFound = await User.findOne({ username, dni });
   todayDate = new Date();
+  if(userFound.status === "WAITING EMAIL VERIFICATION"){
+    return res.status(400).json({status: 'failed', error: 'You must verify your account, check your email !!!'})
+  }
 
   if (userFound.status === "BANED")
     if (userFound.banDate < todayDate) {
@@ -411,5 +415,34 @@ user.delete("/deleteContact/:id", async (req, res) => {
     res.status(400).send(err.message);
   }
 });
+
+
+user.patch("/emailVerification/:username", async (req, res) => {
+
+
+  try {
+    const {code} = req.body;
+    const {username} = req.params
+    const user = await User.findOne({ username })
+
+    if(user.status === 'ACTIVE') {
+      return res.status(200).json({status: 'Account allready verified'})
+    }
+
+    if(utils.decrypt(user.validationCode) === code ) {
+      user.status = 'ACTIVE';
+      user.save()
+
+      return res.status(200).json({status:'Account verified'})
+    }
+
+    return res.status(400).json({status:'failed, invalid code'})
+    
+  }catch(error){
+    res.status(400).send(error.message)
+  }
+
+})
+
 
 module.exports = user;

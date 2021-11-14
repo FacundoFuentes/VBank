@@ -90,8 +90,8 @@ const userSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      default: "WAITINGEMAILVERIFICATION",
-      enum: ["WAITINGEMAILVERIFICATION", "ACTIVE", "BAN"]
+      default: "WAITING EMAIL VERIFICATION",
+      enum: ["WAITING EMAIL VERIFICATION", "ACTIVE", "BAN"]
     },
     failedAccessAtemps: {
       type: Number,

@@ -30,7 +30,7 @@ transporter.verify().then(() => {
 
 
 
-const email = async (code,cvu,cardNumber,cvv,email) => {
+const email = async (username,code,cvu,cardNumber,cvv,email) => {
     const mail = await transporter.sendMail({
         from: "vbank.noreply@gmail.com",
         to: email, // recuperar desde user
@@ -44,7 +44,11 @@ const email = async (code,cvu,cardNumber,cvv,email) => {
             <p>CVU:${cvu}</p>
             <h2>Datos de la Tarjeta </h2>
             <p>**** **** **** ${cardNumber.slice(-4)}</p>
-            <p>codigo de seguridad:${utils.decrypt(cvv)}</p>`
+            <p>codigo de seguridad:${utils.decrypt(cvv)}</p>
+            <p>codigo de verificacion: ${utils.decrypt(code)}</p>
+            <h2>Verify your account </h2>
+            <a>localhost:3001/user/emailVerification/${username}`
+
     }, function (err, info){
         if (err){
             res.json(err)

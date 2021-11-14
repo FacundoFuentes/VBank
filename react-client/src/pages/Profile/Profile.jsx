@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { Link } from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
-
+import User from '../../../../back-client/src/models/User';
 
 
 const Container = styled.div`
@@ -31,7 +31,6 @@ const Information = styled.div`
 const In = styled.div`
 padding-left: 20px; 
 `
-
 const H2 = styled.h2`
 font-weight: bold;
 text-align:left;
@@ -41,9 +40,6 @@ padding-left: 20px;
 border-top-left-radius: 20px;
 border-top-right-radius: 20px;
 `
-
-
-
 const Info = styled.div`
 font-size: 20px;
 text-align: left;
@@ -63,10 +59,9 @@ font-size: 18px;
 float: right;
 text-decoration: underline;
 `
-const User = styled.strong`
+const Users = styled.strong`
 margin-left: 15px;
 color: #8b8989;
-
 `
 const Button = styled.button`
 display: flex;
@@ -88,6 +83,7 @@ color: white;
 background-color: #95BEFE;
 } 
 `
+
 
 export default function Profile() {
   //me traigo la info del usuario
@@ -114,11 +110,9 @@ export default function Profile() {
   const closeHandler2 = () => {
     setVisible2(false);
   };
+//----------------------Validaciones-----------------------------------
 
-
-
-  //----------------------Validaciones---------------------------------
-
+//---------------------------------------------------------------------
 
   return (
     <>
@@ -126,39 +120,39 @@ export default function Profile() {
         <Information>
           <H2> Profile </H2>
           <In>
-          <Info>
+            <Info>
               <span>Birthdate:</span>
               {userInfo &&
-                <User> {`${userInfo.birthDate}`} </User>}
+                <Users> {`${userInfo.birthDate}`} </Users>}
             </Info>
             <Info>
               <span>DNI:</span>
               {userInfo &&
-                <User> {`${userInfo.dni}`} </User>}
+                <Users> {`${userInfo.dni}`} </Users>}
             </Info>
             <Info>
               <span>Firts Name:</span>
               {userInfo &&
-                <User>  {`${userInfo.firstname}`} </User>}
+                <Users>  {`${userInfo.firstname}`} </Users>}
             </Info>
             <Info>
               <span>Last Name:</span>
               {userInfo &&
-                <User> {`${userInfo.lastname}`} </User>}
+                <Users> {`${userInfo.lastname}`} </Users>}
             </Info>
             <Info>
               <span>Email:</span>
               {userInfo &&
-                <User>{`${userInfo.email}`} </User>}
+                <Users>{`${userInfo.email}`} </Users>}
             </Info>
             <Info>
               <span>Phone Number:</span>
               {userInfo &&
-                <User>{`${userInfo.phoneNumber}`} </User>}
+                <Users>{`${userInfo.phoneNumber}`} </Users>}
             </Info>
             <Info>
               <span>Adress:</span>
-                <User>  </User>
+              <Users>  </Users>
               <Edit auto shadow onClick={handler1}>+Add </Edit>
               <Modal
                 closeButton
@@ -187,7 +181,8 @@ export default function Profile() {
                   <Button auto flat color="error" onClick={closeHandlers1}>
                     Back
                   </Button>
-                  <Button auto onClick={closeHandler1}>
+                  <Button 
+                  auto onClick={closeHandler1}>
                     Save
                   </Button>
                 </Modal.Footer>
@@ -195,7 +190,7 @@ export default function Profile() {
             </Info>
             <Info>
               <span>Zipcode:</span>
-                <User> </User>
+              <Users> </Users>
               <Edit auto shadow onClick={handler2} >+Add</Edit>
               <Modal
                 closeButton
@@ -224,7 +219,8 @@ export default function Profile() {
                   <Button auto flat color="error" onClick={closeHandlers2}>
                     Back
                   </Button>
-                  <Button auto onClick={closeHandler2}>
+                  <Button 
+                  auto onClick={closeHandler2}>
                     Save
                   </Button>
                 </Modal.Footer>

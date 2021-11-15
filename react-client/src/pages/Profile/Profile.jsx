@@ -98,8 +98,10 @@ export default function Profile() {
   const closeHandlers1 = () => {
     setVisible1(false);
   };
+  
+  
   const closeHandler1 = () => {
-    
+    setVisible2(false);
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
@@ -154,7 +156,7 @@ export default function Profile() {
             </Info>
             <Info>
               <span>Adress:</span>
-              <User>  </User>
+              <User> </User>
               <Edit auto shadow onClick={handler1}>+Add </Edit>
               <Modal
                 closeButton

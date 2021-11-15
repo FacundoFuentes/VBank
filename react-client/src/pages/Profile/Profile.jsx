@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import styled from "styled-components"
-import Sidebar from '../../components/Sidebars/Sidebar';
+import React, { useState } from 'react';
+import styled from "styled-components";
 import { getUserInfo } from "../../redux/reducers/userSlice";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { Link } from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
-import User from '../../../../back-client/src/models/User';
+
 
 
 const Container = styled.div`
@@ -59,7 +58,7 @@ font-size: 18px;
 float: right;
 text-decoration: underline;
 `
-const Users = styled.strong`
+const User = styled.strong`
 margin-left: 15px;
 color: #8b8989;
 `
@@ -100,7 +99,7 @@ export default function Profile() {
     setVisible1(false);
   };
   const closeHandler1 = () => {
-    setVisible1(false);
+    
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
@@ -111,6 +110,9 @@ export default function Profile() {
     setVisible2(false);
   };
 //----------------------Validaciones-----------------------------------
+
+
+
 
 //---------------------------------------------------------------------
 
@@ -123,36 +125,36 @@ export default function Profile() {
             <Info>
               <span>Birthdate:</span>
               {userInfo &&
-                <Users> {`${userInfo.birthDate}`} </Users>}
+                <User> {`${userInfo.birthDate}`} </User>}
             </Info>
             <Info>
               <span>DNI:</span>
               {userInfo &&
-                <Users> {`${userInfo.dni}`} </Users>}
+                <User> {`${userInfo.dni}`} </User>}
             </Info>
             <Info>
               <span>Firts Name:</span>
               {userInfo &&
-                <Users>  {`${userInfo.firstname}`} </Users>}
+                <User>  {`${userInfo.firstname}`} </User>}
             </Info>
             <Info>
               <span>Last Name:</span>
               {userInfo &&
-                <Users> {`${userInfo.lastname}`} </Users>}
+                <User> {`${userInfo.lastname}`} </User>}
             </Info>
             <Info>
               <span>Email:</span>
               {userInfo &&
-                <Users>{`${userInfo.email}`} </Users>}
+                <User>{`${userInfo.email}`} </User>}
             </Info>
             <Info>
               <span>Phone Number:</span>
               {userInfo &&
-                <Users>{`${userInfo.phoneNumber}`} </Users>}
+                <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
             <Info>
               <span>Adress:</span>
-              <Users>  </Users>
+              <User>  </User>
               <Edit auto shadow onClick={handler1}>+Add </Edit>
               <Modal
                 closeButton
@@ -190,7 +192,7 @@ export default function Profile() {
             </Info>
             <Info>
               <span>Zipcode:</span>
-              <Users> </Users>
+              <User> </User>
               <Edit auto shadow onClick={handler2} >+Add</Edit>
               <Modal
                 closeButton

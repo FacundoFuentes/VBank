@@ -152,8 +152,9 @@ export default function Home() {
 
  
   useEffect(()=>{
-    if(document.getElementsByTagName("body").style){
-
+   let  body = document.getElementsByTagName('body')[0];
+    if( body.style.overflow === "hidden"){
+      body.style.overflow = "visible"
     }
     
   },[])

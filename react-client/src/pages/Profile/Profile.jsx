@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import { getUserInfo } from "../../redux/reducers/userSlice";
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { Link } from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
-
-
+import { useForm, Controller } from "react-hook-form";
+import {useHistory} from 'react-router-dom';
+import {toast } from 'react-toastify';
 
 const Container = styled.div`
 padding: 50px;
@@ -95,12 +95,11 @@ export default function Profile() {
   //---------------------Modales-----------------------------
   const [visible1, setVisible1] = useState(false);
   const handler1 = () => setVisible1(true);
-  const closeHandlers1 = () => {
+  const closeHandlers = () => {
     setVisible1(false);
   };
-  
   const closeHandler1 = () => {
-    
+    setVisible1(false);
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
@@ -108,15 +107,47 @@ export default function Profile() {
     setVisible2(false);
   };
   const closeHandler2 = () => {
-   
+    setVisible2(false);
   };
-//----------------------Validaciones-----------------------------------
+  
+  const history= useHistory();
 
+  const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
 
-
-
-//---------------------------------------------------------------------
-
+  const onSubmit = async (data) => {
+    try {
+      const response= await dispatch(userInfo(data)).unwrap()
+      let {status} = response;
+      if (status === "ok"){
+        toast.info('save', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          onClose: () => ( history.push("/user/profile")  ), 
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          });
+      }
+    } catch (error) {
+      // handle error here
+      console.log(error.data)
+     let {status} = error
+     if (status === "failed"){
+     /*  toast.error(`${error.data}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        }); */
+     }
+    }
+  }
+  
   return (
     <>
       <Container>
@@ -153,9 +184,10 @@ export default function Profile() {
               {userInfo &&
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
+            <form  onSubmit={handleSubmit(onSubmit)} >    
             <Info>
               <span>Adress:</span>
-              <User>  </User>
+              <User> </User>
               <Edit auto shadow onClick={handler1}>+Add </Edit>
               <Modal
                 closeButton
@@ -171,20 +203,34 @@ export default function Profile() {
                   </Text>
                 </Modal.Header>
                 <Modal.Body>
-                  <Input
-                    clearable
-                    bordered
-                    fullWidth
-                    color="primary"
-                    size="large"
-                    placeholder="Adress..."
-                  />
+                <Controller
+        className="fields"
+        name="adress"
+        control={control}
+        defaultValue=""
+        rules={ { pattern: /^[0-9a-zA-Z]+$/i, required:true, maxLength:12}}
+        render={({ field }) => <Input className="input"
+        underlined 
+        labelPlaceholder="adress"
+        tipe="submit"
+         color="#696262" {...field} />}
+      />
+       {errors?.adress?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.adress?.type === "maxLength" && (
+        <p className="error"> adress cannot exceed 12 characters</p>
+      )}
+      {errors?.adress?.type === "pattern" && (
+        <p className="error">Alphabetical characters only</p>
+      )}
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button auto flat color="error" onClick={closeHandlers1}>
+                  <Button 
+                  type="reset"
+                  onClick={closeHandlers}>
                     Back
                   </Button>
                   <Button 
+                  type="submit"
                   auto onClick={closeHandler1}>
                     Save
                   </Button>
@@ -193,7 +239,7 @@ export default function Profile() {
             </Info>
             <Info>
               <span>Zipcode:</span>
-              <User> </User>
+              <User></User>
               <Edit auto shadow onClick={handler2} >+Add</Edit>
               <Modal
                 closeButton
@@ -209,26 +255,37 @@ export default function Profile() {
                   </Text>
                 </Modal.Header>
                 <Modal.Body>
-                  <Input
-                    clearable
-                    bordered
-                    fullWidth
-                    color="primary"
-                    size="large"
-                    placeholder="Zipcode..."
-                  />
+                <Controller
+        className="fields"
+        name="zipCode"
+        rules={{ required: true, pattern: /^([0-9])*$/i , maxLength:5, minLength:4}}
+        control={control}
+        defaultValue=""
+        render={({ field }) => <Input className="input"
+      
+        underlined 
+       
+        labelPlaceholder="zipCode"
+         color="#c5c5c5" {...field} />}
+      />
+      {errors.zipCode?.type === 'required' && <p className="error">zipCode is required</p>}
+      {errors.zipCode?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.zipCode?.type === 'maxLength' && <p className="error">zipCode cannot be shorter than 5</p>}
+      {errors.zipCode?.type === 'minLength' && <p className="error">zipCode cannot be longer than 3 caracters </p>}         
                 </Modal.Body>
                 <Modal.Footer>
                   <Button auto flat color="error" onClick={closeHandlers2}>
                     Back
                   </Button>
                   <Button 
+                  type = "submit"
                   auto onClick={closeHandler2}>
                     Save
                   </Button>
                 </Modal.Footer>
               </Modal>
             </Info>
+            </form>
             <Link to='/home'>
               <Button> Back </Button>
             </Link>

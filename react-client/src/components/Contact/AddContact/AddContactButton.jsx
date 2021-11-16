@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
-import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
-import { useHistory } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { Modal, Button, Text, Input} from '@nextui-org/react';
+import { useDispatch } from 'react-redux';
 
 import styled from "styled-components";
+import {PersonAdd} from "@styled-icons/evaicons-solid/PersonAdd"
 import { addContact } from '../../../redux/reducers/ContactSlice';
 
 
@@ -17,15 +17,23 @@ const StyledModal = styled(Modal)`
      font-size: 15px;
 }
 `;
+const StyledButton = styled(Button)`
+
+
+.icon{
+  padding-top: 8px;
+}
+`;
+
 
 const AddContactButton = () => {
 
     const dispatch= useDispatch();
-    const userState = useSelector(state => state.user);
+  
 
-    const {loggedInUser} =userState; 
+   
 
-    const error = useSelector(state => state.user.signinState.error);
+   
    
 
 
@@ -37,17 +45,16 @@ const AddContactButton = () => {
     const handler = () => setVisible(true);
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
         reset({
             data: "",
             description:"",
         });
     };
 
-    const history = useHistory();
+
  
   const onSubmit = (data) => {
-     console.log(data)
+/*      console.log(data) */
      dispatch(addContact(data))
   
       /* setVisible(false) */
@@ -57,9 +64,9 @@ const AddContactButton = () => {
     return (
 
     <div>
-        <Button onClick={handler}>
-            Add Contact
-        </Button>
+        <StyledButton auto onClick={handler}>
+            <PersonAdd className="icon" width="22px" />
+        </StyledButton>
        
         <StyledModal
             closeButton
@@ -82,7 +89,7 @@ const AddContactButton = () => {
         name="data"
         control={control}
         defaultValue=""
-        rules={{required:true}}
+        rules={{required:true, maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -91,13 +98,14 @@ const AddContactButton = () => {
          color="#f5f5f5" {...field} />}
       />
       {errors.data?.type === 'required' && <p className="error">This field is required</p>}
+      {errors.data?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
  
             <Controller
         className="fields"
         name="description"
         control={control}
         defaultValue=""
-
+        rules={{maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -105,6 +113,7 @@ const AddContactButton = () => {
         labelPlaceholder="Ej: Alquiler"
          color="#f5f5f5" {...field} />}
       />
+      {errors.description?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
      
 
 
@@ -115,7 +124,7 @@ const AddContactButton = () => {
                 <Button auto flat color="error" onClick={closeHandler}>
                 Close
                 </Button>
-                <Button auto type="submit">
+                <Button  type="submit">
                      Add
                 </Button>
             </Modal.Footer>

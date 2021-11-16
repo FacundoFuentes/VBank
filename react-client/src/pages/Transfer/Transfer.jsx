@@ -9,7 +9,7 @@ import {useHistory} from 'react-router-dom'
 
 import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
-
+import {toast } from 'react-toastify';
 
 const Container= styled.div`
 display: flex;
@@ -20,6 +20,7 @@ height: 450px;
 width: 700px;
 background-color: white;
 border-radius: 10px;
+
 `
 const MaxContainer=styled.div`
 height: 800px;
@@ -104,6 +105,7 @@ const defaultForm = {
 
 
 
+
 export default function Transfer() {
   const [visible, setVisible] = useState(false);
   const handler = () => setVisible(true);
@@ -113,23 +115,37 @@ export default function Transfer() {
    
   }
 
-const myRef = useRef(null)
+
+const myHistory = useHistory()
 
 const [state, setState] = useState(defaultForm)
 
 const [error,setError] = useState('')
 
-
 const [status, setStatus] =useState(0)
+/* const [input, setInput] = useState(null)
+console.log(input) */
+const [btnLoading, setBtnLoading] = useState(false)
+const [btnValidate, setBtnValidate] = useState(true)
 
+function handleInputChange(e){
+
+  setState({
+    ...state,
+    to: e.target.value
+})
+}
 
 function handleChange(e){
+  
   setState({
       ...state,
       [e.target.name]: e.target.value
   })
   
 }
+
+
 
 function handleAmount(e){
   setState({
@@ -140,7 +156,7 @@ function handleAmount(e){
 const handleBranch = () => {
   setState({
     ...state,
-    branch: myRef.current.value
+    branch: myHistory.current.value
   })
   
 }
@@ -149,7 +165,7 @@ const handleBranch = () => {
 
 const token = JSON.parse(localStorage.getItem("token")).data
 let {username} = jwt.decode(token)
-
+let history= useHistory();
 
  function handleSubmit(e){
   e.preventDefault()
@@ -159,11 +175,27 @@ let {username} = jwt.decode(token)
    console.log(response)
    setStatus(response.status)
    console.log(response.status)
+   setBtnLoading(false)
    
    }).catch(error=>{
      setError(error.response.data.error)
      setStatus(error.response.data.status)
-      
+     setBtnLoading(false)
+     
+     if (error.response.data.data === "Unauthorized"){
+       localStorage.removeItem('token')
+       toast.error(`Session expired, you must sign in again`, {
+        position: "top-right",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        }); 
+     }
+    
    })
   }
   
@@ -176,7 +208,7 @@ let {username} = jwt.decode(token)
 
     return (
       <div>
-      <Sidebar/>
+      
        <MaxContainer>
         
         <TitleContainer>
@@ -190,13 +222,13 @@ let {username} = jwt.decode(token)
          
           <ToContainer>
             <Text weight='bold'>To Username</Text>
-            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal/>} width="300px"/>
+            <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal handleInputChange={handleInputChange}/>} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
            <Text >How much?</Text>
-           <Input name="amount" value={state.amount} type="number" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
+           <Input name="amount" value={state.amount} type="number" min="1" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
@@ -207,7 +239,7 @@ let {username} = jwt.decode(token)
        </DetailContainer>   
        <BranchContainer>
         <Text>Why?</Text>
-          <Select ref={myRef} onChange={handleBranch}>
+          <Select ref={myHistory} onChange={handleBranch}>
           <option  value="Branch">select reason</option>
                     <option value="Travel">Travel</option>
                     <option value="Food">Food</option>
@@ -224,7 +256,7 @@ let {username} = jwt.decode(token)
        </TextContainer>
        
        <ButtonContainer>
-       <Button disabled={!state.to||!state.amount||!state.description} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
        
        <Modal  

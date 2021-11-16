@@ -5,13 +5,15 @@ const generator = require("generate-password");
 const CryptoJS = require('crypto-js')
 const pdf = require('html-pdf');
 const random = require("simple-random-number-generator");
+const QRCode = require('qrcode')
+
 
 
 require('dotenv').config()
 
 
 const signToken =(userInfo) => {
-  return jwt.sign(userInfo ,process.env.JWT_SECRET, {expiresIn: '10000'});
+  return jwt.sign(userInfo ,process.env.JWT_SECRET, {expiresIn: '600000'});
 }
 const generatePDF = async (date, sender, receiver, amount) => {
   const content = `
@@ -149,7 +151,8 @@ const generateCode = () => {
     length: 6,
     uppercase: false,
   });
-  return validationCode;
+  const encryptCode = encrypt(validationCode)
+  return encryptCode;
 };
 
 
@@ -163,6 +166,29 @@ const generateCargeNumber = () => {
   const number = random(params)
   return number.toString()
 }
+
+
+ 
+  // QRCode.toDataURL('I am a pony!', function (err, url) {
+  //   console.log(url)
+  // }) 
+const generateQR = async (text) => {
+    try {
+    
+      let qrImage, qrUrl;
+
+      qrUrl = await QRCode.toDataURL(text)
+      qrImage = await QRCode.toFile('./src/utils/Qerres/qr.png',text, function (err) {
+          if (err) throw err
+        })
+        return qrUrl
+      } catch (err) {
+      console.error(err)
+    }
+}
+
+
+
 
 
 function validateRegisterData({
@@ -203,8 +229,10 @@ module.exports = {
   generarCvv,
   validateRegisterData,
   generateCode,
+  encrypt,
   decrypt,
   signToken,
   verifyToken,
   generateCargeNumber,
+  generateQR
 };

@@ -22,11 +22,6 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
   let userFrom, userTo, accountFrom, accountTo; //Variables auxiliares
   
   try { 
-    // if(decodedToken.username === to) return res.status(400).json({ //Si el usuario logeado es el mismo que el receiver 
-    //   status: "failed",
-    //   error:
-    //     "You can't receive money from yourself",
-    // })
 
     userFrom = await User.findOne({ username: decodedToken.username }); //Busco el usuario cuyo username es el del token
     accountFrom = await Account.findOne({_id: userFrom.account})
@@ -133,4 +128,41 @@ transaction.post("/", async (req, res) => {
 
 });
 
+
+
+transaction.get("/authorize/:code", async (req, res) => {
+
+  const {code} = req.params
+  try {
+    
+    const transaction = await Transaction.findOne({transactionCode: code}).populate('to')
+    
+    if(!transaction){
+      res.status(400).send('Invalid transaction code')
+    }
+    else {
+      const account = await Account.findOne({_id: transaction.to.account})
+      if(!account){
+        res.status(400).send('That account no longer exist')
+      }
+  
+      else if(transaction.status === 'DONE'){
+        res.status(400).send('Charge already done!')
+      }
+      else{
+        account.balance += Number(transaction.amount)
+        account.save()
+    
+        transaction.status = 'DONE';
+        transaction.save()
+    
+        res.status(200).send('Enjoy Your Money')
+      }
+    }
+
+  } catch (error) {
+    res.status(404).send({status: 'failed', data: error.message})
+  }
+
+});
 module.exports = transaction;

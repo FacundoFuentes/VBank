@@ -86,7 +86,17 @@ const userSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Contact'
       }
-    ] 
+    ], 
+    status: {
+      type: String,
+      required: true,
+      default: "WAITING EMAIL VERIFICATION",
+      enum: ["WAITING EMAIL VERIFICATION", "ACTIVE", "BAN"]
+    },
+    failedAccessAtemps: {
+      type: Number,
+      default: 0
+    }
     
   },
   { timestamps: true }

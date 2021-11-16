@@ -99,7 +99,7 @@ export default function Profile() {
     setVisible1(false);
   };
   const closeHandler1 = () => {
-    setVisible1(false);
+    userInfo.adress = false
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
@@ -115,7 +115,7 @@ export default function Profile() {
   const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
 
   const onSubmit = async (data) => {
-    try {
+    try  {
       const response= await dispatch(userInfo(data)).unwrap()
       let {status} = response;
       if (status === "ok"){
@@ -187,7 +187,7 @@ export default function Profile() {
             <form  onSubmit={handleSubmit(onSubmit)} >    
             <Info>
               <span>Adress:</span>
-              <User> </User>
+                <User> </User> 
               <Edit auto shadow onClick={handler1}>+Add </Edit>
               <Modal
                 closeButton

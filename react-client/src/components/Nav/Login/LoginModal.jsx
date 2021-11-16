@@ -77,11 +77,13 @@ const LoginModal = () => {
     const history = useHistory();
 
     useEffect(() => {
-        if (loggedInUser){
-            //redirect con el hook useHistory
-            history.push("/home"); //esto me lleva hacia esta ventana
+        // setVisible(false)
+        // if (loggedInUser){
+        //     //redirect con el hook useHistory
+            
+        //     history.push("/home"); //esto me lleva hacia esta ventana
 
-        }
+        // }
     },[loggedInUser,history])
   
 
@@ -93,11 +95,16 @@ const LoginModal = () => {
  
   const onSubmit = async(data) => {
      try {
-        const response= await dispatch(signinUser(data)).unwrap()
+       const response= await dispatch(signinUser(data)).unwrap()
+       if(response.status === "ok"){
+         setVisible(false)
+         history.push("/home")
+       }
+        
         
       } catch (error) {
         // handle error here
-        /* console.log(error) */
+        /* .log(error) */
        let {status} = error
        if (status === "failed"){
          return <>

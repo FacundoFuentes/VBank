@@ -152,7 +152,6 @@ export default function FixedTerm() {
     
     return (
       <div>
-      <Sidebar/>
        <MaxContainer>
         
         <TitleContainer>

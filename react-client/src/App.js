@@ -23,7 +23,7 @@ function App() {
         <Route exact path="/home/transfer" render={()=> (<> <Sidebar/> <Transfer/> </>)}/>
         <Route exact path="/home/charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/>
         <Route exact path="/user/signUp"  render={()=> (<> <Sidebar/> <SignupPage/> </>)}/>  
-        <Route exact path="/fixedTerm" component={FixedTerm}/>
+        <Route exact path="/fixedTerm" render={()=> (<> <Sidebar/> <FixedTerm/> </>)}/>
         <Route exact path="/user/profile"  render={()=> (<> <Sidebar/> <Profile/> </>)}/>
         <Route exact path="/Charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/> 
        </Switch>

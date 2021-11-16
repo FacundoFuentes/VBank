@@ -11,6 +11,7 @@ import {LogOut} from "@styled-icons/boxicons-regular/LogOut"
 import { Spacer, Text , Grid, Col,Row} from "@nextui-org/react"
 import { logoutUser } from '../../redux/reducers/userSlice'
 import { BuildingRetailMoney } from "@styled-icons/fluentui-system-filled/BuildingRetailMoney"
+import {PiggyBankFill} from "@styled-icons/bootstrap/PiggyBankFill"
 
 
 const SideNav = styled.div`
@@ -27,7 +28,7 @@ const SideNav = styled.div`
   padding:0px;
   transition: all 700ms;
   &:hover{
-    width:200px
+    width:220px
   }
 
   `; 
@@ -71,6 +72,16 @@ const IconUser = styled(UserCircle)`
   color: #f5f5f5;
   width:30px;
   height:30px;
+`;
+const IconPiggy = styled(PiggyBankFill)`
+  
+  cursor:pointer;
+  position:relative;
+  margin: 0;
+  padding:0;
+  color: #f5f5f5;
+  width:35px;
+  height:35px;
 `;
 const IconLogOut = styled(LogOut)`
   
@@ -136,6 +147,12 @@ const logOut = ()=> {
             <TextIcons color="#f5f5f5;">Charge</TextIcons></LinkIcons>
             </Row>
           <Spacer y={2}/>
+            <Row>
+             <LinkIcons to="/fixedTerm"><IconPiggy /> 
+             <Spacer x={1.3}/>
+              <TextIcons color="#f5f5f5;">Fixed Term</TextIcons></LinkIcons>
+            </Row>
+            <Spacer y={2}/> 
             <Row>
              <LinkIcons to="/user/profile"><IconUser /> 
              <Spacer x={1.4}/>

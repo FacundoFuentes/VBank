@@ -227,6 +227,27 @@ user.post("/userInfo", async (req, res) => {
   }
 });
 
+user.post("/updateInfo", async (req, res )  => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req); //Extraigo el token que me llega por head
+  const decodedToken = jwtDecode(authToken); // Decodeo el token
+  const username = decodedToken.username;
+
+  const {zipCode, address} = req.body
+
+  try {
+    const userFound = await User.findOne({username})
+    if(!userFound) return res.status(400).json({status: 'failed', data: 'User not found, please reload the page'})
+  
+    userFound.zipCode = zipCode
+    userFound.address = address
+    
+    userFound.save()
+    res.json({status: 'ok', data: userFound})
+  } catch (error) {
+    res.status(400).json({status: 'failed', data: "Error: " + error})
+  }
+})
+
 user.post("/userAccountInfo", async (req, res) => {
   const { username } = req.body; // add token
 

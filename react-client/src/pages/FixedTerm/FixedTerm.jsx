@@ -159,6 +159,7 @@ export default function FixedTerm() {
     const [state, setState] = useState(defaultForm)
     const [error,setError] = useState('')
    const [status, setStatus] =useState(0)
+   const [btnLoading, setBtnLoading] = useState(false)
 
   
     function handleChange(e){
@@ -223,12 +224,13 @@ export default function FixedTerm() {
 
        function handleSubmit(e){
         e.preventDefault()
-        
+        setBtnLoading(true)
         axios.post('http://localhost:3001/fixedDeposit/new', state, {headers:{'Authorization':'Bearer ' + token}})
         .then(response=> {
           console.log(response)
           setStatus(response.status)
           console.log(response.status)
+          setBtnLoading(false)
           
           }).catch(error=>{
             setError(error.response.data.data)
@@ -332,7 +334,7 @@ export default function FixedTerm() {
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+            <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
             </>
@@ -341,7 +343,7 @@ export default function FixedTerm() {
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
+            <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Confirm!
             </Button>
             
@@ -368,11 +370,11 @@ export default function FixedTerm() {
         <BoderShadow style={{height:"350px"}} >
           <Expeses>
             <DateNameTotal>
-            <LatestMovements  gap={2} justify="space-around">
+            <LatestMovements  gap={2} justify="space-between">
                 <Spacer x={4} />
-                <GridLatestMovents xs={2}>Due Date</GridLatestMovents>
+                <GridLatestMovents xs={2}>Date</GridLatestMovents>
                 <Spacer x={-5}/>
-                <GridLatestMovents justify="center" xs={4}>Amount</GridLatestMovents>
+                <GridLatestMovents justify="center" xs={4}>Initial amount</GridLatestMovents>
                 <Spacer x={1}/>
                 <GridLatestMovents xs={1}>Total</GridLatestMovents>
                 <Spacer x={2} />
@@ -383,7 +385,7 @@ export default function FixedTerm() {
               {info?.map((e, i) => {
                
                   return (
-                    <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
+                <LatestMovements key={i} gap={2} justify="space-between" style={{marginBottom:"10px"}}>
                 <Spacer x={3} />
                 <GridLatestMovents xs={2}>{` ${e.finishDate.slice(0,10)} `} </GridLatestMovents>
                 <Spacer x={-4}/>

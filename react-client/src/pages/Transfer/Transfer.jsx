@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
+import { Button, Text, Input, Textarea, Modal,Spacer} from '@nextui-org/react';
 
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
@@ -11,6 +11,32 @@ import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
 import {toast } from 'react-toastify';
 
+
+const ContainerS = styled.div`
+  margin: 0px 300px;
+  display:flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content:center;
+  
+  `;
+  const GridS = styled.div`
+  margin:5px 20px;
+  display:flex;
+  flex-wrap:wrap;
+  width: 70%;
+  height:100%;
+  
+`;
+const BoderShadow = styled(GridS)`
+  border:solid 0.5px #03030349;
+  border-radius:10px;
+  display:flex;
+  justify-content :center;
+  width:61%;
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+`;
 const Container= styled.div`
 display: flex;
 justify-content: space-evenly;
@@ -22,13 +48,13 @@ background-color: white;
 border-radius: 10px;
 
 `
-const MaxContainer=styled.div`
+/* const MaxContainer=styled.div`
 height: 800px;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-`
+` */
 const TitleContainer= styled.div`
 margin-right: 85px;
 margin-bottom: 10px;
@@ -212,11 +238,13 @@ let history= useHistory();
     return (
       <div>
       
-       <MaxContainer>
+      <ContainerS style={{overflow:"hidden"}} >
         
         <TitleContainer>
           <Text h3 > Send Money </Text>
         </TitleContainer>
+
+        <BoderShadow>
          
          <form >
       
@@ -322,8 +350,12 @@ let history= useHistory();
       
        </form>
       
-      </MaxContainer>
+       </BoderShadow>
 
+      
+</ContainerS>
+  <Spacer y={3}/>
+  
       </div>
     )
 }

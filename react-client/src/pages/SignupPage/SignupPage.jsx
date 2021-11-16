@@ -344,7 +344,7 @@ const SignupPage = () => {
         name="firstName"
         control={control}
         defaultValue=""
-        rules={ { pattern: /^[A-Za-z]+$/i, required:true, maxLength:32}}
+        rules={ { pattern: /[A-Za-z]{2,254}/i, required:true, maxLength:32}}
         render={({ field }) => <Input className="input"
         underlined 
         labelPlaceholder="First Name"
@@ -464,7 +464,7 @@ Prev
 </Button>
 <Button
 size="mini"
-disabled={formStep === 2 || !isValid}
+disabled={formStep === 2 }
 onClick={() => {
 setFormStep((currPage) => currPage + 1);
 
@@ -476,7 +476,7 @@ Next
 </div>
 
 
-{formStep === 2 ? <>   <Button  type="submit" color="primary" auto>
+{formStep === 2  && isValid ? <>   <Button  type="submit" color="primary" auto>
           Create Account
 </Button></> : null}
           

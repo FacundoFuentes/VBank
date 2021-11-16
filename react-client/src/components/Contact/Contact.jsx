@@ -60,6 +60,7 @@ const ContactModal = ({handleInputChange}) => {
     const dispatch= useDispatch();
 
     const contacts = useSelector(state => state.contacts.contactList)
+ 
     
     const loading = useSelector(state => state.contacts.loading)
 
@@ -125,7 +126,7 @@ const ContactModal = ({handleInputChange}) => {
 )):(
   <p> Empty, Add One</p>
 )}
-
+   
         </>
       )}
               

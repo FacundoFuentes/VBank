@@ -8,20 +8,26 @@ const ChartStyle = styled.div`
   height:500px;
 `;
 
-export default function Chart({data}) {
+
+export default function Chart({data , label, interactive, enableArcLinkLabels}) {
   
-  const MyResponsivePie = ({ data /* see data tab */ }) => (
+  const MyResponsivePie = ({ data} ) => (
+   
     <ResponsivePie
+   
         data={data}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.75}
         padAngle={0.7}
         cornerRadius={3}
         activeOuterRadiusOffset={8}
+        isInteractive={interactive}
         colors={{ scheme: 'paired' }}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.2 ] ] }}
         arcLinkLabelsSkipAngle={10}
+        enableArcLabels={label}
+        enableArcLinkLabels={enableArcLinkLabels}
         arcLinkLabelsTextColor="#333333"
         arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: 'color' }}

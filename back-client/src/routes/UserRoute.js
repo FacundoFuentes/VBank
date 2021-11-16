@@ -156,7 +156,7 @@ user.post("/login", async (req, res) => {
 
   const userFound = await User.findOne({ username, dni });
   todayDate = new Date();
-
+if(!userFound) return res.status(400).json({status: 'failed', error: 'Invalid Credentials'})
   if (userFound.status === "BANED")
     if (userFound.banDate < todayDate) {
       userFound.banDate = null;

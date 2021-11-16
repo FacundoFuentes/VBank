@@ -5,7 +5,6 @@ import {useHistory} from "react-router-dom"
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png"
 import { Grid, Spacer, Text, Divider} from "@nextui-org/react"
-import SideBar from "../../components/Sidebars/Sidebar"
 import { getUserAccountInfo, getUserInfo, getBalance} from "../../redux/reducers/userSlice";
 import { toast} from "react-toastify";
 import gold from "../../img/oro.png"
@@ -234,7 +233,7 @@ export default function Home() {
 data2 = data2?.filter(e => e.value > 0 )
    
 userTransaction = userTransaction?.map(e => e).reverse()
-  
+console.log( userTransaction?.map(e => e).reverse());
 
 
   return (
@@ -284,7 +283,7 @@ userTransaction = userTransaction?.map(e => e).reverse()
               <Divider x={0} y={1} />
               <GridContainer >
               {userTransaction?.map((e, i) => {
-                if(!e.transaction?.status){
+                if(!e.transaction?.status || e.transaction?.status === "DONE"){
                   return (
                     <LatestMovements key={i} gap={2} justify="space-around" style={{marginBottom:"10px"}}>
                 <Spacer x={3} />

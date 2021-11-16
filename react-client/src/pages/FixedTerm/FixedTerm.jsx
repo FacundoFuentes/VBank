@@ -62,7 +62,7 @@ align-items: center;
 export default function FixedTerm() {
 
     
-
+    const [info, setInfo] = useState()
     const [visible, setVisible] = useState(false);
     const handler = () => setVisible(true);
     const closeHandler = () => {
@@ -112,7 +112,7 @@ export default function FixedTerm() {
       let rate37xdays= ((parseFloat(state.amount)*rate37))
       let rate37Total = (rate37xdays + monto).toFixed(2)
 
-
+      console.log(info)
       
        useEffect(() => {
         
@@ -126,7 +126,21 @@ export default function FixedTerm() {
       const token = JSON.parse(localStorage.getItem("token")).data
       let {username} = jwt.decode(token)
       
-      
+      useEffect(()=>{
+        axios.get("http://localhost:3001/fixedDeposit" , {headers:{'Authorization':'Bearer ' + token}} )
+        .then(response=> {
+          
+          setInfo(response.data.fixedDeposits)
+          
+          
+          
+          }).catch(error=>{
+            
+             console.log(error)
+          })
+      },[])
+
+
        function handleSubmit(e){
         e.preventDefault()
         
@@ -166,7 +180,6 @@ export default function FixedTerm() {
     
     return (
       <div>
-      <Sidebar/>
        <MaxContainer>
         
         <TitleContainer>

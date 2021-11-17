@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input} from '@nextui-org/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styled from "styled-components";
 import {PersonAdd} from "@styled-icons/evaicons-solid/PersonAdd"
-import { addContact } from '../../../redux/reducers/ContactSlice';
+import { addContact, resetAddContact } from '../../../redux/reducers/ContactSlice';
 
 
 const StyledModal = styled(Modal)`
@@ -29,7 +29,7 @@ const StyledButton = styled(Button)`
 const AddContactButton = () => {
 
     const dispatch= useDispatch();
-  
+    const error = useSelector(state => state.contacts.error)
 
    
 
@@ -49,12 +49,15 @@ const AddContactButton = () => {
             data: "",
             description:"",
         });
+        dispatch(resetAddContact())
+
     };
 
 
  
   const onSubmit = (data) => {
 /*      console.log(data) */
+dispatch(resetAddContact())
      dispatch(addContact(data))
   
       /* setVisible(false) */
@@ -114,6 +117,8 @@ const AddContactButton = () => {
          color="#f5f5f5" {...field} />}
       />
       {errors.description?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
+
+      {error && <p className="error">{error.error}</p>}
      
 
 

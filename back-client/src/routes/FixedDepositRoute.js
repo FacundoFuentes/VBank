@@ -144,7 +144,7 @@ fixedDeposit.post("/new", async (req, res) => {
   }
 });
 
-fixedDeposit.post("/", async (req, res) => {
+fixedDeposit.get("/", async (req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req); //Extraigo el token que me llega por head
   const decodedToken = jwtDecode(authToken); // Decodeo el token
   const username = decodedToken.username;

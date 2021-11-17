@@ -85,7 +85,11 @@ const initContactsState = {
 const contactsSlice = createSlice({ 
   name: "contacts",
   initialState: initContactsState,
-  reducers: {},
+  reducers: {
+    resetAddContact: (state) => {
+      state.error = initContactsState.error;
+    },
+  },
   extraReducers: {
     [getContacts.pending]: (state) => {
       if (state.loading === "idle") {
@@ -136,4 +140,5 @@ const contactsSlice = createSlice({
   },
 });
 
+export const {resetAddContact} = contactsSlice.actions;
 export default contactsSlice.reducer;

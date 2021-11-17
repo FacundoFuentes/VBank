@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Link } from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
-
+import axios from "axios";
 
 const Container = styled.div`
 padding: 50px;
@@ -97,9 +97,9 @@ export default function Profile() {
   const closeHandlers = () => {
     setVisible1(false);
   };
-  const closeHandler1 = () => {
-    setVisible2(false);
-  
+  const closeHandler1 = (data) => {
+    setVisible1(false) 
+   
   
   };
   const [visible2, setVisible2] = useState(false);
@@ -111,18 +111,15 @@ export default function Profile() {
     setVisible2(false);
   };
 
-  const { register, control, handleSubmit, formState: {errors} } = useForm();
+  const { control, handleSubmit, formState: {errors} } = useForm();
 
 
-  const [update, setUpdate] = useState(
-    
-  );
-
-
-const onSubmit = (data) => {setUpdate(data)
+const onSubmit = (data,e) => {
 console.log(data)
+ e.target.reset();
 
 }
+
 
 
 
@@ -162,17 +159,19 @@ console.log(data)
               {userInfo &&
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
-            <form onSubmit = {handleSubmit(onSubmit)} >
               <Info>
                 <span>Adress:</span>
-                {userInfo &&
-                  <User>{`${userInfo.adress}`} </User>}
+                {userInfo && userInfo.adress === undefined ? (
+                  <User> </User>
+                ) :(                   
+                  <User>{`${userInfo.adress}`} </User>)}
                 <Edit auto shadow onClick={handler1}>+Add </Edit>
                 <Modal
                   closeButton
                   aria-labelledby="modal-title"
                   open={visible1}
                   onClose={closeHandler1}>
+               
                   <Modal.Header>
                     <Text id="modal-title" size={18}>
                       change your..
@@ -180,17 +179,19 @@ console.log(data)
                         Adress
                       </Text>
                     </Text>
+                  
                   </Modal.Header>
+                  <form onSubmit = {handleSubmit(onSubmit)} >
                   <Modal.Body>
                     <Controller
                       className="fields"
                       control={control}
                       defaultValue=""
+                      name="address"
                       rules={{ pattern: /^[0-9a-zA-Z]+$/i, required: true, maxLength: 12 }}
                       render={({ field }) => <Input className="input"
-                      {...register("adress")}
+                      
                         underlined
-                        
                         labelPlaceholder="adress.."
                         tipe="text"
                         color="#696262" {...field} />}
@@ -204,9 +205,7 @@ console.log(data)
                     )}
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button
-                      type="reset"
-                      onClick={closeHandlers}>
+                    <Button auto flat color="error" onClick={closeHandlers}>
                       Back
                     </Button>
                     <Button
@@ -215,13 +214,15 @@ console.log(data)
                       Save
                     </Button>
                   </Modal.Footer>
+                  </form>
                 </Modal>
               </Info>
               <Info>
                 <span>Zipcode:</span>
-                {userInfo &&
-                  <User>{`${userInfo.zipCode}`} </User>}
-                <Edit auto shadow onClick={handler2} >+Add</Edit>
+                {userInfo && userInfo.zipCode === undefined ? (
+                  <User> </User> && <Edit auto shadow onClick={handler2}>+Add </Edit>
+                ) :(                   
+                <User>{`${userInfo.zipCode}`} </User> && <Edit auto shadow onClick={handler2}>Edit </Edit>)} 
                 <Modal
                   closeButton
                   aria-labelledby="modal"
@@ -235,17 +236,17 @@ console.log(data)
                       </Text>
                     </Text>
                   </Modal.Header>
+                  <form onSubmit = {handleSubmit(onSubmit)} >
                   <Modal.Body>
                     <Controller
-                      className="fields"
+                      className="field"
                       name="zipCode"
                       rules={{ required: true, pattern: /^([0-9])*$/i, maxLength: 5, minLength: 4 }}
                       control={control}
                       defaultValue=""
                       render={({ field }) => <Input className="input"
-                      {...register("adress")}
                         underlined
-
+                        type="number"
                         labelPlaceholder="zipCode"
                         color="#c5c5c5" {...field} />}
                     />
@@ -264,9 +265,10 @@ console.log(data)
                       Save
                     </Button>
                   </Modal.Footer>
+                  </form>
                 </Modal>
               </Info>
-            </form>
+  
             <Link to='/home'>
               <Button> Back </Button>
             </Link>

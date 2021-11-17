@@ -389,7 +389,7 @@ export default function FixedTerm() {
                 <Spacer x={3} />
                 <GridLatestMovents xs={2}>{` ${e.finishDate.slice(0,10)} `} </GridLatestMovents>
                 <Spacer x={-4}/>
-                <GridLatestMovents justify="center" xs={4}>{` ${e.amount} `} </GridLatestMovents>
+                <GridLatestMovents justify="center" xs={4}>{`$ ${e.amount} `} </GridLatestMovents>
                 <Spacer x={1}/>
                 <GridLatestMovents xs={1}>{ `$ ${e.total}` } </GridLatestMovents>
                 <Spacer x={2} />

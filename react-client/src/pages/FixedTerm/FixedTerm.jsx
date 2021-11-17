@@ -14,13 +14,11 @@ const ContainerS = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content:center;
-  @media (max-width: 1100px){
-    width: 100%
-  }
+  align-items: flex-start;
   `;
 const Container= styled.div`
 display: flex;
-justify-content: space-evenly;
+justify-content: center;
 flex-direction: column;
 align-items: center;
 height: 450px;
@@ -28,7 +26,12 @@ width: 700px;
 background-color: #FFF;
 border-radius: 10px;
 @media (max-width: 1100px){
-  width: 100%; 
+  min-width: 500px;
+  width: 65%;
+  background-color: blue;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
 } 
 `
 /* const MaxContainer=styled.div`
@@ -45,21 +48,35 @@ margin-right:50px;
 
 const TextContainer = styled.div`
 @media (max-width: 1100px){
-  width:100%;}
+  background-color: green;
+  display:flex;
+  flex-direction: column;
+  width:100%;
+  align-items: center;
+  justify-content:center;
+}
 `
 const ToContainer= styled.div`
 margin-top:10px;
 margin-bottom: 10px;
 padding: 5px;
 @media (max-width: 1100px){
-  width:100%;}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
 padding: 5px;
 @media (max-width: 1100px){
-  width:100%;}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 `
 const DetailContainer = styled.div `
@@ -67,13 +84,19 @@ margin-bottom: 0px;
 margin-top: 30px;
 padding: 5px;
 @media (max-width: 1100px){
-  width:100%;}
+  max-width: 30%
+}
+
 `
 const ButtonContainer = styled.div`
-margin-left:155px;
 padding: 5px;
 @media (max-width: 1100px){
-  width:100%;}
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
 
 `
 const DivCheck = styled.div`
@@ -114,6 +137,8 @@ const BoderShadow = styled(GridS)`
   @media (max-width: 1100px){
     width:100%;
     border: none;
+    border-radius: 0px;
+    border-bottom: solid 3px #03030349;
     -webkit-box-shadow: none; 
     box-shadow: none;
   }
@@ -309,7 +334,7 @@ export default function FixedTerm() {
        </MoneyContainer>
        
        <DetailContainer>
-       <Card  color="#f3f3f3" bordered borderColor="#D8DBE2" >
+       <Card color="#f3f3f3" bordered borderColor="#D8DBE2" >
            <Text  >Interest rate: </Text>
            <Text > from 30 to 365 days: TNA 37% </Text>
           

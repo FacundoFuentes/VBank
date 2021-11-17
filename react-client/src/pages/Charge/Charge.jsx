@@ -97,7 +97,7 @@ export default function Charge() {
         style={{ height: "100vh", width: "100vh" }}
       >
         <Text
-          style={{ position: "relative", left: "-24%", marginBottom: "10px" }}
+          style={{ position: "relative", left: "-245px", marginBottom: "10px" }}
           h3
         >
           Charge

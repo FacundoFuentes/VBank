@@ -9,7 +9,7 @@ import {toast } from 'react-toastify';
 
 
 const ContainerS = styled.div`
-  margin: 0px 300px;
+  margin: 0px 25%;
   display:flex;
   flex-direction: column;
   width: 100%;
@@ -89,6 +89,7 @@ const GridS = styled.div`
   
 `;
 const BoderShadow = styled(GridS)`
+  overflow:hidden;
   border:solid 0.5px #03030349;
   border-radius:10px;
   display:flex;

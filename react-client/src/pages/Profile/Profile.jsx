@@ -98,9 +98,9 @@ export default function Profile() {
     setVisible1(false);
   };
   const closeHandler1 = () => {
-   
-
-    
+    setVisible2(false);
+  
+  
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
@@ -110,13 +110,22 @@ export default function Profile() {
   const closeHandler2 = () => {
     setVisible2(false);
   };
-  
-  
 
-  const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
+  const { register, control, handleSubmit, formState: {errors} } = useForm();
 
-  
-      
+
+  const [update, setUpdate] = useState(
+    
+  );
+
+
+const onSubmit = (data) => {setUpdate(data)
+console.log(data)
+
+}
+
+
+
   return (
     <>
       <Container>
@@ -126,7 +135,7 @@ export default function Profile() {
             <Info>
               <span>Birthdate:</span>
               {userInfo &&
-                <User> {`${userInfo.birthDate.slice(0,10)}`} </User>}
+                <User> {`${userInfo.birthDate.slice(0, 10)}`} </User>}
             </Info>
             <Info>
               <span>DNI:</span>
@@ -153,109 +162,110 @@ export default function Profile() {
               {userInfo &&
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
-            <form  >    
-            <Info>
-              <span>Adress:</span>
-              {userInfo &&
-                <User>{`${userInfo.adress}`} </User>}
-              <Edit auto shadow onClick={handler1}>+Add </Edit>
-              <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={visible1}
-                onClose={closeHandler1}>
-                <Modal.Header>
-                  <Text id="modal-title" size={18}>
-                    change your..
-                    <Text b size={18}>
-                      Adress
+            <form onSubmit = {handleSubmit(onSubmit)} >
+              <Info>
+                <span>Adress:</span>
+                {userInfo &&
+                  <User>{`${userInfo.adress}`} </User>}
+                <Edit auto shadow onClick={handler1}>+Add </Edit>
+                <Modal
+                  closeButton
+                  aria-labelledby="modal-title"
+                  open={visible1}
+                  onClose={closeHandler1}>
+                  <Modal.Header>
+                    <Text id="modal-title" size={18}>
+                      change your..
+                      <Text b size={18}>
+                        Adress
+                      </Text>
                     </Text>
-                  </Text>
-                </Modal.Header>
-                <Modal.Body>
-                <Controller
-        className="fields"
-        name="adress"
-        control={control}
-        defaultValue=""
-        rules={ { pattern: /^[0-9a-zA-Z]+$/i, required:true, maxLength:12}}
-        render={({ field }) => <Input className="input"
-        underlined 
-        labelPlaceholder="adress"
-        tipe="submit"
-         color="#696262" {...field} />}
-      />
-       {errors?.adress?.type === "required" && <p className="error">This field is required</p>}
-      {errors?.adress?.type === "maxLength" && (
-        <p className="error"> adress cannot exceed 12 characters</p>
-      )}
-      {errors?.adress?.type === "pattern" && (
-        <p className="error">Alphabetical characters only</p>
-      )}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button 
-                  type="reset"
-                  onClick={closeHandlers}>
-                    Back
-                  </Button>
-                  <Button 
-                  type="submit"
-                  auto onClick={closeHandler1}>
-                    Save
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </Info>
-            <Info>
-              <span>Zipcode:</span>
-              {userInfo &&
-                <User>{`${userInfo.zipCode}`} </User>}
-              <Edit auto shadow onClick={handler2} >+Add</Edit>
-              <Modal
-                closeButton
-                aria-labelledby="modal"
-                open={visible2}
-                onClose={closeHandler2}>
-                <Modal.Header>
-                  <Text id="modal" size={18}>
-                    change your..
-                    <Text b size={18}>
-                      Zipcode
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Controller
+                      className="fields"
+                      control={control}
+                      defaultValue=""
+                      rules={{ pattern: /^[0-9a-zA-Z]+$/i, required: true, maxLength: 12 }}
+                      render={({ field }) => <Input className="input"
+                      {...register("adress")}
+                        underlined
+                        
+                        labelPlaceholder="adress.."
+                        tipe="text"
+                        color="#696262" {...field} />}
+                    />
+                    {errors?.adress?.type === "required" && <p className="error">This field is required</p>}
+                    {errors?.adress?.type === "maxLength" && (
+                      <p className="error"> adress cannot exceed 12 characters</p>
+                    )}
+                    {errors?.adress?.type === "pattern" && (
+                      <p className="error">Alphabetical characters only</p>
+                    )}
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      type="reset"
+                      onClick={closeHandlers}>
+                      Back
+                    </Button>
+                    <Button
+                     type="submit"
+                     auto onClick={closeHandler1}>
+                      Save
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Info>
+              <Info>
+                <span>Zipcode:</span>
+                {userInfo &&
+                  <User>{`${userInfo.zipCode}`} </User>}
+                <Edit auto shadow onClick={handler2} >+Add</Edit>
+                <Modal
+                  closeButton
+                  aria-labelledby="modal"
+                  open={visible2}
+                  onClose={closeHandler2}>
+                  <Modal.Header>
+                    <Text id="modal" size={18}>
+                      change your..
+                      <Text b size={18}>
+                        Zipcode
+                      </Text>
                     </Text>
-                  </Text>
-                </Modal.Header>
-                <Modal.Body>
-                <Controller
-        className="fields"
-        name="zipCode"
-        rules={{ required: true, pattern: /^([0-9])*$/i , maxLength:5, minLength:4}}
-        control={control}
-        defaultValue=""
-        render={({ field }) => <Input className="input"
-      
-        underlined 
-       
-        labelPlaceholder="zipCode"
-         color="#c5c5c5" {...field} />}
-      />
-      {errors.zipCode?.type === 'required' && <p className="error">zipCode is required</p>}
-      {errors.zipCode?.type === 'pattern' && <p className="error">Number characters only </p>}
-      {errors.zipCode?.type === 'maxLength' && <p className="error">zipCode cannot be shorter than 5</p>}
-      {errors.zipCode?.type === 'minLength' && <p className="error">zipCode cannot be longer than 3 caracters </p>}         
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button auto flat color="error" onClick={closeHandlers2}>
-                    Back
-                  </Button>
-                  <Button 
-                  type = "submit"
-                  auto onClick={closeHandler2}>
-                    Save
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </Info>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Controller
+                      className="fields"
+                      name="zipCode"
+                      rules={{ required: true, pattern: /^([0-9])*$/i, maxLength: 5, minLength: 4 }}
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => <Input className="input"
+                      {...register("adress")}
+                        underlined
+
+                        labelPlaceholder="zipCode"
+                        color="#c5c5c5" {...field} />}
+                    />
+                    {errors.zipCode?.type === 'required' && <p className="error">zipCode is required</p>}
+                    {errors.zipCode?.type === 'pattern' && <p className="error">Number characters only </p>}
+                    {errors.zipCode?.type === 'maxLength' && <p className="error">zipCode cannot be shorter than 5</p>}
+                    {errors.zipCode?.type === 'minLength' && <p className="error">zipCode cannot be longer than 3 caracters </p>}
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button auto flat color="error" onClick={closeHandlers2}>
+                      Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      auto onClick={closeHandler2}>
+                      Save
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Info>
             </form>
             <Link to='/home'>
               <Button> Back </Button>

@@ -113,6 +113,7 @@ transaction.post("/", async (req, res) => {
   try {
     
     const user = await User.findOne({ username }).populate('account')
+    if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
     const accountTransactions = await Account.findOne({_id: user.account._id}).populate({
       path: 'transactions',
       model: 'AccountTransaction',

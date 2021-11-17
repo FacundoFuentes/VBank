@@ -27,6 +27,7 @@ const SideNav = styled.div`
   margin:0px;
   padding:0px;
   transition: all 700ms;
+  z-index:200;
   &:hover{
     width:220px
   }

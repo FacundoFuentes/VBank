@@ -99,7 +99,9 @@ export default function Profile() {
     setVisible1(false);
   };
   const closeHandler1 = () => {
-    userInfo.adress = false
+   
+
+    
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);

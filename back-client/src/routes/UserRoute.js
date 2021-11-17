@@ -447,7 +447,7 @@ user.patch("/emailVerification/:username", async (req, res) => {
     const user = await User.findOne({ username })
 
     if(user.status === 'ACTIVE') {
-      return res.status(200).json({status: 'Account allready verified'})
+      return res.status(200).json({status: 'Account already verified'})
     }
 
     if(utils.decrypt(user.validationCode) === code ) {

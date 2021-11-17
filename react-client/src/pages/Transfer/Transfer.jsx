@@ -229,7 +229,8 @@ const token = JSON.parse(localStorage.getItem("token")).data
 
 
     return (
-      <div style={{display:"flex",justifyContent:"center", marginTop:"150px"}}>
+    
+      <div style={{display:"flex",justifyContent:"center"}}>
       
         <TitleContainer>
           <Text h3 > Send Money </Text>
@@ -345,5 +346,6 @@ const token = JSON.parse(localStorage.getItem("token")).data
 
       </div>
     )
+    
 }
 

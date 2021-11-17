@@ -97,7 +97,7 @@ export default function Profile() {
   const closeHandlers = () => {
     setVisible1(false);
   };
-  const closeHandler1 = (data) => {
+  const closeHandler1 = () => {
     setVisible1(false) 
    
   
@@ -115,9 +115,14 @@ export default function Profile() {
 
 
 const onSubmit = (data,e) => {
-console.log(data)
- e.target.reset();
-
+  e.preventDefault();
+  console.log(data);
+  axios.post("/user/updateInfo", data)
+  .then(res => {
+    console.log(res);
+    dispatch(getUserInfo())
+  })
+  .catch(err => console.log(err))
 }
 
 

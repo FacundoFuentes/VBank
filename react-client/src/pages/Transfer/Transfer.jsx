@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal,Spacer} from '@nextui-org/react';
+import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
 
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
@@ -11,32 +11,6 @@ import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
 import {toast } from 'react-toastify';
 
-
-const ContainerS = styled.div`
-  margin: 0px 300px;
-  display:flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content:center;
-  
-  `;
-  const GridS = styled.div`
-  margin:5px 20px;
-  display:flex;
-  flex-wrap:wrap;
-  width: 70%;
-  height:100%;
-  
-`;
-const BoderShadow = styled(GridS)`
-  border:solid 0.5px #03030349;
-  border-radius:10px;
-  display:flex;
-  justify-content :center;
-  width:61%;
-  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
-  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
-`;
 const Container= styled.div`
 display: flex;
 justify-content: space-evenly;
@@ -48,17 +22,18 @@ background-color: white;
 border-radius: 10px;
 
 `
-/* const MaxContainer=styled.div`
-height: 800px;
+const MaxContainer=styled.div`
+height: 600px;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-` */
+`
 const TitleContainer= styled.div`
-margin-right: 85px;
-margin-bottom: 10px;
-padding: 5px;
+  position:relative;
+  left:130px;
+  top:-50px;
+  
 `
 
 const TextContainer = styled.div`
@@ -75,7 +50,7 @@ margin-bottom: 10px;
  
 
 }
-`;
+`
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
@@ -96,6 +71,18 @@ margin-left:155px;
 padding: 5px;
 
 `
+const BoderShadow = styled.div`
+  border:solid 0.5px #03030349;
+  border-radius:10px;
+  display:flex;
+  justify-content :center;
+  
+  width:30%;
+  height:500x ;
+  overflow:hidden;
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+`;
 /* const ContactBlack = styled(Contact)`
   color: black;
   height: 50px;
@@ -190,12 +177,11 @@ const handleBranch = () => {
 
 
 const token = JSON.parse(localStorage.getItem("token")).data
-let {username} = jwt.decode(token)
-let history= useHistory();
+
 
  function handleSubmit(e){
   e.preventDefault()
-  setBtnLoading(true)
+  
   axios.post('http://localhost:3001/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
@@ -204,14 +190,15 @@ let history= useHistory();
    setBtnLoading(false)
    
    }).catch(error=>{
-    setError(error.response.data.error)
-    setStatus(error.response.data.status)
-    setBtnLoading(false)
+     setError(error.response.data.error)
+     setStatus(error.response.data.status)
+     setBtnLoading(false)
+     
      if (error.response.data.data === "Unauthorized"){
        localStorage.removeItem('token')
        toast.error(`Session expired, you must sign in again`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
@@ -220,10 +207,6 @@ let history= useHistory();
         progress: undefined,
         }); 
      }
-     else{
-
-     }
-    
     
    })
   }
@@ -236,15 +219,13 @@ let history= useHistory();
 
 
     return (
-      <div>
+      <div style={{display:"flex",justifyContent:"center", marginTop:"150px"}}>
       
-      <ContainerS style={{overflow:"hidden"}} >
-        
         <TitleContainer>
           <Text h3 > Send Money </Text>
         </TitleContainer>
-
-        <BoderShadow>
+       <BoderShadow>
+       <MaxContainer>
          
          <form >
       
@@ -318,7 +299,7 @@ let history= useHistory();
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto loading={btnLoading} rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
             </>
@@ -327,7 +308,7 @@ let history= useHistory();
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto loading={btnLoading} rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
+            <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!
             </Button>
             
@@ -349,13 +330,9 @@ let history= useHistory();
       </Container>
       
        </form>
-      
+      </MaxContainer>
        </BoderShadow>
 
-      
-</ContainerS>
-  <Spacer y={3}/>
-  
       </div>
     )
 }

@@ -21,7 +21,7 @@ display: flex;
 
 justify-content: center;
 align-items: center;
-margin-top:30px;
+margin-top:15px;
 @media only screen and (max-width:725px){
   margin-top:15px;
 }
@@ -30,10 +30,10 @@ margin-top:30px;
 
 const FormContainer = styled.div`
 
-width: 85%;
+width: 70%;
 background-color:white;
-height: 700px;
-max-height: 700px;
+height: 600px;
+max-height: 600px;
 display: grid;
 grid-template-columns: 1fr 1fr;
  img{
@@ -83,7 +83,7 @@ grid-template-columns: 1fr 1fr;
   padding-bottom: 15px;
 }
 .step.selected {
-  border: 2px solid #4B81BD; 
+  border: 2px solid #0070f3; 
   color:  #fff; 
 
 }
@@ -116,7 +116,8 @@ h2{
   flex-direction: column;
   align-items: center;
   color: #f5f5f5;
-  height: auto;
+ 
+  min-height: 520px;
   border-radius:10px;
   padding-top:25px;
   padding-bottom:5%;
@@ -126,7 +127,12 @@ form{
   padding-top: 60px;
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 50%;
+
+  @media screen and (max-width:520px){
+        width: 55%;
+   
+        }
 
   .fields{
     margin-top:10px;
@@ -161,11 +167,18 @@ form{
   
   }
   .navigation{
-      margin-top:10px;
+           margin-top:10px;
       display:flex;
       width: 100%;
       justify-content: space-between;
+
       margin-bottom: 12px;
+      @media screen and (max-width:467px){
+        button{
+          padding: 5px 10px 5px 10px;
+
+        }
+      }
     }
 
 }

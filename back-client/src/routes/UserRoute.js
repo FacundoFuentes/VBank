@@ -140,7 +140,7 @@ user.post("/changePassword", async (req, res) => {
         .status(400)
         .json({
           status: "failed",
-          data: "The previous password does not match ",
+          data: "The current password does not match ",
         });
 
     else userFound.password = await bcrypt.hash(newPassword, 10);

@@ -412,6 +412,7 @@ user.patch("/updateContact", async (req, res) => {
   const { _Id, description } = req.body;
   try {
     const contact = await Contact.findOne({ _Id });
+    if(!contact) return res.status(404).json({status: 'failed', data: 'Contact not found'})
     contact.description = description;
     contact.save();
 

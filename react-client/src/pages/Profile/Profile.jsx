@@ -153,7 +153,7 @@ export default function Profile() {
               {userInfo &&
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
-            <form  onSubmit={handleSubmit(onSubmit)} >    
+            <form  >    
             <Info>
               <span>Adress:</span>
               {userInfo &&

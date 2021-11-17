@@ -9,6 +9,7 @@ statistics.get("/month", async (req, res) => {
       $eq: [{ $month: "$date" }, month],
     },
   });
+  if(!filteredTransactions) return res.status(404).json({status: 'failed', data: 'Transaction not found'})
   res.json(filteredTransactions);
 });
 

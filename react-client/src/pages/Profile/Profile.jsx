@@ -5,8 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Link } from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
-import {useHistory} from 'react-router-dom';
-import {toast } from 'react-toastify';
+
 
 const Container = styled.div`
 padding: 50px;
@@ -112,44 +111,12 @@ export default function Profile() {
     setVisible2(false);
   };
   
-  const history= useHistory();
+  
 
   const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
 
-  const onSubmit = async (data) => {
-    try  {
-      const response= await dispatch(userInfo(data)).unwrap()
-      let {status} = response;
-      if (status === "ok"){
-        toast.info('save', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          onClose: () => ( history.push("/user/profile")  ), 
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          });
-      }
-    } catch (error) {
-      // handle error here
-      console.log(error.data)
-     let {status} = error
-     if (status === "failed"){
-     /*  toast.error(`${error.data}`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        }); */
-     }
-    }
-  }
   
+      
   return (
     <>
       <Container>
@@ -159,7 +126,7 @@ export default function Profile() {
             <Info>
               <span>Birthdate:</span>
               {userInfo &&
-                <User> {`${userInfo.birthDate}`} </User>}
+                <User> {`${userInfo.birthDate.slice(0,10)}`} </User>}
             </Info>
             <Info>
               <span>DNI:</span>
@@ -189,7 +156,8 @@ export default function Profile() {
             <form  onSubmit={handleSubmit(onSubmit)} >    
             <Info>
               <span>Adress:</span>
-                <User> </User> 
+              {userInfo &&
+                <User>{`${userInfo.adress}`} </User>}
               <Edit auto shadow onClick={handler1}>+Add </Edit>
               <Modal
                 closeButton
@@ -241,7 +209,8 @@ export default function Profile() {
             </Info>
             <Info>
               <span>Zipcode:</span>
-              <User></User>
+              {userInfo &&
+                <User>{`${userInfo.zipCode}`} </User>}
               <Edit auto shadow onClick={handler2} >+Add</Edit>
               <Modal
                 closeButton

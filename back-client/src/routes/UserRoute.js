@@ -186,11 +186,6 @@ if(userFound.status === "WAITING EMAIL VERIFICATION"){
     });
   }
 
-  if (!userFound)
-    return res
-      .status(404)
-      .json({ status: "failed", error: "Invalid Credentials" });
-
   if (await bcrypt.compare(password, userFound.password)) {
     const token = utils.signToken({
       id: userFound._id,

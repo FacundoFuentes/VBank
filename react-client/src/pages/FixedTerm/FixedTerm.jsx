@@ -14,7 +14,9 @@ const ContainerS = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content:center;
-  
+  @media (max-width: 1100px){
+    width: 100%
+  }
   `;
 const Container= styled.div`
 display: flex;
@@ -25,6 +27,9 @@ height: 450px;
 width: 700px;
 background-color: #FFF;
 border-radius: 10px;
+@media (max-width: 1100px){
+  width: 100%; 
+} 
 `
 /* const MaxContainer=styled.div`
 
@@ -39,28 +44,36 @@ margin-right:50px;
 ` */
 
 const TextContainer = styled.div`
+@media (max-width: 1100px){
+  width:100%;}
 `
 const ToContainer= styled.div`
 margin-top:10px;
 margin-bottom: 10px;
 padding: 5px;
-
+@media (max-width: 1100px){
+  width:100%;}
 `
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
 padding: 5px;
-
+@media (max-width: 1100px){
+  width:100%;}
 
 `
 const DetailContainer = styled.div `
 margin-bottom: 0px;
 margin-top: 30px;
 padding: 5px;
+@media (max-width: 1100px){
+  width:100%;}
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
 padding: 5px;
+@media (max-width: 1100px){
+  width:100%;}
 
 `
 const DivCheck = styled.div`
@@ -98,6 +111,12 @@ const BoderShadow = styled(GridS)`
   width:61%;
   -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+  @media (max-width: 1100px){
+    width:100%;
+    border: none;
+    -webkit-box-shadow: none; 
+    box-shadow: none;
+  }
   
 `;
 
@@ -272,7 +291,7 @@ export default function FixedTerm() {
           <TextS > Fixed Term Deposit </TextS>
         
          <BoderShadow>
-         <form >
+         <form style={{width: '100%'}}>
       
       <Container>    
         <TextContainer> 

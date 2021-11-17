@@ -31,6 +31,7 @@ statistics.get("/dayOfWeek", async (req, res) => {
       $eq: [{ $dayOfWeek: "$date" }, dayOfWeek],
     },
   });
+  if(!filteredTransactions) return res.status(404).json({status: 'failed', data: 'Transaction not found'})
   res.json(filteredTransactions);
 });
 

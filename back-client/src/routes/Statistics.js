@@ -20,6 +20,7 @@ statistics.get("/year", async (req, res) => {
       $eq: [{ $year: "$date" }, year],
     },
   });
+  if(!filteredTransactions) return res.status(404).json({status: 'failed', data: 'Transaction not found'})
   res.json(filteredTransactions);
 });
 

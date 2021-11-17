@@ -445,6 +445,7 @@ user.patch("/emailVerification/:username", async (req, res) => {
     const {code} = req.body;
     const {username} = req.params
     const user = await User.findOne({ username })
+    if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
 
     if(user.status === 'ACTIVE') {
       return res.status(200).json({status: 'Account already verified'})

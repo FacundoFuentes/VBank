@@ -257,16 +257,10 @@ const userSlice = createSlice({
                     userBalance.error = action.payload; //envio el error
                 }
             }
-      
-  
   }
 })
 
-
 export const {logoutUser, resetSigninState} = userSlice.actions;
 export default  userSlice.reducer;
-
-
-
 
 /* const {dni, username, password} = req.body */

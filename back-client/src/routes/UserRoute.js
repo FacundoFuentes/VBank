@@ -215,10 +215,10 @@ user.post("/userInfo", async (req, res) => {
       lastname: user.lastName,
       email: user.email,
       dni: user.dni,
-      adress: user.adress, //Recently added
-      phoneNumber: user.phoneNumber, //Recently added
-      zipCode: user.zipCode, //Recently added
-      birthDate: user.birthDate, //Recently added
+      adress: user.adress,
+      phoneNumber: user.phoneNumber,
+      zipCode: user.zipCode,
+      birthDate: user.birthDate,
     });
   } catch (error) {
     res.status(400).json({ status: "failed", error: error.message });

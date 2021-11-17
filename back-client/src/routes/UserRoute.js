@@ -34,8 +34,8 @@ user.post("/register", async (req, res) => {
   } = req.body;
 
   const userCheck = await User.findOne({username, dni})
-  if(userCheck) return res.status(301).json({status: 'failed', error: "Already registered user, did you want to log in? "})
-  
+  if(userCheck) return res.status(301).json({status: 'failed', data: "Already registered user, did you want to log in? "})
+
   const HashedPassword = await bcrypt.hash(password, 10);
 
   const validation = utils.validateRegisterData(req.body);

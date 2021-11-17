@@ -92,10 +92,12 @@ const BoderShadow = styled(GridS)`
   border:solid 0.5px #03030349;
   border-radius:10px;
   display:flex;
+  flex-direction: wrap;
   justify-content :center;
   width:61%;
   -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+  
 `;
 
 const Expeses = styled.div`

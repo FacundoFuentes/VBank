@@ -9,6 +9,7 @@ statistics.get("/month", async (req, res) => {
       $eq: [{ $month: "$date" }, month],
     },
   });
+  if(!filteredTransactions) return res.status(404).json({status: 'failed', data: 'Transaction not found'})
   res.json(filteredTransactions);
 });
 
@@ -19,6 +20,7 @@ statistics.get("/year", async (req, res) => {
       $eq: [{ $year: "$date" }, year],
     },
   });
+  if(!filteredTransactions) return res.status(404).json({status: 'failed', data: 'Transaction not found'})
   res.json(filteredTransactions);
 });
 
@@ -29,6 +31,7 @@ statistics.get("/dayOfWeek", async (req, res) => {
       $eq: [{ $dayOfWeek: "$date" }, dayOfWeek],
     },
   });
+  if(!filteredTransactions) return res.status(404).json({status: 'failed', data: 'Transaction not found'})
   res.json(filteredTransactions);
 });
 

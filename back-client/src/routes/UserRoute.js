@@ -33,6 +33,9 @@ user.post("/register", async (req, res) => {
     zipCode,
   } = req.body;
 
+  const userCheck = await User.findOne({username, dni})
+  if(userCheck) return res.status(301).json({status: 'failed', data: "Already registered user, did you want to log in? "})
+
   const HashedPassword = await bcrypt.hash(password, 10);
 
   const validation = utils.validateRegisterData(req.body);
@@ -137,7 +140,7 @@ user.post("/changePassword", async (req, res) => {
         .status(400)
         .json({
           status: "failed",
-          data: "The previous password does not match ",
+          data: "The current password does not match ",
         });
 
     else userFound.password = await bcrypt.hash(newPassword, 10);
@@ -183,11 +186,6 @@ if(userFound.status === "WAITING EMAIL VERIFICATION"){
     });
   }
 
-  if (!userFound)
-    return res
-      .status(404)
-      .json({ status: "failed", error: "Invalid Credentials" });
-
   if (await bcrypt.compare(password, userFound.password)) {
     const token = utils.signToken({
       id: userFound._id,
@@ -217,10 +215,10 @@ user.post("/userInfo", async (req, res) => {
       lastname: user.lastName,
       email: user.email,
       dni: user.dni,
-      adress: user.adress, //Recently added
-      phoneNumber: user.phoneNumber, //Recently added
-      zipCode: user.zipCode, //Recently added
-      birthDate: user.birthDate, //Recently added
+      adress: user.adress,
+      phoneNumber: user.phoneNumber,
+      zipCode: user.zipCode,
+      birthDate: user.birthDate,
     });
   } catch (error) {
     res.status(400).json({ status: "failed", error: error.message });
@@ -414,6 +412,7 @@ user.patch("/updateContact", async (req, res) => {
   const { _Id, description } = req.body;
   try {
     const contact = await Contact.findOne({ _Id });
+    if(!contact) return res.status(404).json({status: 'failed', data: 'Contact not found'})
     contact.description = description;
     contact.save();
 
@@ -446,9 +445,10 @@ user.patch("/emailVerification/:username", async (req, res) => {
     const {code} = req.body;
     const {username} = req.params
     const user = await User.findOne({ username })
+    if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
 
     if(user.status === 'ACTIVE') {
-      return res.status(200).json({status: 'Account allready verified'})
+      return res.status(200).json({status: 'Account already verified'})
     }
 
     if(utils.decrypt(user.validationCode) === code ) {

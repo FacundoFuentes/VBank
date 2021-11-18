@@ -20,7 +20,7 @@ import {
 } from "../../redux/reducers/userSlice";
 import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
-
+import { useMediaQuery } from 'react-responsive'
 
 
 const GridS = styled.div`
@@ -100,7 +100,19 @@ const BoderShadow = styled(GridS)`
     10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
+
+
+    @media screen and (max-width: 1080px){
+    width:100%;
+    padding:0;
+  }
 `;
+
+
+
+
+
+
 
 export default function Home() {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
@@ -187,8 +199,13 @@ export default function Home() {
   userTransaction = userTransaction?.map((e) => e).reverse();
   console.log(userTransaction?.map((e) => e).reverse());
 
+
+
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
+
+
   return (
-      <Container direction="column" display="flex" justify="space-evenly" style={{marginLeft:"20%"}}  >
+      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile && "20%"  }}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
             My Card
@@ -204,7 +221,7 @@ export default function Home() {
                 
                   <Card height="100%"  width="75%" cover>
                     <Card.Header
-                      style={{ position: "absolute", zIndex: 1, top: 115 }}
+                      style={{ position: "absolute", zIndex: 1, top: 108 }}
                     >
                       {userInfo && userAccountInfo && (
                         <Col>
@@ -255,7 +272,7 @@ export default function Home() {
           <Expeses>
             <DateNameTotal>
               <LatestMovements gap={2} justify="space-around">
-                <Spacer x={4} />
+                <Spacer x={0} />
                 <GridLatestMovents xs={2}>Date</GridLatestMovents>
                 <Spacer x={-5} />
                 <GridLatestMovents justify="center" xs={4}>
@@ -280,7 +297,7 @@ export default function Home() {
                       justify="space-around"
                       style={{ marginBottom: "10px" }}
                     >
-                      <Spacer x={3} />
+                      <Spacer x={-1} />
                       <GridLatestMovents xs={2}>
                         {` ${e.transaction.date.slice(0, 10)} `}{" "}
                       </GridLatestMovents>

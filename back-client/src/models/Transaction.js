@@ -46,7 +46,6 @@ const transactionSchema = new mongoose.Schema({
 
     branch: {
         type: String,
-        default: 'other'
     }
 })
 

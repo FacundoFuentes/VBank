@@ -11,8 +11,6 @@ import {
   Divider,
   Card,
   Col,
-  Tooltip,
-  Row,
   Container
 } from "@nextui-org/react";
 import {
@@ -24,15 +22,7 @@ import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
 
 
-const TextS = styled.h2`
-  font-weight: bold;
-  position: relative;
-  left: 20px;
-  justify-content: center;
-  margin-top: 25px;
 
-  margin-bottom: 0px;
-`;
 const GridS = styled.div`
   margin: 5px 20px;
   display: flex;
@@ -44,8 +34,8 @@ const GridS = styled.div`
 const Balance = styled.div`
   border-radius: 20px;
   display: flex;
-  width: 130%;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   padding:50px;
   justify-content: center;
   align-items: center;
@@ -105,7 +95,7 @@ const BoderShadow = styled(GridS)`
   flex-direction: wrap;
   justify-content: center;
   align-items: center;
-  width: 61%;
+  width: 70%;
   -webkit-box-shadow: -10px 0px 13px -7px #00000052,
     10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
@@ -198,7 +188,7 @@ export default function Home() {
   console.log(userTransaction?.map((e) => e).reverse());
 
   return (
-      <Container direction="column" display="flex" justify="space-between" style={{marginLeft:"25%"}}  >
+      <Container direction="column" display="flex" justify="space-evenly" style={{marginLeft:"20%"}}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
             My Card
@@ -207,18 +197,14 @@ export default function Home() {
 
         <BoderShadow style={{ height: "auto", padding: "20px" }}>
           <Spacer y={0} />
-          <Row gap={1} justify="center" align="center">
-            <Grid.Container gap={2}>
-              <Spacer x={2} />
+
+            <Grid.Container wrap="nowrap" display="flex" justify="space-around" >
+              
               <Grid >
-                <Tooltip
-                  color="#95BEFE"
-                  content={"Copy CVU"}
-                  placement="bottom"
-                >
-                  <Card hoverable clickable width="100%" cover>
+                
+                  <Card height="100%"  width="75%" cover>
                     <Card.Header
-                      style={{ position: "absolute", zIndex: 1, top: 120 }}
+                      style={{ position: "absolute", zIndex: 1, top: 115 }}
                     >
                       {userInfo && userAccountInfo && (
                         <Col>
@@ -237,52 +223,28 @@ export default function Home() {
                       )}
                     </Card.Header>
                     <Card.Image
-                      autoResize={true}
+                      autoResize={false}
                       src={img}
-                      height={200}
+                      height="100%"
                       width="100%"
                       alt="Card image background"
                     />
                   </Card>
-                </Tooltip>
               </Grid>
-              <Grid width="auto">
+              <Grid >
                 {userAccountInfo && (
-                  <Balance>
+                  <Balance style={{marginRight:"20px"}}>
                     <img width={"50px"} src={gold} alt="" />
-                    <h1>${`${userAccountInfo.balance}`}</h1>
+                    <Text h2 >${`${userAccountInfo.balance}`}</Text>
                   </Balance>
                 )}
               </Grid>
             </Grid.Container>
 
            
-          </Row>
+        
 
-          {/* <CardBalance >
-              <div >
-              <img width={"auto"} height={"auto"} src={img} alt="" />
-             
-             {userInfo && userAccountInfo &&
-             <>
-             <CardNnumber>
-                 {`**** **** **** ${userAccountInfo.card.cardNumber}`}
-               </CardNnumber>
-               <CardName >
-                   {`${userInfo.firstname} ${userInfo.lastname}`}
-               </CardName>
-               </>} 
-              </div>
-              
-           
-            <Line/>
-            {userAccountInfo && 
-            <Balance  >
-              <img width={"50px"} src={gold} alt="" />
-              <h1>${`${userAccountInfo.balance}`}</h1>
-            </Balance> }
-           
-            </CardBalance> */}
+          
         </BoderShadow>
          <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>

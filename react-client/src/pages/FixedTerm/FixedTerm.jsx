@@ -229,7 +229,9 @@ export default function FixedTerm() {
           }).catch(error=>{
             setError(error.response.data.data)
             setStatus(error.response.data.status)
+            setBtnLoading(false)
             if (error.response.data.data === "Unauthorized"){
+              
               localStorage.removeItem('token')
               toast.error(`Session expired, you must sign in again`, {
                position: "top-right",

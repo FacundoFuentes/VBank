@@ -483,7 +483,7 @@ user.post('/password-reset', async (req, res) => { //Forgot password
       data: 'You already requested a password change, please check your e-mail'
     })
   
-    const passwordChangeLink = `http://localhost:3001/user/password-reset/${user._id}/${token.token}`
+    const passwordChangeLink = `http://localhost:3000/user/password-reset/${user._id}/${token.token}`
     await emailUtils.passwordResetEmail(user.email, "VBank Password Reset", passwordChangeLink)
   
     return res.status(200).json({status: 'ok', data: 'Password Reset link sent to your email account'})

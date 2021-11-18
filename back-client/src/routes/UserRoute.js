@@ -506,7 +506,7 @@ user.post('/password-reset/:userId/:token', async (req, res) => {
     userId: user._id,
     token: token
   })
-  if(!token) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
+  if(!tokenFind) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
 
   user.password = await bcrypt.hash(password, 10)
   await user.save()

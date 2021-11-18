@@ -499,5 +499,26 @@ user.post('/password-reset', async (req, res) => {
 
 })
 
+user.post('/password-reset/:userId/:token', async (req, res) => {
+
+  const {userId, token} = req.params
+  const {password} = req.body
+
+  const user = await User.findById(userId)
+  if(!user) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
+
+  const tokenFind = await Token.findOne({
+    userId: user._id,
+    token: token
+  })
+  if(!token) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
+
+  user.password = password
+  await user.save()
+  await tokenFind.delete()
+
+  return res.status(200).json({status: 'ok', data: 'Password changed succesfully'})
+})
+
 
 module.exports = user;

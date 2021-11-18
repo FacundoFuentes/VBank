@@ -1,8 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
@@ -13,7 +11,6 @@ const crypto = require('crypto')
 
 const { ExtractJwt } = require("passport-jwt");
 const user = express.Router();
-const JwtStrategy = require("../utils/strategy/jwt.strategy");
 const passport = require("passport");
 const jwtDecode = require("jwt-decode");
 const emailUtils = require("../utils/email");
@@ -470,12 +467,10 @@ user.patch("/emailVerification/:username", async (req, res) => {
 
 user.post('/password-reset', async (req, res) => { //Forgot password
   try {
-    const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
-    const decodedToken = jwtDecode(authToken);
-    const username = decodedToken.username
+    const {email} = req.body
   
-    const user = await User.findOne({username})
-    if(!user) return res.status(404).json({sattus: 'failed', data: `'User doesn't exist`})
+    const user = await User.findOne({email})
+    if(!user) return res.status(404).json({status: 'failed', data: `'User doesn't exist`})
   
     let token = await Token.findOne({userId: user._id})
     if(!token){

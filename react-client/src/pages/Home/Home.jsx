@@ -103,7 +103,7 @@ const BoderShadow = styled(GridS)`
 
 
     @media screen and (max-width: 1080px){
-    width:100%;
+    width:90%;
     padding:0;
   }
 `;
@@ -205,7 +205,7 @@ export default function Home() {
 
 
   return (
-      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile && "20%"  }}  >
+      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px"  }}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
             My Card

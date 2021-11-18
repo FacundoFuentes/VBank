@@ -1,4 +1,4 @@
-const SuccesPageHTML = (color, text, type, icon) => {
+const TransactionTemplate = (color, text, type, icon) => {
     return `
     <html>
   <head>
@@ -13,7 +13,7 @@ const SuccesPageHTML = (color, text, type, icon) => {
         background: #EBF0F5;
       }
         h1 {
-          color: #88B04B;
+          color: ${color};
           font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
           font-weight: 900;
           font-size: 40px;
@@ -46,10 +46,10 @@ const SuccesPageHTML = (color, text, type, icon) => {
     <body>
       <div class="card">
       <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto; display:flex; justify-content:center; align-items:center;">
-      <i class=${icon}></i>
+      <i class="${icon}"></i>
       </div>
         <h1>${type}</h1> 
-        <p>${text};<br/> Redirecting you in 3 seconds!</p>
+        <p>${text}<br/> Redirecting you in 3 seconds!</p>
       </div>
     </body>
 </html>
@@ -57,5 +57,5 @@ const SuccesPageHTML = (color, text, type, icon) => {
 }
 
 module.exports = {
-    SuccesPageHTML
+  TransactionTemplate
 }

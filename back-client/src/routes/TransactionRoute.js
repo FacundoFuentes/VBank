@@ -13,7 +13,7 @@ const jwtDecode = require('jwt-decode')
 require("dotenv").config();
 passport.use(JwtStrategy)
 const path = require('path')
-const successpage = require('../utils/HTML/SuccessPage')
+const pages = require('../utils/HTML/TransactionPage')
 
 transaction.post("/new",
 passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -143,16 +143,16 @@ transaction.get("/authorize/:code", async (req, res) => {
     const transaction = await Transaction.findOne({transactionCode: code}).populate('to')
     
     if(!transaction){
-      res.send(successpage.SuccesPageHTML('red', 'Invalid transaction code', 'Error', 'fas fa-times'))
+      res.send(pages.TransactionTemplate('red', 'Invalid transaction code', 'Error', 'fas fa-times'))
     }
     else {
       const account = await Account.findOne({_id: transaction.to.account})
       if(!account){
-        res.send(successpage.SuccesPageHTML('red', 'That account does not exists anymore', 'Error', 'fas fa-times'))
+        res.send(pages.TransactionTemplate('red', 'That account does not exists anymore', 'Error', 'fas fa-times'))
       }
   
       else if(transaction.status === 'DONE'){
-        res.send(successpage.SuccesPageHTML('red', 'Charge has already been done', 'Error', 'fas fa-times'))
+        res.send(pages.TransactionTemplate('red', 'Charge has already been done', 'Error', 'fas fa-times'))
       }
       else{
         account.balance += Number(transaction.amount)
@@ -160,7 +160,7 @@ transaction.get("/authorize/:code", async (req, res) => {
     
         transaction.status = 'DONE';
         transaction.save()
-        res.send(successpage.SuccesPageHTML('green', 'Charge done, thank you', 'Success', 'fas fa-check'))
+        res.send(pages.TransactionTemplate('green', 'Charge done, thank you for choosing VBank', 'Success', 'fas fa-check'))
       }
     }
 

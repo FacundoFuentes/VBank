@@ -202,6 +202,7 @@ export default function Home() {
 
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 940px)' })
 
 
   return (
@@ -222,7 +223,7 @@ export default function Home() {
                 
                   <Card height="100%"  width="75%" cover>
                     <Card.Header
-                      style={{ position: "absolute", zIndex: 1, top: 108 }}
+                      style={{ position: "absolute", zIndex: 1, top:isTabletOrMobile  ? 110 : 115 }}
                     >
                       {userInfo && userAccountInfo && (
                         <Col>

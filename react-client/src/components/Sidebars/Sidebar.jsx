@@ -141,7 +141,7 @@ const dispatch = useDispatch()
 const [navOpen, setNavOpen] = useState(false)
 const logOut = ()=> {
   dispatch(logoutUser())
-
+  
 }
 
   
@@ -193,7 +193,7 @@ const logOut = ()=> {
             <Row wrap="nowrap">
                <LinkIcons to="/"><IconLogOut  onClick={logOut}/> 
                <Spacer x={1.4}/>
-               <TextIcons  color="#f5f5f5;"> Log Out</TextIcons></LinkIcons>
+               <TextIcons onClick={logOut}  color="#f5f5f5;"> Log Out</TextIcons></LinkIcons>
             </Row>
 
           </Col>

@@ -468,7 +468,7 @@ user.patch("/emailVerification/:username", async (req, res) => {
 
 })
 
-user.post('/password-reset', async (req, res) => {
+user.post('/password-reset', async (req, res) => { //Forgot password
   try {
     const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
     const decodedToken = jwtDecode(authToken);

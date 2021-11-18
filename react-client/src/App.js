@@ -13,6 +13,7 @@ import Charge from "./pages/Charge/Charge";
 import { ToastContainer } from "react-toastify";
 import Sidebar from "./components/Sidebars/Sidebar";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import Authorization from "./components/Authorization/Authorization";
 
 function App() {
   return (
@@ -27,9 +28,10 @@ function App() {
         <Route exact path="/user/signUp"  render={()=> (<> <SignupPage/> </>)}/>  
         <Route exact path="/fixedTerm" render={()=> (<> <Sidebar/> <FixedTerm/> </>)}/>
         <Route exact path="/user/profile"  render={()=> (<> <Sidebar/> <Profile/> </>)}/>
-        <Route exact path="/Charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/> 
+        <Route exact path="/Charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/>
+        <Route path="/Authorization" render={() => (<Authorization/>)} />
        </Switch>
-    </Router>    
+    </Router>     
 
   );
 }

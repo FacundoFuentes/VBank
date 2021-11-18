@@ -47,7 +47,7 @@ const email = async (username,code,cvu,cardNumber,cvv,email) => {
             <p>codigo de seguridad:${utils.decrypt(cvv)}</p>
             <p>codigo de verificacion: ${utils.decrypt(code)}</p>
             <h2>Verify your account </h2>
-            <a>localhost:3001/user/emailVerification/${username}`
+            <a>localhost:3000/authorization?username=${username}`
 
     }, function (err, info){
         if (err){

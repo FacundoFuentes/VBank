@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
 
 
+
 const TextS = styled.h2`
   font-weight: bold;
   position: relative;
@@ -42,6 +43,7 @@ const GridS = styled.div`
 `;
 
 const Balance = styled.div`
+  font-family: "Roboto"
   border-radius: 20px;
   display: flex;
   width: 130%;

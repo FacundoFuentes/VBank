@@ -95,17 +95,13 @@ export default function Profile() {
   //---------------------Modales-----------------------------
   const [visible1, setVisible1] = useState(false);
   const handler1 = () => setVisible1(true);
-  const closeHandlers = () => {
-    setVisible1(false);
-  };
+  
   const closeHandler1 = () => {
     setVisible1(false) 
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
-  const closeHandlers2 = () => {
-    setVisible2(false);
-  };
+
   const closeHandler2 = () => {
     setVisible2(false);
   };
@@ -180,15 +176,16 @@ const onSubmit = (data,e) => {
             </Info>
               <Info>
                 <span>Adress:</span>
-               {userInfo &&         
-                  <User>{`${userInfo.adress}`} </User>} 
+               {userInfo &&  userInfo.adress === undefined ?       
+                 <User> </User> :
+                 userInfo &&
+                <User>{`${userInfo.adress}`} </User>}
                 <Edit auto shadow onClick={handler1}>+Add </Edit>
                 <Modal
                   closeButton
                   aria-labelledby="modal-title"
                   open={visible1}
                   onClose={closeHandler1}>
-               
                   <Modal.Header>
                     <Text id="modal-title" size={18}>
                       change your..
@@ -196,7 +193,6 @@ const onSubmit = (data,e) => {
                         Adress
                       </Text>
                     </Text>
-                  
                   </Modal.Header>
                   <form onSubmit = {handleSubmit(onSubmit)} >
                   <Modal.Body>
@@ -205,7 +201,7 @@ const onSubmit = (data,e) => {
                       control={control}
                       defaultValue=""
                       name="adress"
-                      rules={{ pattern: /^[0-9a-zA-Z]+$/i, required: true, maxLength: 12 }}
+                      rules={{ pattern: /^[0-9a-zA-Z \_]+$/i, required: true, maxLength: 12 }}
                       render={({ field }) => <Input className="input"
                       
                         underlined
@@ -222,9 +218,6 @@ const onSubmit = (data,e) => {
                     )}
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button auto flat color="error" onClick={closeHandlers}>
-                      Back
-                    </Button>
                     <Button
                      type="submit"
                      auto onClick={closeHandler1}>
@@ -236,8 +229,10 @@ const onSubmit = (data,e) => {
               </Info>
               <Info>
                 <span>Zipcode:</span>
-                {userInfo &&              
-                  <User>{`${userInfo.zipCode}`}</User>}
+                {userInfo &&  userInfo.zipCode === undefined ?       
+                 <User> </User> :
+                 userInfo &&
+                <User>{`${userInfo.zipCode}`} </User>}
                 <Edit auto shadow onClick={handler2}>+Add </Edit>
                 <Modal
                   closeButton
@@ -268,13 +263,10 @@ const onSubmit = (data,e) => {
                     />
                     {errors.zipCode?.type === 'required' && <p className="error">zipCode is required</p>}
                     {errors.zipCode?.type === 'pattern' && <p className="error">Number characters only </p>}
-                    {errors.zipCode?.type === 'maxLength' && <p className="error">zipCode cannot be shorter than 5</p>}
-                    {errors.zipCode?.type === 'minLength' && <p className="error">zipCode cannot be longer than 3 caracters </p>}
+                    {errors.zipCode?.type === 'maxLength' && <p className="error">zipCode cannot be longer than 5</p>}
+                    {errors.zipCode?.type === 'minLength' && <p className="error">zipCode cannot be shorter than 3 characters</p>}
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button auto flat color="error" onClick={closeHandlers2}>
-                      Back
-                    </Button>
                     <Button
                       type="submit"
                       auto onClick={closeHandler2}>
@@ -284,7 +276,6 @@ const onSubmit = (data,e) => {
                   </form>
                 </Modal>
               </Info>
-  
             <Link to='/home'>
               <Button> Back </Button>
             </Link>

@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal, Grid, Container, Spacer} from '@nextui-org/react';
+import { Button, Text, Input, Textarea, Modal, Grid, Spacer} from '@nextui-org/react';
+import { useForm, Controller } from "react-hook-form";
 
 const TitleContainer= styled.div` 
 position:relative;
@@ -11,7 +12,7 @@ display:none
 }
 `
 const MaxContainer=styled.div`
-height: 420px;
+height: 300px;
 `
 const PassContainer = styled.div`
 margin-top:15px;
@@ -44,13 +45,24 @@ const BoderShadow = styled.div`
 `;
 
 export default function Transfer() {
+    const {control, handleSubmit, formState: { errors, isValid }} = useForm({mode:"all"});
     const defaultForm = {
-        amount: 0,
-        due: '',
-        total:0
+        amouprevPasswordnt: '',
+        newPassword:'',
+
       }
   
       const [state, setState] = useState(defaultForm)
+
+      function handleChange(e){
+  
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
+        
+      }
+
 
     return (
         <div style={{display:"flex",justifyContent:"center"}}>
@@ -64,40 +76,45 @@ export default function Transfer() {
             
           <BoderShadow>
             <MaxContainer>
-            <form >
+            <useForm >
 
             <PassContainer>
-            <Text> Type your current password </Text>
+            <Text> Type current password </Text>
             <Input.Password
             clearable
             type="password"
             width="300px"
+            name="prevPassword"
+            onChange={(e)=>handleChange(e)}
         /> 
             </PassContainer>
 
             <PassContainer>
-            <Text> Type your new password </Text>
-            <Input.Password
-            clearable
-            type="password"
-            width="300px"
-        /> 
+            <Text> Type new password </Text>
+        <Controller
+        onChange={(e)=>handleChange(e)}
+        name="newPassword"
+        control={control}
+        defaultValue=""
+        rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/}}
+        render={({ field }) => <Input.Password
+           width="300px"
+             type="password" 
+             className="input"
+         color="#f5f5f5" {...field} />}
+      />
+     {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+
+     {errors?.password?.type === "pattern" && <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+           
             </PassContainer>
 
-            <PassContainer>
-            <Text> New password again! </Text>
-            <Input.Password
-            clearable
-            type="password"
-            width="300px"
-        /> 
-            </PassContainer>
 
         <ButtonContainer>
        <Button  rounded="Primary" color="#2CA1DE" size="small">Change</Button>   
        </ButtonContainer> 
 
-            </form>
+            </useForm>
 
             </MaxContainer>
           </BoderShadow>

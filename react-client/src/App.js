@@ -12,6 +12,7 @@ import Profile from "./pages/Profile/Profile";
 import Charge from "./pages/Charge/Charge";
 import { ToastContainer } from "react-toastify";
 import Sidebar from "./components/Sidebars/Sidebar";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path={["/home","/user"]} render={()=>( <> <Sidebar/> <Home/> </> )} />
+        <Route exact path="/home/changePassword" render={()=> (<> <Sidebar/> <ChangePassword/> </>)}/>
         <Route exact path="/home/transfer" render={()=> (<> <Sidebar/> <Transfer/> </>)}/>
         <Route exact path="/home/charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/>
         <Route exact path="/user/signUp"  render={()=> (<> <SignupPage/> </>)}/>  

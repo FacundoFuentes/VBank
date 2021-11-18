@@ -205,7 +205,8 @@ export default function Home() {
 
 
   return (
-      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px"  }}  >
+      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px" ,
+      overflowX:"hidden" }}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
             My Card

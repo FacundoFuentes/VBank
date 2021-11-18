@@ -23,7 +23,7 @@ const SideNav = styled.div`
   align-items:center;
   flex-direction: flex-start;
   width:80px;
-  height: 100vh;
+  height: 200vh;
   background-color:#95BEFE;
   margin:0px;
   padding:0px;

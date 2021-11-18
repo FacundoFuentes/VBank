@@ -31,7 +31,7 @@ function App() {
         <Route exact path="/user/profile"  render={()=> (<> <Sidebar/> <Profile/> </>)}/>
         <Route exact path="/Charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/> 
         <Route exact path="/user/recover" render={()=> (<> <RecoverPass/> </>)}/> 
-         <Route exact path="/user/verify" render={()=> (<> <VerifyAccount/> </>)}/> 
+         <Route exact path="/user/verify/:username" render={()=> (<> <VerifyAccount/> </>)}/> 
        </Switch>
     </Router>    
 

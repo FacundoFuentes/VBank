@@ -2,7 +2,7 @@ import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
 import {useDispatch} from "react-redux"
 import { Button, Input} from '@nextui-org/react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
 
 import axios from "axios"
@@ -81,11 +81,14 @@ const VerifyAccount =()=>{
 	 const [error, setError] = useState("")
 	 const dispatch= useDispatch()
 	 const history = useHistory()
+	 const {username}= useParams();
 	 const onSubmit = async(code) => {
 	 	console.log(code)
-     axios.post('http://localhost:3001/user/emailVerification', code)
+     axios.patch(`http://localhost:3001/user/emailVerification/${username}`, code)
   .then(response=> {
-   console.log(response)
+   console.log(response.data)
+   if (response.data.status === "wait") setError(response.data.data)
+   	if(response.data.status === "ok") history.push("/")
    
    
    }).catch(error=>{

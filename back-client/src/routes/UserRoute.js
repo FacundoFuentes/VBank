@@ -447,17 +447,17 @@ user.patch("/emailVerification/:username", async (req, res) => {
     if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
 
     if(user.status === 'ACTIVE') {
-      return res.status(200).json({status: 'Account already verified'})
+      return res.status(200).json({status: 'wait', data: 'Account already verified'})
     }
 
     if(utils.decrypt(user.validationCode) === code ) {
       user.status = 'ACTIVE';
       user.save()
 
-      return res.status(200).json({status:'Account verified'})
+      return res.status(200).json({status:'ok', data:'Account verified'})
     }
 
-    return res.status(400).json({status:'failed, invalid code'})
+    return res.status(400).json({status:'failed', data:'failed, invalid code'})
     
   }catch(error){
     res.status(400).send(error.message)

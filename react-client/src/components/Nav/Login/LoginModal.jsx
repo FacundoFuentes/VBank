@@ -3,8 +3,11 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import {Link} from "react-router-dom"
 import { resetSigninState, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
+import axios from "axios";
+import jwt from 'jsonwebtoken'
 
 const StyledModal = styled(Modal)`
 &.with-close-button.jsx-1754213264 {
@@ -86,8 +89,16 @@ const LoginModal = () => {
         // }
     },[loggedInUser,history])
   
+// const token = JSON.parse(localStorage.getItem("token")).data
 
-
+// const sendRecoverMail = async()=>{
+//     await 
+//     axios.get('http://localhost:3001/user/password-reset',{headers:{'Authorization':'Bearer ' + token}})
+//   .then(response=> {
+//    console.log(response)
+   
+//    }).catch(error=> console.log(error))
+// }
 
 
  
@@ -196,10 +207,11 @@ const LoginModal = () => {
       
       
                 <Row justify="space-between">
-               
+                <Link to="/user/recover">
                 <Text size={14} color="#000" style={{ padding: '20px 0 0 0' }}>
                     Forgot password?
                 </Text>
+                </Link>
                 </Row>
             </Modal.Body>
             <Modal.Footer >

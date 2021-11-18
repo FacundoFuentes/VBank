@@ -13,6 +13,9 @@ import Charge from "./pages/Charge/Charge";
 import { ToastContainer } from "react-toastify";
 import Sidebar from "./components/Sidebars/Sidebar";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import RecoverPass from "./pages/RecoverPassPage/RecoverPass"
+import VerifyAccount from "./pages/VerifyAccountPage/VerifyAccount"
+import NewPassword from "./pages/NewPasswordPage/NewPassword"
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
         <Route exact path="/fixedTerm" render={()=> (<> <Sidebar/> <FixedTerm/> </>)}/>
         <Route exact path="/user/profile"  render={()=> (<> <Sidebar/> <Profile/> </>)}/>
         <Route exact path="/Charge" render={()=> (<> <Sidebar/> <Charge/> </>)}/> 
+        <Route exact path="/user/recover" render={()=> (<> <RecoverPass/> </>)}/> 
+         <Route exact path="/user/verify/:username" render={()=> (<> <VerifyAccount/> </>)}/> 
+          <Route exact path="/user/password-reset/:userId/:token" render={()=> (<> <NewPassword/> </>)}/> 
        </Switch>
     </Router>    
 

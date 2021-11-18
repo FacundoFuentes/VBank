@@ -29,9 +29,11 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
     
     if(to.length > 16){ //Si es CVU
       accountTo = await Account.findOne({cvu: to}).populate('user')//Busco la cuenta del usuario RECEIVER
+      if(!accountTo) return res.status(404).json({status: 'failed', data: 'Failed to find an account with provided CVU'})
       userTo = await User.findOne({_id: accountTo.user}).populate('account')
     } else{
       userTo = await User.findOne({ username: to}).populate('account')
+      if(!userTo) return res.status(404).json({status: 'failed', data: 'Failed to find a user with provided username'})
       accountTo = await Account.findOne({_id: userTo.account})
     } 
 
@@ -111,6 +113,7 @@ transaction.post("/", async (req, res) => {
   try {
     
     const user = await User.findOne({ username }).populate('account')
+    if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
     const accountTransactions = await Account.findOne({_id: user.account._id}).populate({
       path: 'transactions',
       model: 'AccountTransaction',

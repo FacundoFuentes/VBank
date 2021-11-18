@@ -1,4 +1,5 @@
 const  nodemailer = require('nodemailer')
+const {VerificationEmail} = require('./HTML/VerificationEmail.js')
 // const hbs = require('nodemailer-express-handlebars');
 const utils = require('../utils/utils')
 
@@ -39,16 +40,7 @@ const email = async (username,code,cvu,cardNumber,cvv,email) => {
         // context: {
         //     code: code
         // }
-        html:`
-            <h1> Welcome to VBank !! </h1>
-            <p>CVU:${cvu}</p>
-            <h2>Datos de la Tarjeta </h2>
-            <p>**** **** **** ${cardNumber.slice(-4)}</p>
-            <p>codigo de seguridad:${utils.decrypt(cvv)}</p>
-            <p>codigo de verificacion: ${utils.decrypt(code)}</p>
-            <h2>Verify your account </h2>
-    
-            <a href=http://localhost:3000/user/verify/${username}> Click Here </a>`
+        html:VerificationEmail(username,code,cvu,cardNumber,cvv)
 
     }, function (err, info){
         if (err){

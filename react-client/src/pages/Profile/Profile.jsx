@@ -133,7 +133,7 @@ export default function Profile() {
     setVisible2(false);
   };
 
-  const { control, handleSubmit, formState: {errors} } = useForm();
+const { control, handleSubmit, formState: {errors} } = useForm();
 
 const token = JSON.parse(localStorage.getItem("token")).data
 
@@ -230,9 +230,8 @@ const onSubmit = (data,e) => {
                       control={control}
                       defaultValue=""
                       name="adress"
-                      rules={{ pattern: /^[0-9a-zA-Z \_]+$/i, required: true, maxLength: 12 }}
-                      render={({ field }) => <Input className="input"
-                      
+                      rules={{ pattern: /^[0-9a-zA-Z \_]+$/i, required: true, maxLength: 35 }}
+                      render={({ field }) => <Input className="input"       
                         underlined
                         labelPlaceholder="address.."
                         tipe="text"
@@ -240,7 +239,7 @@ const onSubmit = (data,e) => {
                     />
                     {errors?.adress?.type === "required" && <p className="error">This field is required</p>}
                     {errors?.adress?.type === "maxLength" && (
-                      <p className="error"> adress cannot exceed 12 characters</p>
+                      <p className="error"> adress cannot exceed 35 characters</p>
                     )}
                     {errors?.adress?.type === "pattern" && (
                       <p className="error">Alphabetical characters only</p>

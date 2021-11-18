@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const Card = require("../models/Card.js");
 const bcrypt = require("bcrypt");
 

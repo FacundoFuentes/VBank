@@ -17,22 +17,28 @@ justify-content: space-evenly;
 flex-direction: column;
 align-items: center;
 height: 450px;
-width: 700px;
+width:100%;
 background-color: white;
 border-radius: 10px;
+padding:0px 30px
 
 `
 const MaxContainer=styled.div`
-height: 800px;
+height: 600px;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+width: 50%;
+padding:0px 30px
 `
-const TitleContainer= styled.div`
-margin-right: 85px;
-margin-bottom: 10px;
-padding: 5px;
+const TitleContainer= styled.div` 
+  position:relative;
+  left:130px;
+  top:-50px;
+  @media screen and (max-width:1100px){
+  display:none
+  }
 `
 
 const TextContainer = styled.div`
@@ -53,23 +59,40 @@ margin-bottom: 10px;
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
-padding:5px
-`
+padding:5px;
+`;
 const DetailContainer = styled.div `
 margin-top: 10px;
 margin-bottom: 10px;
-padding:5px
+padding:5px;
 `
 const BranchContainer = styled.div`
 margin-top:10px;
 margin-bottom:10px;
-padding:5px
+padding:5px;
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
 padding: 5px;
 
 `
+const BoderShadow = styled.div`
+  border:solid 0.5px #03030349;
+  border-radius:10px;
+  display:flex;
+  justify-content :center;
+  padding: 0px 30px;
+  width:30%;
+  overflow:hidden;
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+  @media screen and (max-width:1100px){
+    width:100%;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    border:none;
+  }
+`;
 /* const ContactBlack = styled(Contact)`
   color: black;
   height: 50px;
@@ -164,8 +187,7 @@ const handleBranch = () => {
 
 
 const token = JSON.parse(localStorage.getItem("token")).data
-let {username} = jwt.decode(token)
-let history= useHistory();
+
 
  function handleSubmit(e){
   e.preventDefault()
@@ -207,13 +229,14 @@ let history= useHistory();
 
 
     return (
-      <div>
+    
+      <div style={{display:"flex",justifyContent:"center"}}>
       
-       <MaxContainer>
-        
         <TitleContainer>
           <Text h3 > Send Money </Text>
         </TitleContainer>
+       <BoderShadow>
+       <MaxContainer>
          
          <form >
       
@@ -318,10 +341,11 @@ let history= useHistory();
       </Container>
       
        </form>
-      
       </MaxContainer>
+       </BoderShadow>
 
       </div>
     )
+    
 }
 

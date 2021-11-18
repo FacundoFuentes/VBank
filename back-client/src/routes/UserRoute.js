@@ -1,8 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
@@ -13,7 +11,6 @@ const crypto = require('crypto')
 
 const { ExtractJwt } = require("passport-jwt");
 const user = express.Router();
-const JwtStrategy = require("../utils/strategy/jwt.strategy");
 const passport = require("passport");
 const jwtDecode = require("jwt-decode");
 const emailUtils = require("../utils/email");

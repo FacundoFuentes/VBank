@@ -10,8 +10,11 @@ import {toast} from "react-toastify";
 
 
 const Container = styled.div`
-padding: 50px;
+padding: 150px;
 text-align:center;
+@media (max-width: 640px) {
+margin: 0 ;
+}
 `
 const Card = styled.div`
  display: flex;

@@ -8,11 +8,12 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import {toast} from "react-toastify";
 
+
 const Container = styled.div`
 padding: 50px;
 text-align:center;
 `
-const Information = styled.div`
+const Card = styled.div`
  display: flex;
  flex-direction: column;
  max-width: 700px;  
@@ -26,10 +27,11 @@ const Information = styled.div`
  -webkit-box-shadow: 5px 5px 12px 5px rgba(0,0,0,0.24);
  -moz-box-shadow: 5px 5px 12px 5px rgba(0,0,0,0.24);
  transition: all 0.25s;
+ @media (max-width: 640px) {
+ display :"block";
+width: 450px;
+}
  `
-const In = styled.div`
-padding-left: 20px; 
-`
 const H2 = styled.h2`
 font-weight: bold;
 text-align:left;
@@ -38,6 +40,19 @@ background-color:#95BEFE;
 padding-left: 20px;
 border-top-left-radius: 20px;
 border-top-right-radius: 20px;
+@media (max-width: 640px) {
+ padding: 20px 20px 5px 20px;
+ border: none;
+}
+`
+
+const In = styled.div`
+padding-left: 20px; 
+padding-right: 5px;
+@media (max-width: 640px) {
+ padding: 5px 20px 20px 20px;
+ background: transparent;
+}
 `
 const Info = styled.div`
 font-size: 20px;
@@ -51,6 +66,9 @@ font-weight: bold;
   background-color: #e8eaeb53;
   border-radius: 2px;
 }
+@media (max-width: 640px) {
+ margin:0;
+}
 `
 const Edit = styled.a`
 color:#95BEFE;
@@ -61,6 +79,9 @@ text-decoration: underline;
 const User = styled.strong`
 margin-left: 15px;
 color: #8b8989;
+@media (max-width: 640px) {
+ margin:0;
+}
 `
 const Button = styled.button`
 display: flex;
@@ -82,6 +103,9 @@ color: white;
 background-color: #95BEFE;
 } 
 `
+  
+
+
 
 
 export default function Profile() {
@@ -141,7 +165,7 @@ const onSubmit = (data,e) => {
   return (
     <>
       <Container>
-        <Information>
+        <Card>
           <H2> Profile </H2>
           <In>
             <Info>
@@ -175,13 +199,15 @@ const onSubmit = (data,e) => {
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
               <Info>
-                <span>Adress:</span>
+                <span>Address:</span>
                {userInfo &&  userInfo.adress === undefined ?       
                  <User> </User> :
-                 userInfo &&
-                <User>{`${userInfo.adress}`} </User>}
-                <Edit auto shadow onClick={handler1}>+Add </Edit>
-                <Modal
+                userInfo && 
+                 <User>{`${userInfo.adress}`} </User> }
+              {userInfo &&  userInfo.adress === undefined ?
+             <Edit auto shadow onClick={handler1}>+Add </Edit> :
+             <Edit auto shadow onClick={handler1}>Edit </Edit> }
+             <Modal
                   closeButton
                   aria-labelledby="modal-title"
                   open={visible1}
@@ -190,7 +216,7 @@ const onSubmit = (data,e) => {
                     <Text id="modal-title" size={18}>
                       change your..
                       <Text b size={18}>
-                        Adress
+                        Address
                       </Text>
                     </Text>
                   </Modal.Header>
@@ -205,7 +231,7 @@ const onSubmit = (data,e) => {
                       render={({ field }) => <Input className="input"
                       
                         underlined
-                        labelPlaceholder="adress.."
+                        labelPlaceholder="address.."
                         tipe="text"
                         color="#696262" {...field} />}
                     />
@@ -233,7 +259,9 @@ const onSubmit = (data,e) => {
                  <User> </User> :
                  userInfo &&
                 <User>{`${userInfo.zipCode}`} </User>}
-                <Edit auto shadow onClick={handler2}>+Add </Edit>
+               {userInfo &&  userInfo.zipCode === undefined ? 
+                <Edit auto shadow onClick={handler2}>+Add </Edit> :
+                <Edit auto shadow onClick={handler2}> Edit </Edit>}
                 <Modal
                   closeButton
                   aria-labelledby="modal"
@@ -280,7 +308,7 @@ const onSubmit = (data,e) => {
               <Button> Back </Button>
             </Link>
           </In>
-        </Information>
+        </Card>
       </Container>
     </>
   )

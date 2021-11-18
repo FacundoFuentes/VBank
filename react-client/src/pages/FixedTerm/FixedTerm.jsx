@@ -1,44 +1,44 @@
 import React, {useState, useRef, useEffect}from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Modal, Card,Grid, Spacer, Divider} from '@nextui-org/react';
+import { Button, Text, Input, Modal, Card,Grid, Spacer, Container} from '@nextui-org/react';
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
 import jwt from 'jsonwebtoken'
 import success from "../../img/success.gif"
 import {toast } from 'react-toastify';
+import {useHistory} from 'react-router-dom'
 
 
-const ContainerS = styled.div`
-  margin: 0px 25%;
-  display:flex;
+  const ContainerS= styled.div`
+  display: flex;
+  justify-content: space-evenly;
   flex-direction: column;
-  width: 100%;
-  justify-content:center;
+  align-items: center;
+  height: 450px;
+  width:100%;
+  background-color: white;
+  border-radius: 10px;
+  /* padding:0px 30px */
   
-  `;
-const Container= styled.div`
-display: flex;
-justify-content: space-evenly;
-flex-direction: column;
-align-items: center;
-height: 450px;
-width: 700px;
-background-color: #FFF;
-border-radius: 10px;
-`
-/* const MaxContainer=styled.div`
+  `
 
+const MaxContainer=styled.div`
+height: 500px;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+width: 40%;
+padding:0px 30px
 `
-const TitleContainer= styled.div`
-margin-right:50px;
 
-` */
-
-const TextContainer = styled.div`
+const TitleContainer= styled.div` 
+  position:relative;
+  left:130px;
+  top:-50px;
+  @media screen and (max-width:1100px){
+  display:none
+  }
 `
 const ToContainer= styled.div`
 margin-top:10px;
@@ -54,9 +54,10 @@ padding: 5px;
 
 `
 const DetailContainer = styled.div `
-margin-bottom: 0px;
-margin-top: 30px;
+margin-bottom: 10px;
+margin-top:30px;
 padding: 5px;
+width:300px;
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
@@ -70,35 +71,23 @@ align-items: center;
 
 `
 
-const TextS = styled.h2`
-  /* font-weight: bold; */
-  position:relative;
-  left:20px;
-  justify-content: center;
-  margin-top:25px;
- 
-  margin-bottom:0px;
-  
-`;
-const GridS = styled.div`
-  margin:5px 20px;
-  display:flex;
-  flex-wrap:wrap;
-  width: 70%;
-  height:100%;
-  
-`;
-const BoderShadow = styled(GridS)`
-  overflow:hidden;
+
+const BoderShadow = styled.div`
   border:solid 0.5px #03030349;
   border-radius:10px;
   display:flex;
-  flex-direction: wrap;
   justify-content :center;
-  width:61%;
+  padding: 0px 30px;
+  width:30%;
+  overflow:hidden;
   -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
-  
+  @media screen and (max-width:1100px){
+    width:100%;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    border:none;
+  }
 `;
 
 const Expeses = styled.div`
@@ -123,8 +112,9 @@ const LatestMovements = styled(Grid.Container)`
   color:black;
   width:100%;
   padding-bottom:10px;
-  
-
+  @media screen and (max-width: 1100px) {
+    width:100%;
+  }
 `;
 
 const GridLatestMovents = styled(Grid)`
@@ -143,7 +133,8 @@ const GridContainer = styled.div`
 
 export default function FixedTerm() {
 
-    
+  let myHistory = useHistory()
+   
     const [info, setInfo] = useState()
     const [visible, setVisible] = useState(false);
     const handler = () => setVisible(true);
@@ -207,7 +198,7 @@ export default function FixedTerm() {
       }, [rate37Total]) 
     
       const token = JSON.parse(localStorage.getItem("token")).data
-      let {username} = jwt.decode(token)
+      
       
       useEffect(()=>{
         axios.get("http://localhost:3001/fixedDeposit" , {headers:{'Authorization':'Bearer ' + token}} )
@@ -259,24 +250,26 @@ export default function FixedTerm() {
           e.preventDefault()
           setState(defaultForm)
           closeHandler()
+          myHistory.push("/home")
         }
 
 
     
     return (
-      <div>
-      <ContainerS style={{overflow:"hidden"}} >
-       {/* <MaxContainer> */}
+      
+      <div style={{display:"flex",justifyContent:"center"}}>
+
+       <Grid.Container display="flex" justify="center" style={{marginTop:"150px" }}>
       
       
-          <TextS > Fixed Term Deposit </TextS>
+       <TitleContainer>
+          <Text h3 > Fixed Term </Text>
+        </TitleContainer>
         
          <BoderShadow>
+         <MaxContainer>   
          <form >
-      
-      <Container>    
-        <TextContainer> 
-         
+         <ContainerS style={{overflow:"hidden"}} >
           <ToContainer>
             <Text >How much?</Text>
             <Input name="amount" type="number" min="1"  step="0.01" value={state.amount} contentClickable="true" onChange={(e)=>handleAmount(e)}  width="300px"/>
@@ -290,7 +283,7 @@ export default function FixedTerm() {
        </MoneyContainer>
        
        <DetailContainer>
-       <Card  color="#f3f3f3" bordered borderColor="#D8DBE2" >
+       <Card width="300px"  color="#f3f3f3" bordered borderColor="#D8DBE2" >
            <Text  >Interest rate: </Text>
            <Text > from 30 to 365 days: TNA 37% </Text>
           
@@ -298,7 +291,6 @@ export default function FixedTerm() {
        
        </DetailContainer>   
  
-       </TextContainer>
        
        <ButtonContainer>
        <Button disabled={!state.amount||!state.due} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Calculate</Button>   
@@ -361,19 +353,21 @@ export default function FixedTerm() {
           </DivCheck>
           
           <Button  color="#2CA1DE" onClick={(e)=> HandleCloseSucces(e) }> Ok! </Button>
+          
           </>
           }  
           </Modal>
-         
-      </Container>
+          </ContainerS>
+      
        </form>
+       </MaxContainer>
        </BoderShadow>
 
-       <TextS>Latest movements</TextS>
+ {/*       <TextS>Latest movements</TextS>
         <BoderShadow style={{height:"350px"}} >
           <Expeses>
             <DateNameTotal>
-            <LatestMovements  gap={2} justify="space-between">
+            <LatestMovements gap={2} justify="space-between">
                 <Spacer x={4} />
                 <GridLatestMovents xs={2}>Date</GridLatestMovents>
                 <Spacer x={-5}/>
@@ -407,11 +401,12 @@ export default function FixedTerm() {
               </GridContainer>
               </Expeses>
         </BoderShadow>
-
+ */}
       
-      </ContainerS>
+      
         <Spacer y={3}/>
-  
+      
+        </Grid.Container>
       </div>
     )
 }

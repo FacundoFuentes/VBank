@@ -230,16 +230,16 @@ user.post("/updateInfo", async (req, res )  => {
   const decodedToken = jwtDecode(authToken); // Decodeo el token
   const username = decodedToken.username;
 
-  const {zipCode, address} = req.body
-
+  const {zipCode, adress} = req.body
+  console.log(zipCode, adress)
   try {
     const userFound = await User.findOne({username})
     if(!userFound) return res.status(400).json({status: 'failed', data: 'User not found, please reload the page'})
-  
-    userFound.zipCode = zipCode
-    userFound.address = address
-    
-    userFound.save()
+
+    if(zipCode) userFound.zipCode = zipCode
+    if(adress) userFound.adress = adress
+
+    await userFound.save()
     res.json({status: 'ok', data: userFound})
   } catch (error) {
     res.status(400).json({status: 'failed', data: "Error: " + error})

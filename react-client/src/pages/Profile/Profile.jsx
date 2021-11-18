@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Text, Input, Modal } from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
-
+import {toast} from "react-toastify";
 
 const Container = styled.div`
 padding: 50px;
@@ -124,7 +124,21 @@ const onSubmit = (data,e) => {
     console.log(res);
     dispatch(getUserInfo())
   })
-  .catch(err => console.log(err))
+  .catch(err => {
+    if (err.response.data.data === "Unauthorized"){
+      localStorage.removeItem('token')
+      toast.error(`Session expired, you must sign in again`, {
+       position: "top-right",
+       autoClose: 500,
+       hideProgressBar: false,
+       closeOnClick: true,
+       onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+       pauseOnHover: false,
+       draggable: true,
+       progress: undefined,
+       }); 
+      }
+  })
 }
 
 
@@ -166,10 +180,8 @@ const onSubmit = (data,e) => {
             </Info>
               <Info>
                 <span>Adress:</span>
-                {userInfo && userInfo.adress === undefined ? (
-                  <User> </User>
-                ) :(                   
-                  <User>{`${userInfo.adress}`} </User>)}
+               {userInfo &&         
+                  <User>{`${userInfo.adress}`} </User>} 
                 <Edit auto shadow onClick={handler1}>+Add </Edit>
                 <Modal
                   closeButton
@@ -224,10 +236,8 @@ const onSubmit = (data,e) => {
               </Info>
               <Info>
                 <span>Zipcode:</span>
-                {userInfo && userInfo.zipCode === undefined ? (
-                  <User> </User>
-                ) :(                   
-                  <User>{`${userInfo.zipCode}`} </User>)}
+                {userInfo &&              
+                  <User>{`${userInfo.zipCode}`}</User>}
                 <Edit auto shadow onClick={handler2}>+Add </Edit>
                 <Modal
                   closeButton

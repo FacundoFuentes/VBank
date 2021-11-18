@@ -125,11 +125,12 @@ const NavResponsive = styled(Grid.Container)`
   width:100vmax;
   padding:30px; 
   background-color: #95BEFE;
-  position:absolute;
+  position:relative;
   margin:50px;
   justify-content:space-between;
   z-index:500;
   display:none;
+  margin-bottom:100px;
 
 `;
   

@@ -110,7 +110,8 @@ const passwordResetEmail = async (email, subject, link) => {
 module.exports = {
     email,
     transporter,
-    chargeEmail
+    chargeEmail,
+    passwordResetEmail
 }
 
 

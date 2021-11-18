@@ -30,7 +30,7 @@ const SideNav = styled.div`
   transition: all 700ms;
   z-index:200;
 
-  @media screen and (max-width: 1100px){
+  @media screen and (max-width: 1080px){
     width:0px;
   }
   
@@ -145,7 +145,7 @@ const logOut = ()=> {
 }
 
   
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1100px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
   const isPortrait = useMediaQuery({ query: '(max-width: 480px)' })
   
 

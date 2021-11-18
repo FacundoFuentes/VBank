@@ -3,7 +3,6 @@ const UserRoute = require("./UserRoute");
 const TransactionRoute = require("./TransactionRoute");
 const utils = require("./Utils.js");
 const statistics = require("./Statistics.js");
-const schedule = require("node-schedule")
 const fixedDeposit = require("./FixedDepositRoute.js");
 
 const router = Router();

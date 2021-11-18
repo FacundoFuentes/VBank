@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
+import { Button, Text, Input, Textarea, Modal, Grid, Container} from '@nextui-org/react';
 
 import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
@@ -11,7 +11,7 @@ import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
 import {toast } from 'react-toastify';
 
-const Container= styled.div`
+const ContainerS= styled.div`
 display: flex;
 justify-content: space-evenly;
 flex-direction: column;
@@ -93,11 +93,6 @@ const BoderShadow = styled.div`
     border:none;
   }
 `;
-/* const ContactBlack = styled(Contact)`
-  color: black;
-  height: 50px;
-  
-` */
 
 
 const DivCheck = styled.div`
@@ -225,22 +220,26 @@ const token = JSON.parse(localStorage.getItem("token")).data
     e.preventDefault()
     setState(defaultForm)
     closeHandler()
+    myHistory.push("/home")
   }
 
 
     return (
     
       <div style={{display:"flex",justifyContent:"center"}}>
+
+      <Grid.Container display="flex" justify="center" style={{marginTop:"150px" }}>
       
         <TitleContainer>
           <Text h3 > Send Money </Text>
         </TitleContainer>
        <BoderShadow>
+       
        <MaxContainer>
          
          <form >
       
-      <Container>    
+      <ContainerS>    
         <TextContainer> 
          
           <ToContainer>
@@ -338,12 +337,12 @@ const token = JSON.parse(localStorage.getItem("token")).data
           }  
         </Modal> 
       
-      </Container>
+      </ContainerS>
       
        </form>
       </MaxContainer>
        </BoderShadow>
-
+       </Grid.Container>
       </div>
     )
     

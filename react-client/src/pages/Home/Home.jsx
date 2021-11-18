@@ -198,9 +198,9 @@ export default function Home() {
   console.log(userTransaction?.map((e) => e).reverse());
 
   return (
-      <Container direction="column" display="flex" justify="center" style={{marginLeft:"25%"}}  >
-        <Grid  justify="center">
-          <Text margin="20px" h2 weight={"bolder"}>
+      <Container direction="column" display="flex" justify="space-between" style={{marginLeft:"25%"}}  >
+        <Grid width="100%"  justify="center">
+          <Text width="300px" margin="20px" h2 weight={"bolder"}>
             My Card
           </Text>
         </Grid>
@@ -284,7 +284,11 @@ export default function Home() {
            
             </CardBalance> */}
         </BoderShadow>
-        <TextS>Latest movements</TextS>
+         <Grid width="100%"  justify="center">
+          <Text width="300px" margin="20px" h2 weight={"bolder"}>
+          Latest movements
+          </Text>
+        </Grid>
         <BoderShadow style={{ height: "350px" }}>
           <Expeses>
             <DateNameTotal>
@@ -337,7 +341,11 @@ export default function Home() {
             </GridContainer>
           </Expeses>
         </BoderShadow>
-        <TextS>Statistics</TextS>
+        <Grid width="100%"  justify="center">
+          <Text width="300px" margin="20px" h2 weight={"bolder"}>
+          Statistics
+          </Text>
+        </Grid>
         <BoderShadow>
           {data2?.length > 0 ? (
             <ChartContainer>

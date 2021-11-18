@@ -159,7 +159,16 @@ transaction.get("/authorize/:code", async (req, res) => {
         transaction.status = 'DONE';
         transaction.save()
     
-        res.status(200).send('Enjoy Your Money')
+        res.send(
+          `<html>
+          <head>
+              <meta http-equiv="refresh" content="3;url=http://localhost:3000/home/" />
+          </head>
+          <body>
+              <h1>Validation done, enjoy your money</h1>
+          </body>
+      </html>`
+        )
       }
     }
 

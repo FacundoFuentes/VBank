@@ -7,6 +7,7 @@ import { Text, Input, Modal } from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 
+
 const Container = styled.div`
 padding: 50px;
 text-align:center;
@@ -99,8 +100,6 @@ export default function Profile() {
   };
   const closeHandler1 = () => {
     setVisible1(false) 
-   
-  
   };
   const [visible2, setVisible2] = useState(false);
   const handler2 = () => setVisible2(true);
@@ -113,19 +112,20 @@ export default function Profile() {
 
   const { control, handleSubmit, formState: {errors} } = useForm();
 
+const token = JSON.parse(localStorage.getItem("token")).data
+
+console.log(token)
 
 const onSubmit = (data,e) => {
   e.preventDefault();
   console.log(data);
-  axios.post("/user/updateInfo", data)
+  axios.post("http://localhost:3001/user/updateInfo", data,{headers:{'Authorization':'Bearer ' + token}})
   .then(res => {
     console.log(res);
     dispatch(getUserInfo())
   })
   .catch(err => console.log(err))
 }
-
-
 
 
   return (
@@ -192,7 +192,7 @@ const onSubmit = (data,e) => {
                       className="fields"
                       control={control}
                       defaultValue=""
-                      name="address"
+                      name="adress"
                       rules={{ pattern: /^[0-9a-zA-Z]+$/i, required: true, maxLength: 12 }}
                       render={({ field }) => <Input className="input"
                       
@@ -225,9 +225,10 @@ const onSubmit = (data,e) => {
               <Info>
                 <span>Zipcode:</span>
                 {userInfo && userInfo.zipCode === undefined ? (
-                  <User> </User> && <Edit auto shadow onClick={handler2}>+Add </Edit>
+                  <User> </User>
                 ) :(                   
-                <User>{`${userInfo.zipCode}`} </User> && <Edit auto shadow onClick={handler2}>Edit </Edit>)} 
+                  <User>{`${userInfo.zipCode}`} </User>)}
+                <Edit auto shadow onClick={handler2}>+Add </Edit>
                 <Modal
                   closeButton
                   aria-labelledby="modal"

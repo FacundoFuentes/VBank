@@ -202,10 +202,12 @@ export default function Home() {
 
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 940px)' })
 
 
   return (
-      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px"  }}  >
+      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px" ,
+      overflowX:"hidden" }}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
             My Card
@@ -221,7 +223,7 @@ export default function Home() {
                 
                   <Card height="100%"  width="75%" cover>
                     <Card.Header
-                      style={{ position: "absolute", zIndex: 1, top: 108 }}
+                      style={{ position: "absolute", zIndex: 1, top:isTabletOrMobile  ? 110 : 115 }}
                     >
                       {userInfo && userAccountInfo && (
                         <Col>

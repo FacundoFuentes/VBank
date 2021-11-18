@@ -1,6 +1,6 @@
 import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
-import {useDispatch} from "react-redux"
+import {useDispatch} from "react-redux";
 import { Button, Input} from '@nextui-org/react';
 import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
@@ -43,9 +43,9 @@ form{
 	flex-direction:column;
 	align-items:center;
 	justify-content:space-around;
-	height: 80%;
+	height: 100%;
 }
-.field{
+.fields{
 	display: flex;
 	flex-direction:column;
 	align-items: center;
@@ -75,28 +75,32 @@ form{
 `;
 
 
-const RecoverPass =()=>{
+const NewPassword =()=>{
 
-	 const { control, handleSubmit,reset, formState: { errors }} = useForm();
+	 const { control, getValues, handleSubmit,reset, formState: { errors }} = useForm();
 	 const [error, setError] = useState("")
 	 const [msg, setMsg] = useState("");
+	 const {userId, token} = useParams();
 	 const dispatch= useDispatch()
 	 const history = useHistory()
 
 	 const onSubmit = async(data) => {
-	 	console.log(data)
-     axios.post('http://localhost:3001/user/password-reset', data)
+	 
+	 	const {password}= data;
+	 	console.log(password)
+     axios.post(`http://localhost:3001/user/password-reset/${userId}/${token}`, {password})
+	 	
   .then(response=> {
    console.log(response)
-   if(response.data.status === "ok") setMsg(response.data.data)
+   
    
    
    }).catch(error=>{
-   	console.log(error)
-     setError(error.response.data.data)
+   	console.log(error.response)
+     /*setError(error.response.data.data)*/
    
      
-     /*if (error.response.data.data === "Unauthorized"){
+    /* if (error.response.data.data === "Unauthorized"){
        localStorage.removeItem('token')
        toast.error(`Session expired, you must sign in again`, {
         position: "top-right",
@@ -119,37 +123,61 @@ const RecoverPass =()=>{
 		<PageContainer>
 		<Box>
 		<div id="title">
-		<h2> Recover Password</h2>
+		<h2> New Password</h2>
 		</div>
-		<span>
-			Introduce tu correo electrónico para buscar tu cuenta.
-		</span>
-		
+	
 		
 		 <form onSubmit={handleSubmit(onSubmit)}>
-		<div  className="field">
+		<div  className="fields">
           <Controller
         className="fields"
-        name="email"
+        name="password"
         control={control}
         defaultValue=""
-        rules={{required:true, pattern: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i }}
-        render={({ field }) => <Input className="input"
+        rules={{required:true , pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/}}
+        render={({ field }) => <Input.Password className="input"
         underlined 
-        labelPlaceholder="Email"
+        labelPlaceholder="New Password"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.email?.type === "required" && <p className="error">This field is required</p>}
-      {errors?.email?.type === "pattern" && (
-        <p className="error">Please, enter a valid email</p>
+      {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.password?.type === "pattern" && (
+        <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
       )}
+            </div>
+
+     <div  className="fields">
+          <Controller
+        className="fields"
+        name="samePassword"
+        control={control}
+        defaultValue=""
+        rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/,
+        validate: (value)=>{
+        	const {password}= getValues();
+        	return password === value;
+        }
+      	}}
+        render={({ field }) => <Input.Password className="input"
+        underlined 
+        labelPlaceholder="Confirm Password"
+         color="#f5f5f5" {...field} />}
+      />
+      {errors?.samePassword?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.samePassword?.type === "pattern" && (
+        <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
+      )}
+       {errors?.samePassword?.type === "validate" && (
+        <p className="error">Password don´t match</p>
+      )}
+
        { error && (
         <p className="error">{error}</p>
       )}
        { msg && (
         <p className="error">{msg}</p>
       )}
-            </div>
+            </div>       
 		<div id="btns">
 			<Button auto flat color="error" onClick={handleClick}>
                 Cancel
@@ -174,4 +202,4 @@ const RecoverPass =()=>{
 		)
 }
 
-export default RecoverPass;
+export default NewPassword;

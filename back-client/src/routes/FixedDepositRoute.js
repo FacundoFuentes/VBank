@@ -40,7 +40,7 @@ const checkFixedDeposit = async () => {
           amount: fixedDeposits[i].total,
           from: userFound,
           to: userFound,
-          description: `Fixed Deposit profits on ${todayDate.getMonth()}/${todayDate.getDay()}/${todayDate.getFullYear()}`,
+          description: `Fixed Deposit profits on ${todayDate.getDate()}/${todayDate.getMonth()+1}/${todayDate.getFullYear()}`,
           type: "FIXED DEPOSIT",
           transactionCode: generateCargeNumber(),
         });
@@ -144,7 +144,7 @@ fixedDeposit.post("/new", async (req, res) => {
   }
 });
 
-fixedDeposit.post("/", async (req, res) => {
+fixedDeposit.get("/", async (req, res) => {
   const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req); //Extraigo el token que me llega por head
   const decodedToken = jwtDecode(authToken); // Decodeo el token
   const username = decodedToken.username;

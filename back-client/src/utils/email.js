@@ -84,13 +84,34 @@ const chargeEmail = async (email) => {
     })
 } 
 
+const passwordResetEmail = async (email, subject, link) => {
+    const mail = await transporter.sendMail({
+        from: "vbank.noreply@gmail.com",
+        to: email, // recuperar desde user
+        subject: subject,
+        html:`
+            <h1> VBank </h1>
+            <p>Click on the link to reset your password</p>
+            <p>${link}</p>`
 
+    }, function (err, info){
+        if (err){
+            res.json(err)
+        }
+        else {
+            res.json(info)
+        }
+    })
+    
+    return mail
+}
 
 
 module.exports = {
     email,
     transporter,
-    chargeEmail
+    chargeEmail,
+    passwordResetEmail
 }
 
 

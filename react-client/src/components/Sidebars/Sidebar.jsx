@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 import {Link } from "react-router-dom"
 import styled from 'styled-components'
 import Logos from "../../img/Logos.png"
@@ -11,6 +11,8 @@ import {LogOut} from "@styled-icons/boxicons-regular/LogOut"
 import { Spacer, Text , Grid, Col,Row} from "@nextui-org/react"
 import { logoutUser } from '../../redux/reducers/userSlice'
 import { BuildingRetailMoney } from "@styled-icons/fluentui-system-filled/BuildingRetailMoney"
+import {PiggyBankFill} from "@styled-icons/bootstrap/PiggyBankFill"
+import { useMediaQuery } from 'react-responsive'
 
 
 const SideNav = styled.div`
@@ -26,8 +28,14 @@ const SideNav = styled.div`
   margin:0px;
   padding:0px;
   transition: all 700ms;
+  z-index:200;
+
+  @media screen and (max-width: 1100px){
+    width:0px;
+  }
+  
   &:hover{
-    width:200px
+    width:220px
   }
 
   `; 
@@ -35,7 +43,8 @@ const LogoMenu = styled.img`
   margin-top:30px;
   width:50px;
   height: 40px;
-`;
+  `;
+
 const IconHome = styled(Home)`
   color: #f5f5f5;
   width:30px;
@@ -72,6 +81,16 @@ const IconUser = styled(UserCircle)`
   width:30px;
   height:30px;
 `;
+const IconPiggy = styled(PiggyBankFill)`
+  
+  cursor:pointer;
+  position:relative;
+  margin: 0;
+  padding:0;
+  color: #f5f5f5;
+  width:35px;
+  height:35px;
+`;
 const IconLogOut = styled(LogOut)`
   
   cursor:pointer;
@@ -96,21 +115,43 @@ const LinkIcons = styled(Link)`
   }
 
 `;
+const IconMenu = styled(Menu)`
+  color: #f5f5f5;
+  width:40px;
+  height:40px;
+`;
 
+const NavResponsive = styled(Grid.Container)`
+  width:100vmax;
+  padding:30px; 
+  background-color: #95BEFE;
+  position:absolute;
+  margin:50px;
+  justify-content:space-between;
+  z-index:500;
+  display:none;
 
+`;
+  
+console.log(window.screen.width)
 
 export default function Sidebar() {
 const dispatch = useDispatch()
+const [navOpen, setNavOpen] = useState(false)
 const logOut = ()=> {
   dispatch(logoutUser())
 
 }
 
+  
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1100px)' })
+  const isPortrait = useMediaQuery({ query: '(max-width: 480px)' })
+  
+
   return (
-    <>
+  <>
    
-      
-        <SideNav>
+        <SideNav style={{width:(navOpen && "300px")}}>
           
           <LogoMenu src={Logos} />
           <Spacer y={7}/>
@@ -137,6 +178,12 @@ const logOut = ()=> {
             </Row>
           <Spacer y={2}/>
             <Row>
+             <LinkIcons to="/fixedTerm"><IconPiggy /> 
+             <Spacer x={1.3}/>
+              <TextIcons color="#f5f5f5;">Fixed Term</TextIcons></LinkIcons>
+            </Row>
+            <Spacer y={2}/> 
+            <Row>
              <LinkIcons to="/user/profile"><IconUser /> 
              <Spacer x={1.4}/>
               <TextIcons color="#f5f5f5;">Profile</TextIcons></LinkIcons>
@@ -152,10 +199,24 @@ const logOut = ()=> {
          
          </Grid.Container>
         </SideNav>
-      :
-     
-    
+
+        {isTabletOrMobile && 
+        
+        <NavResponsive  >
+            
+                
+        <Grid >
+          <img src={Logos} alt="" style={{marginLeft:"20px"}} />
+        </Grid>
+        <Grid >
+          <IconMenu onClick={()=>{setNavOpen(!navOpen)}} style={{marginRight:"20px"}} />
+        </Grid>
+
+      </NavResponsive>
+      }
+        
+      
+
     </>
-    
   )
 }

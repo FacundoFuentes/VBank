@@ -12,6 +12,8 @@ const {ExtractJwt} = require('passport-jwt')
 const jwtDecode = require('jwt-decode')
 require("dotenv").config();
 passport.use(JwtStrategy)
+const path = require('path')
+const successpage = require('../utils/HTML/SuccessPage')
 
 transaction.post("/new",
 passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -137,20 +139,20 @@ transaction.get("/authorize/:code", async (req, res) => {
 
   const {code} = req.params
   try {
-    
+    console.log(__dirname)
     const transaction = await Transaction.findOne({transactionCode: code}).populate('to')
     
     if(!transaction){
-      res.status(400).send('Invalid transaction code')
+      res.send(successpage.SuccesPageHTML('red', 'Invalid transaction code', 'Error', 'fas fa-times'))
     }
     else {
       const account = await Account.findOne({_id: transaction.to.account})
       if(!account){
-        res.status(400).send('That account no longer exist')
+        res.send(successpage.SuccesPageHTML('red', 'That account does not exists anymore', 'Error', 'fas fa-times'))
       }
   
       else if(transaction.status === 'DONE'){
-        res.status(400).send('Charge already done!')
+        res.send(successpage.SuccesPageHTML('red', 'Charge has already been done', 'Error', 'fas fa-times'))
       }
       else{
         account.balance += Number(transaction.amount)
@@ -158,17 +160,7 @@ transaction.get("/authorize/:code", async (req, res) => {
     
         transaction.status = 'DONE';
         transaction.save()
-    
-        res.send(
-          `<html>
-          <head>
-              <meta http-equiv="refresh" content="3;url=http://localhost:3000/home/" />
-          </head>
-          <body>
-              <h1>Validation done, enjoy your money</h1>
-          </body>
-      </html>`
-        )
+        res.send(successpage.SuccesPageHTML('green', 'Charge done, thank you', 'Success', 'fas fa-check'))
       }
     }
 

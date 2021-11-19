@@ -10,8 +10,6 @@ import styled from "styled-components";
 import {Delete} from "@styled-icons/fluentui-system-filled/Delete"
 import { deleteContact } from '../../../redux/reducers/ContactSlice';
 
-import { useTranslation } from "react-i18next";
-
 const StyledModal = styled(Modal)`
 .error{
     margin:0;
@@ -50,7 +48,7 @@ const DeleteContactButton = ({contact}) => {
         dispatch(deleteContact(payload));
       };
 
-      const { t } = useTranslation("global");
+
 
     return (
 
@@ -66,7 +64,7 @@ const DeleteContactButton = ({contact}) => {
         >
             <Modal.Header>
                 <Text id="modal-title" size={18}>
-                   {t("Nav.DL")}
+                    Delete Contact
                 </Text>
             </Modal.Header>
            
@@ -77,10 +75,10 @@ const DeleteContactButton = ({contact}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
-                    {t("Home.CANCEL")}
+                Cancel
                 </Button>
                 <Button auto type="submit" onClick={handleSubmit}>
-                {t("Nav.DL2")}
+                     Delete
                 </Button>
             </Modal.Footer>
         </StyledModal>

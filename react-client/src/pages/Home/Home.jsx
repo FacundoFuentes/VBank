@@ -11,8 +11,6 @@ import {
   Divider,
   Card,
   Col,
-  Tooltip,
-  Row,
   Container
 } from "@nextui-org/react";
 import {
@@ -22,17 +20,10 @@ import {
 } from "../../redux/reducers/userSlice";
 import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
+import { useMediaQuery } from 'react-responsive'
 
+import { useTranslation } from "react-i18next";
 
-const TextS = styled.h2`
-  font-weight: bold;
-  position: relative;
-  left: 20px;
-  justify-content: center;
-  margin-top: 25px;
-
-  margin-bottom: 0px;
-`;
 const GridS = styled.div`
   margin: 5px 20px;
   display: flex;
@@ -44,8 +35,8 @@ const GridS = styled.div`
 const Balance = styled.div`
   border-radius: 20px;
   display: flex;
-  width: 130%;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   padding:50px;
   justify-content: center;
   align-items: center;
@@ -105,12 +96,24 @@ const BoderShadow = styled(GridS)`
   flex-direction: wrap;
   justify-content: center;
   align-items: center;
-  width: 61%;
+  width: 70%;
   -webkit-box-shadow: -10px 0px 13px -7px #00000052,
     10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
+
+
+    @media screen and (max-width: 1080px){
+    width:90%;
+    padding:0;
+  }
 `;
+
+
+
+
+
+
 
 export default function Home() {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
@@ -197,28 +200,30 @@ export default function Home() {
   userTransaction = userTransaction?.map((e) => e).reverse();
   console.log(userTransaction?.map((e) => e).reverse());
 
+
+  const { t, i18n } = useTranslation("global");
+
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 940px)' })
   return (
-      <Container direction="column" display="flex" justify="space-between" style={{marginLeft:"25%"}}  >
+      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px" ,
+      overflowX:"hidden" }}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-            My Card
+          {t("Home.card")}
           </Text>
         </Grid>
 
         <BoderShadow style={{ height: "auto", padding: "20px" }}>
           <Spacer y={0} />
-          <Row gap={1} justify="center" align="center">
-            <Grid.Container gap={2}>
-              <Spacer x={2} />
+
+            <Grid.Container wrap="nowrap" display="flex" justify="space-around" >
+              
               <Grid >
-                <Tooltip
-                  color="#95BEFE"
-                  content={"Copy CVU"}
-                  placement="bottom"
-                >
-                  <Card hoverable clickable width="100%" cover>
+                
+                  <Card height="100%"  width="75%" cover>
                     <Card.Header
-                      style={{ position: "absolute", zIndex: 1, top: 120 }}
+                      style={{ position: "absolute", zIndex: 1, top:isTabletOrMobile  ? 110 : 115 }}
                     >
                       {userInfo && userAccountInfo && (
                         <Col>
@@ -237,67 +242,44 @@ export default function Home() {
                       )}
                     </Card.Header>
                     <Card.Image
-                      autoResize={true}
+                      autoResize={false}
                       src={img}
-                      height={200}
+                      height="100%"
                       width="100%"
                       alt="Card image background"
                     />
                   </Card>
-                </Tooltip>
               </Grid>
-              <Grid width="auto">
+              <Grid >
                 {userAccountInfo && (
-                  <Balance>
+                  <Balance style={{marginRight:"20px"}}>
                     <img width={"50px"} src={gold} alt="" />
-                    <h1>${`${userAccountInfo.balance}`}</h1>
+                    <Text h2 >${`${userAccountInfo.balance}`}</Text>
                   </Balance>
                 )}
               </Grid>
             </Grid.Container>
 
            
-          </Row>
+        
 
-          {/* <CardBalance >
-              <div >
-              <img width={"auto"} height={"auto"} src={img} alt="" />
-             
-             {userInfo && userAccountInfo &&
-             <>
-             <CardNnumber>
-                 {`**** **** **** ${userAccountInfo.card.cardNumber}`}
-               </CardNnumber>
-               <CardName >
-                   {`${userInfo.firstname} ${userInfo.lastname}`}
-               </CardName>
-               </>} 
-              </div>
-              
-           
-            <Line/>
-            {userAccountInfo && 
-            <Balance  >
-              <img width={"50px"} src={gold} alt="" />
-              <h1>${`${userAccountInfo.balance}`}</h1>
-            </Balance> }
-           
-            </CardBalance> */}
+          
         </BoderShadow>
          <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Latest movements
+          {t("Home.last-movements")}
           </Text>
         </Grid>
         <BoderShadow style={{ height: "350px" }}>
           <Expeses>
             <DateNameTotal>
               <LatestMovements gap={2} justify="space-around">
+
                 <Spacer x={4} />
-                <GridLatestMovents xs={2}>Date</GridLatestMovents>
+                <GridLatestMovents xs={2}>{t("Home.date")}</GridLatestMovents>
                 <Spacer x={-5} />
                 <GridLatestMovents justify="center" xs={4}>
-                  Name
+                 {t("Home.name")}
                 </GridLatestMovents>
                 <Spacer x={1} />
                 <GridLatestMovents xs={1}>Total</GridLatestMovents>
@@ -318,7 +300,7 @@ export default function Home() {
                       justify="space-around"
                       style={{ marginBottom: "10px" }}
                     >
-                      <Spacer x={3} />
+                      <Spacer x={-1} />
                       <GridLatestMovents xs={2}>
                         {` ${e.transaction.date.slice(0, 10)} `}{" "}
                       </GridLatestMovents>
@@ -343,7 +325,7 @@ export default function Home() {
         </BoderShadow>
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Statistics
+           {t("Home.statistics ")}
           </Text>
         </Grid>
         <BoderShadow>

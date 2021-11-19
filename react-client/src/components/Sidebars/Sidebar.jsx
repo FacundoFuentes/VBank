@@ -14,6 +14,8 @@ import { BuildingRetailMoney } from "@styled-icons/fluentui-system-filled/Buildi
 import {PiggyBankFill} from "@styled-icons/bootstrap/PiggyBankFill"
 import { useMediaQuery } from 'react-responsive'
 
+import { useTranslation } from "react-i18next";
+
 
 const SideNav = styled.div`
   display:flex;
@@ -23,14 +25,14 @@ const SideNav = styled.div`
   align-items:center;
   flex-direction: flex-start;
   width:80px;
-  height: 100%;
+  height: 200vh;
   background-color:#95BEFE;
   margin:0px;
   padding:0px;
   transition: all 700ms;
   z-index:200;
 
-  @media screen and (max-width: 1100px){
+  @media screen and (max-width: 1080px){
     width:0px;
   }
   
@@ -141,13 +143,15 @@ const dispatch = useDispatch()
 const [navOpen, setNavOpen] = useState(false)
 const logOut = ()=> {
   dispatch(logoutUser())
-
+  
 }
 
   
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1100px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
   const isPortrait = useMediaQuery({ query: '(max-width: 480px)' })
   
+  const { t, i18n } = useTranslation("global");
+
 
   return (
   <>
@@ -162,38 +166,46 @@ const logOut = ()=> {
               <Row align="center" >
               <LinkIcons  to="/home"><IconHome/>
                 <Spacer x={1.5}/>
-                <TextIcons color="#f5f5f5;">Home</TextIcons>
+                <TextIcons color="#f5f5f5;">{t("Side.home")}</TextIcons>
+              
               </LinkIcons>
               </Row>
            <Spacer y={2}/>  
             <Row class="iconos"  align="center">
              <LinkIcons to="/home/transfer"><IconCashCoin/>
              <Spacer x={1.2}/>
-            <TextIcons color="#f5f5f5;">Transfer</TextIcons></LinkIcons>
+            <TextIcons color="#f5f5f5;">{t("Side.transfer")}</TextIcons>
+            </LinkIcons>
             </Row>
           <Spacer y={2}/>
             <Row>
             <LinkIcons to="/home/charge"><IconCharge/>
             <Spacer x={1.2}/>
-            <TextIcons color="#f5f5f5;">Charge</TextIcons></LinkIcons>
+            <TextIcons color="#f5f5f5;">{t("Side.change")}</TextIcons>
+            </LinkIcons>
             </Row>
           <Spacer y={2}/>
             <Row>
              <LinkIcons to="/fixedTerm"><IconPiggy /> 
              <Spacer x={1.3}/>
-              <TextIcons color="#f5f5f5;">Fixed Term</TextIcons></LinkIcons>
+              <TextIcons color="#f5f5f5;">{t("Side.fixed-Term")}</TextIcons>
+              </LinkIcons>
             </Row>
             <Spacer y={2}/> 
             <Row>
              <LinkIcons to="/user/profile"><IconUser /> 
              <Spacer x={1.4}/>
-              <TextIcons color="#f5f5f5;">Profile</TextIcons></LinkIcons>
+              <TextIcons color="#f5f5f5;">{t("Side.profile")}</TextIcons>
+              </LinkIcons>
             </Row>
             <Spacer y={2}/> 
             <Row wrap="nowrap">
                <LinkIcons to="/"><IconLogOut  onClick={logOut}/> 
                <Spacer x={1.4}/>
-               <TextIcons  color="#f5f5f5;"> Log Out</TextIcons></LinkIcons>
+
+               <TextIcons  color="#f5f5f5;">{t("Side.log-Out")} </TextIcons>
+               </LinkIcons>
+
             </Row>
 
           </Col>

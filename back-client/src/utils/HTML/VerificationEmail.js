@@ -144,7 +144,7 @@ const VerificationEmail = (username, code, cvu, cardNumber, cvv) => {
 <div style="font-family: Arial, sans-serif">
 <div style="font-size: 14px; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 16.8px; color: #393d47; line-height: 1.2;">
 <p style="margin: 0; font-size: 14px;">Your account is almost ready, you just have to verify your email so that we can help you in the future if you lose your password or any other problem occurs.</p>
-<p style="margin: 0; font-size: 14px;">Press this button and enter the next code: ${utils.decrypt(code)}</p>
+<p style="margin: 0; font-size: 14px;">Press this button and enter the next code:<b> ${utils.decrypt(code)} </b></p>
 </div>
 </div>
 </td>
@@ -154,7 +154,7 @@ const VerificationEmail = (username, code, cvu, cardNumber, cvv) => {
 <tr>
 <td>
 <div align="center">
-<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:3001/user/emailVerification/Enz0las1" style="height:44px;width:84px;v-text-anchor:middle;" arcsize="10%" strokeweight="0.75pt" strokecolor="#8a3b8f" fillcolor="#0070f3"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="http://localhost:3001/user/emailVerification/Enz0las1" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#0070f3;border-radius:4px;width:auto;border-top:1px solid #8a3b8f;border-right:1px solid #8a3b8f;border-bottom:1px solid #8a3b8f;border-left:1px solid #8a3b8f;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="font-size: 16px; line-height: 2; word-break: break-word; mso-line-height-alt: 32px;">Verify</span></span></a>
+<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:3000/user/verify/${username}" style="height:44px;width:84px;v-text-anchor:middle;" arcsize="10%" strokeweight="0.75pt" strokecolor="#8a3b8f" fillcolor="#0070f3"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="http://localhost:3000/user/verify/${username}" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#0070f3;border-radius:4px;width:auto;border-top:1px solid #8a3b8f;border-right:1px solid #8a3b8f;border-bottom:1px solid #8a3b8f;border-left:1px solid #8a3b8f;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="font-size: 16px; line-height: 2; word-break: break-word; mso-line-height-alt: 32px;">Verify</span></span></a>
 <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 </div>
 </td>

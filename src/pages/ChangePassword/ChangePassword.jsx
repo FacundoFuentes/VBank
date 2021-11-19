@@ -152,7 +152,7 @@ export default function ChangePassword() {
             newPassword: getValues('newPassword')
         }
         console.log(data)
-        axios.post('http://localhost:3001/user/changePassword', miniState, {headers:{'Authorization':'Bearer ' + token}})
+        axios.post('https://value-bank.herokuapp.com/user/changePassword', miniState, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(data)
    console.log(response.status)

@@ -93,7 +93,7 @@ const LoginModal = () => {
 
 // const sendRecoverMail = async()=>{
 //     await 
-//     axios.get('http://localhost:3001/user/password-reset',{headers:{'Authorization':'Bearer ' + token}})
+//     axios.get('https://value-bank.herokuapp.com/user/password-reset',{headers:{'Authorization':'Bearer ' + token}})
 //   .then(response=> {
 //    console.log(response)
    

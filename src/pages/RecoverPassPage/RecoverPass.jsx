@@ -106,7 +106,7 @@ const RecoverPass =()=>{
 
 	 const onSubmit = async(data) => {
 	 	console.log(data)
-     axios.post('http://localhost:3001/user/password-reset', data)
+     axios.post('https://value-bank.herokuapp.com/user/password-reset', data)
   .then(response=> {
    console.log(response)
    if(response.data.status === "ok") {

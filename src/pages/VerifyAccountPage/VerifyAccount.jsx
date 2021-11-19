@@ -93,7 +93,7 @@ const VerifyAccount =()=>{
 	 const {username}= useParams();
 	 const onSubmit = async(code) => {
 	 	console.log(code)
-     axios.patch(`http://localhost:3001/user/emailVerification/${username}`, code)
+     axios.patch(`https://value-bank.herokuapp.com/user/emailVerification/${username}`, code)
   .then(response=> {
    console.log(response.data)
    if (response.data.status === "wait") setError(response.data.data)

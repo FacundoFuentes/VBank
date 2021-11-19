@@ -143,7 +143,7 @@ console.log(token)
 const onSubmit = (data,e) => {
   e.preventDefault();
   console.log(data);
-  axios.post("http://localhost:3001/user/updateInfo", data,{headers:{'Authorization':'Bearer ' + token}})
+  axios.post("https://value-bank.herokuapp.com/user/updateInfo", data,{headers:{'Authorization':'Bearer ' + token}})
   .then(res => {
     console.log(res);
     dispatch(getUserInfo())

@@ -28,7 +28,10 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
     userFrom = await User.findOne({ username: decodedToken.username }); //Busco el usuario cuyo username es el del token
     accountFrom = await Account.findOne({_id: userFrom.account})
     
-    
+    if(amount < 0) {
+      return res.status(404).json({status: 'failed', error: 'Enter a valid amount'})
+
+    }
     if(to.length > 16){ //Si es CVU
       accountTo = await Account.findOne({cvu: to}).populate('user')//Busco la cuenta del usuario RECEIVER
       if(!accountTo) return res.status(404).json({status: 'failed', error: 'Failed to find an account with provided CVU'})

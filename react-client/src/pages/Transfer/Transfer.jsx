@@ -1,14 +1,15 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal, Grid} from '@nextui-org/react';
+import { Button, Text, Input, Textarea, Modal, Grid, Container} from '@nextui-org/react';
+
+import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
+import jwt from 'jsonwebtoken'
 import {useHistory} from 'react-router-dom'
+
 import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
 import {toast } from 'react-toastify';
-
-import { useTranslation } from "react-i18next";
-
 
 const ContainerS= styled.div`
 display: flex;
@@ -143,7 +144,7 @@ const [status, setStatus] =useState(0)
 /* const [input, setInput] = useState(null)
 console.log(input) */
 const [btnLoading, setBtnLoading] = useState(false)
-
+const [btnValidate, setBtnValidate] = useState(true)
 
 function handleInputChange(e){
 
@@ -222,16 +223,15 @@ const token = JSON.parse(localStorage.getItem("token")).data
     myHistory.push("/home")
   }
 
-  const { t } = useTranslation("global");
-    
-  return (
+
+    return (
     
       <div style={{display:"flex",justifyContent:"center"}}>
 
       <Grid.Container display="flex" justify="center" style={{marginTop:"150px" }}>
       
         <TitleContainer>
-          <Text h3 > {t("Transfer.Send-Money")} </Text>
+          <Text h3 > Send Money </Text>
         </TitleContainer>
        <BoderShadow>
        
@@ -243,34 +243,34 @@ const token = JSON.parse(localStorage.getItem("token")).data
         <TextContainer> 
          
           <ToContainer>
-            <Text weight='bold'>{t("Transfer.user")}</Text>
+            <Text weight='bold'>To Username</Text>
             <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal handleInputChange={handleInputChange}/>} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text >{t("Transfer.how")}</Text>
+           <Text >How much?</Text>
            <Input name="amount" value={state.amount} type="number" min="1" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
-           <Text>{t("Transfer.note")} </Text>
+           <Text >Note</Text>
            <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
  
        </DetailContainer>   
        <BranchContainer>
-        <Text>{t("Transfer.why")}</Text>
+        <Text>Why?</Text>
           <Select ref={myHistory} onChange={handleBranch}>
-          <option  value="Branch">{t("Transfer.reason")}</option>
-                    <option value="Travel">{t("Transfer.Travel")}</option>
-                    <option value="Food">{t("Transfer.Food")}</option>
-                    <option value="Shopping">{t("Transfer.Shopping")}</option>
-                    <option value="Games">{t("Transfer.Games")}</option>
-                    <option value="Sport">{t("Transfer.Sport")}</option>
-                    <option value="Tech">{t("Transfer.Tech")}</option>
-                    <option value="Rent">{t("Transfer.Rent")}</option>
-                    <option value="Miscellaneous">{t("Transfer.Miscellaneous")}</option>
+          <option  value="Branch">select reason</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Food">Food</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Games">Games</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
           </Select>
  
        </BranchContainer>   
@@ -278,7 +278,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
        </TextContainer>
        
        <ButtonContainer>
-       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">{t("Fixed.check")}</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
        </ButtonContainer> 
        
        <Modal  
@@ -290,15 +290,15 @@ const token = JSON.parse(localStorage.getItem("token")).data
          status !== 200 ?
          <>
          <Modal.Header>
-           <Text h3>{t("Fixed.before")}</Text>
+           <Text h3>Check before send!</Text>
          </Modal.Header>
         
         <Modal.Body> 
          
-         <Text>{t("Transfer.user")}{` ${state.to}`} </Text>
-         <Text>{t("Transfer.how")} {` $${state.amount}`} </Text>
-         <Text>{t("Transfer.note")}{` ${state.description}`}</Text>
-         <Text>{t("Transfer.why")}{`  ${state.branch}`}</Text>
+         <Text>To Username: {` ${state.to}`} </Text>
+         <Text>How much?: {` $${state.amount}`} </Text>
+         <Text>Note:{` ${state.description}`}</Text>
+         <Text>Why?:{`  ${state.branch}`}</Text>
          <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
@@ -307,16 +307,16 @@ const token = JSON.parse(localStorage.getItem("token")).data
             <>
             <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
-            {t("Nav.close-modal")} 
+            Close
             </Button>
-    {/*         <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
-            </Button> */}
+            </Button>
             </>
             :
             <>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
-            {t("Nav.close-modal")} 
+            Close
             </Button>
             <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!

@@ -3,11 +3,8 @@ import { useForm, Controller } from "react-hook-form";
 import { Modal, Button, Text, Input, Row} from '@nextui-org/react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import {Link} from "react-router-dom"
 import { resetSigninState, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
-
-import { useTranslation } from "react-i18next";
 
 const StyledModal = styled(Modal)`
 &.with-close-button.jsx-1754213264 {
@@ -89,16 +86,8 @@ const LoginModal = () => {
         // }
     },[loggedInUser,history])
   
-// const token = JSON.parse(localStorage.getItem("token")).data
 
-// const sendRecoverMail = async()=>{
-//     await 
-//     axios.get('http://localhost:3001/user/password-reset',{headers:{'Authorization':'Bearer ' + token}})
-//   .then(response=> {
-//    console.log(response)
-   
-//    }).catch(error=> console.log(error))
-// }
+
 
 
  
@@ -125,14 +114,10 @@ const LoginModal = () => {
       }
   }
 
-  
-  const { t, i18n } = useTranslation("global");
-
     return (
-    
     <div>
        <Button auto ghost color="#2CA1DE"  onClick={handler}>
-          {t("Nav.botton-modal")}   
+           Login
         </Button> 
         <StyledModal
             closeButton
@@ -143,7 +128,7 @@ const LoginModal = () => {
         >
             <Modal.Header className="modal-header">
                 <Text id="modal-title" size="2em" color="#000" weight="bold">
-                {t("Nav.botton-modal")}
+                    Login
                
                 
                 </Text>
@@ -181,7 +166,7 @@ const LoginModal = () => {
        rules={{required:true}}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder={t("Nav.Username")}
+        labelPlaceholder="Username"
          color="#f5f5f5" {...field} />}
       />
        {errors.username?.type === 'required' && <p className="error">This field is required</p>}
@@ -197,7 +182,7 @@ const LoginModal = () => {
         rules={{required:true}}
         render={({ field }) => <Input.Password
            underlined 
-           labelPlaceholder={t("Nav.Pass")}
+           labelPlaceholder="Password"
            
              type="password" 
              className="input"
@@ -211,19 +196,18 @@ const LoginModal = () => {
       
       
                 <Row justify="space-between">
-                <Link to="/user/recover">
+               
                 <Text size={14} color="#000" style={{ padding: '20px 0 0 0' }}>
-                {t("Nav.Pass?")} 
+                    Forgot password?
                 </Text>
-                </Link>
                 </Row>
             </Modal.Body>
             <Modal.Footer >
                 <Button auto  onClick={closeHandler}>
-                {t("Nav.close-modal")} 
+                Close
                 </Button>
                 <Button color="#2CA1DE" auto type="submit">
-                {t("Nav.singin-modal")}
+                Sign in
                 </Button>
             </Modal.Footer>
             </form>

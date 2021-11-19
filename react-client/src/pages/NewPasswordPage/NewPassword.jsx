@@ -9,7 +9,7 @@ import axios from "axios"
 
 const PageContainer= styled.div`
 width: 100%;
-height 100vh;
+height: 100vh;
 display: grid;
 place-items: center;
 
@@ -50,9 +50,9 @@ form{
 	flex-direction:column;
 	align-items: center;
 
-	width: 60%;
-	margin-top 20px;
-	margin-bottom 30px;
+	width:60%;
+	margin-top:20px;
+	margin-bottom:30px;
 	
 	.jsx-4281389978 {
 		width: 100%;
@@ -66,7 +66,7 @@ form{
 
 #btns{
 
-	margin-bottom 50px;
+	margin-bottom: 50px;
 	button{
 		margin-right: 10px;
 		margin-left: 10px;

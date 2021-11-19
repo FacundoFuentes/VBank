@@ -11,7 +11,7 @@ import {
   Divider,
   Card,
   Col,
-  Container
+  Container,
 } from "@nextui-org/react";
 import {
   getUserAccountInfo,
@@ -20,8 +20,7 @@ import {
 } from "../../redux/reducers/userSlice";
 import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
-import { useMediaQuery } from 'react-responsive'
-
+import { useMediaQuery } from "react-responsive";
 
 const GridS = styled.div`
   margin: 5px 20px;
@@ -36,7 +35,7 @@ const Balance = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  padding:50px;
+  padding: 50px;
   justify-content: center;
   align-items: center;
 
@@ -44,6 +43,12 @@ const Balance = styled.div`
     10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
+  @media screen and (max-width: 650px) {
+    width: 90%;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
 `;
 
 const Expeses = styled.div`
@@ -63,7 +68,6 @@ const ChartContainer = styled.div`
   justify-content: center;
   width: 90%;
 `;
-
 
 const DateNameTotal = styled.div`
   padding-top: 15px;
@@ -101,18 +105,17 @@ const BoderShadow = styled(GridS)`
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
 
-
-    @media screen and (max-width: 1080px){
-    width:90%;
-    padding:0;
+  @media screen and (max-width: 1080px) {
+    width: 90%;
+    padding: 0;
+  }
+  @media screen and (max-width: 650px) {
+    width: 90%;
+    border: none;
+    box-shadow: none;
+    padding: 0;
   }
 `;
-
-
-
-
-
-
 
 export default function Home() {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
@@ -199,167 +202,174 @@ export default function Home() {
   userTransaction = userTransaction?.map((e) => e).reverse();
   console.log(userTransaction?.map((e) => e).reverse());
 
-
-
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
-  const isMobile = useMediaQuery({ query: '(max-width: 940px)' })
-
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  const isSmallMobile = useMediaQuery({ query: "(max-width: 650px)" });
 
   return (
-      <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px" ,
-      overflowX:"hidden" }}  >
-        <Grid width="100%"  justify="center">
-          <Text width="300px" margin="20px" h2 weight={"bolder"}>
-            My Card
-          </Text>
-        </Grid>
+    <Container
+      direction="column"
+      display="flex"
+      justify="space-evenly"
+      style={{
+        marginLeft: !isTabletOrMobile ? "20%" : "30px",
+        overflowX: "hidden",
+        margin: isSmallMobile && "-10px"
+      }}
+    >
+      <Grid width="100%" justify="center">
+        <Text width="300px" margin="20px" h2 weight={"bolder"}>
+          My Card
+        </Text>
+      </Grid>
 
-        <BoderShadow style={{ height: "auto", padding: "20px" }}>
-          <Spacer y={0} />
+      <BoderShadow style={{ height: "auto", padding: "20px" }}>
+        <Spacer y={0} />
 
-            <Grid.Container wrap="nowrap" display="flex" justify="space-around" >
-              
-              <Grid >
-                
-                  <Card height="100%"  width="75%" cover>
-                    <Card.Header
-                      style={{ position: "absolute", zIndex: 1, top:isTabletOrMobile  ? 110 : 115 }}
-                    >
-                      {userInfo && userAccountInfo && (
-                        <Col>
-                          <Text h4 color="white">
-                            {`**** **** **** ${userAccountInfo.card.cardNumber}`}
-                          </Text>
-                          <Text
-                            size={12}
-                            weight="bold"
-                            transform="uppercase"
-                            color="#ffffffAA"
-                          >
-                            {`${userInfo.firstname} ${userInfo.lastname}`}
-                          </Text>
-                        </Col>
-                      )}
-                    </Card.Header>
-                    <Card.Image
-                      autoResize={false}
-                      src={img}
-                      height="100%"
-                      width="100%"
-                      alt="Card image background"
-                    />
-                  </Card>
-              </Grid>
-              <Grid >
-                {userAccountInfo && (
-                  <Balance style={{marginRight:"20px"}}>
-                    <img width={"50px"} src={gold} alt="" />
-                    <Text h2 >${`${userAccountInfo.balance}`}</Text>
-                  </Balance>
-                )}
-              </Grid>
-            </Grid.Container>
-
-           
-        
-
-          
-        </BoderShadow>
-         <Grid width="100%"  justify="center">
-          <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Latest movements
-          </Text>
-        </Grid>
-        <BoderShadow style={{ height: "350px" }}>
-          <Expeses>
-            <DateNameTotal>
-              <LatestMovements gap={2} justify="space-around">
-                <Spacer x={0} />
-                <GridLatestMovents xs={2}>Date</GridLatestMovents>
-                <Spacer x={-5} />
-                <GridLatestMovents justify="center" xs={4}>
-                  Name
-                </GridLatestMovents>
-                <Spacer x={1} />
-                <GridLatestMovents xs={1}>Total</GridLatestMovents>
-                <Spacer x={2} />
-              </LatestMovements>
-            </DateNameTotal>
-            <Divider x={0} y={1} />
-            <GridContainer>
-              {userTransaction?.map((e, i) => {
-                if (
-                  !e.transaction?.status ||
-                  e.transaction?.status === "DONE"
-                ) {
-                  return (
-                    <LatestMovements
-                      key={i}
-                      gap={2}
-                      justify="space-around"
-                      style={{ marginBottom: "10px" }}
-                    >
-                      <Spacer x={-1} />
-                      <GridLatestMovents xs={2}>
-                        {` ${e.transaction.date.slice(0, 10)} `}{" "}
-                      </GridLatestMovents>
-                      <Spacer x={-4} />
-                      <GridLatestMovents justify="center" xs={4}>
-                        {` ${e.transaction.description} `}{" "}
-                      </GridLatestMovents>
-                      <Spacer x={1} />
-                      <GridLatestMovents xs={1}>
-                        {e.role === "RECEIVER"
-                          ? `+$${e.transaction.amount}`
-                          : `-$${e.transaction.amount}`}{" "}
-                      </GridLatestMovents>
-                      <Spacer x={2} />
-                      <Divider x={0} y={0} />
-                    </LatestMovements>
-                  );
-                }
-              })}
-            </GridContainer>
-          </Expeses>
-        </BoderShadow>
-        <Grid width="100%"  justify="center">
-          <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Statistics
-          </Text>
-        </Grid>
-        <BoderShadow>
-          {data2?.length > 0 ? (
-            <ChartContainer>
-              <Chart
-                height="500px"
-                data={data2}
-                enableArcLinkLabels={true}
-                label={true}
-                interactive={true}
-              />
-            </ChartContainer>
-          ) : (
-            <ChartContainer>
-              <Text h2 style={{ height: "500px" }}>
-                <Chart
-                  height="500px"
-                  enableArcLinkLabels={false}
-                  interactive={false}
-                  label={false}
-                  data={[
-                    {
-                      id: "No Movement ",
-                      laber: "No Movement ",
-                      value: 1,
-                    },
-                  ]}
+        <Grid.Container wrap="nowrap" display="flex" justify="space-around">
+          {!isSmallMobile && (
+            <Grid>
+              <Card height="100%" width="75%" cover>
+                <Card.Header
+                  style={{
+                    position: "absolute",
+                    zIndex: 1,
+                    top: isMobile ? 90 : isTabletOrMobile ? 110 : 115,
+                  }}
+                >
+                  {userInfo && userAccountInfo && (
+                    <Col>
+                      <Text h4 color="white">
+                        {`**** **** **** ${userAccountInfo.card.cardNumber}`}
+                      </Text>
+                      <Text
+                        size={12}
+                        weight="bold"
+                        transform="uppercase"
+                        color="#ffffffAA"
+                      >
+                        {`${userInfo.firstname} ${userInfo.lastname}`}
+                      </Text>
+                    </Col>
+                  )}
+                </Card.Header>
+                <Card.Image
+                  autoResize={false}
+                  src={img}
+                  height="100%"
+                  width="100%"
+                  alt="Card image background"
                 />
-              </Text>
-            </ChartContainer>
+              </Card>
+            </Grid>
           )}
-        </BoderShadow>
-        <Spacer y={3} />
-      </Container>
-   
+
+          <Grid>
+            {userAccountInfo && (
+              <Balance style={{ marginRight: "20px" }}>
+                <img width={"50px"} src={gold} alt="" />
+                <Text h2>${`${userAccountInfo.balance}`}</Text>
+              </Balance>
+            )}
+          </Grid>
+        </Grid.Container>
+      </BoderShadow>
+      <Grid width="100%" justify="center">
+        <Text width="300px" margin="20px" h2 weight={"bolder"}>
+          Latest movements
+        </Text>
+      </Grid>
+      <BoderShadow style={{ height: "350px" }}>
+        <Expeses>
+          <DateNameTotal>
+            <LatestMovements gap={2} justify="space-around">
+              <Spacer x={0} />
+              <GridLatestMovents xs={2}>Date</GridLatestMovents>
+              <Spacer x={-5} />
+              {!isSmallMobile && 
+              <GridLatestMovents justify="center" xs={4}>
+              Name
+            </GridLatestMovents> }
+              
+              <Spacer x={1} />
+              <GridLatestMovents xs={1}>Total</GridLatestMovents>
+              <Spacer x={2} />
+            </LatestMovements>
+          </DateNameTotal>
+          <Divider x={0} y={1} />
+          <GridContainer>
+            {userTransaction?.map((e, i) => {
+              if (!e.transaction?.status || e.transaction?.status === "DONE") {
+                return (
+                  <LatestMovements
+                    key={i}
+                    gap={2}
+                    justify="space-around"
+                    style={{ marginBottom: "10px"}}
+                  >
+                    <Spacer x={-1} />
+                    <GridLatestMovents xs={2}>
+                      {` ${e.transaction.date.slice(0, 10)} `}{" "}
+                    </GridLatestMovents>
+                    <Spacer x={-4} />
+                    {!isSmallMobile  && 
+                    <GridLatestMovents justify="center" xs={4}>
+                    {` ${e.transaction.description} `}{" "}
+                  </GridLatestMovents>
+                    }
+                    
+                    <Spacer x={1} />
+                    <GridLatestMovents xs={1}>
+                      {e.role === "RECEIVER"
+                        ? `+$${e.transaction.amount}`
+                        : `-$${e.transaction.amount}`}{" "}
+                    </GridLatestMovents>
+                    <Spacer x={2} />
+                    <Divider x={0} y={0} />
+                  </LatestMovements>
+                );
+              }
+            })}
+          </GridContainer>
+        </Expeses>
+      </BoderShadow>
+      <Grid width="100%" justify="center">
+        <Text width="300px" margin="20px" h2 weight={"bolder"}>
+          Statistics
+        </Text>
+      </Grid>
+      <BoderShadow>
+        {data2?.length > 0 ? (
+          <ChartContainer>
+            <Chart
+              height={!isSmallMobile ? "50px" : "500px"}
+              data={data2}
+              enableArcLinkLabels={true}
+              label={true}
+              interactive={true}
+            />
+          </ChartContainer>
+        ) : (
+          <ChartContainer>
+            <Text h2 >
+              <Chart
+                height={!isSmallMobile ? "50px" : "500px"}
+                enableArcLinkLabels={false}
+                interactive={false}
+                label={false}
+                data={[
+                  {
+                    id: "No Movement ",
+                    laber: "No Movement ",
+                    value: 1,
+                  },
+                ]}
+              />
+            </Text>
+          </ChartContainer>
+        )}
+      </BoderShadow>
+      <Spacer y={3} />
+    </Container>
   );
 }

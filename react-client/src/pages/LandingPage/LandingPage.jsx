@@ -7,6 +7,7 @@ import {Link} from "react-router-dom"
 
 import card from "../../img/Card-Landing.png"
 
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
 display: flex;
@@ -119,19 +120,20 @@ margin: 0px auto;
 `
 
 export default function LandingPage() {
+  const { t, i18n } = useTranslation("global");
   return (
     <div>
       <Nav/>
       <Container>
        <TextContainer>
-         <Title> <Text h1 size="60px">Welcome to VBank</Text> </Title>
+         <Title> <Text h1 size="60px"> {t("Lan.welcome")}  </Text> </Title>
          <PText>
-         <Text h2 color="#2CA1DE"> We lose everything after this. Spend it (wisely). </Text>
-         <Text h5 > Financial Services for Millennial Customers </Text>
+         <Text h2 color="#2CA1DE">  {t("Lan.welcome-sub")}  </Text>
+         <Text h5 >{t("Lan.welcome-sub2")}</Text>
          </PText>
          <ButtonDiv>
            <Link to="/user/signUp">
-         <Button size="large" rounded="Primary" color="#2CA1DE" className="btn" > Get started </Button>
+         <Button size="large" rounded="Primary" color="#2CA1DE" className="btn" >{t("Lan.botton-lan")} </Button>
            </Link>
          </ButtonDiv>
        </TextContainer>
@@ -141,14 +143,14 @@ export default function LandingPage() {
       </Container>   
       <Line/>
     
-        <TitleCard> <Text h3 size="60px">We are the light side of money</Text></TitleCard>
+        <TitleCard> <Text h3 size="60px">{t("Lan.TitleCard")}</Text></TitleCard>
         <ContainerCard>
            <div> 
           <Card src={card} className="img" alt= 'img not found'/> 
            </div>
            <TextCard>
-          <Text small color="#333"size="30px">Just an app and a card</Text>
-          <Text h6 size="40px" color="#2CA1DE" >Simple. Transparent. And for free.</Text>
+          <Text small color="#333"size="30px">{t("Lan.Text")}</Text>
+          <Text h6 size="40px" color="#2CA1DE" >{t("Lan.Text2")}</Text>
           </TextCard>
         </ContainerCard>
         

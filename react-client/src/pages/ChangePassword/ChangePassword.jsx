@@ -3,6 +3,8 @@ import styled from "styled-components"
 import { Button, Text, Input, Textarea, Modal, Grid, Spacer} from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
+
 const TitleContainer= styled.div` 
 position:relative;
 left:250px;
@@ -63,23 +65,22 @@ export default function Transfer() {
         
       }
 
-
-    return (
+const { t, i18n } = useTranslation("global");
+    
+return (
         <div style={{display:"flex",justifyContent:"center"}}>
 
         <Grid.Container display="flex" justify="center" style={{marginTop:"250px" }}>
 
         <TitleContainer>
-           <Text h3 > Change your password </Text>
+           <Text h3 >{t("Transfer.CYP")} </Text>
          </TitleContainer>
-   
-            
           <BoderShadow>
             <MaxContainer>
             <useForm >
 
             <PassContainer>
-            <Text> Type current password </Text>
+            <Text>{t("Transfer.PS")} </Text>
             <Input.Password
             clearable
             type="password"
@@ -90,7 +91,7 @@ export default function Transfer() {
             </PassContainer>
 
             <PassContainer>
-            <Text> Type new password </Text>
+            <Text>{t("Transfer.PS2")}</Text>
         <Controller
         onChange={(e)=>handleChange(e)}
         name="newPassword"
@@ -103,15 +104,15 @@ export default function Transfer() {
              className="input"
          color="#f5f5f5" {...field} />}
       />
-     {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+     {errors?.password?.type === "required" && <p className="error">{t("Profile.err")}</p>}
 
-     {errors?.password?.type === "pattern" && <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+     {errors?.password?.type === "pattern" && <p className="error">{t("Sing.err3")}</p>}
            
             </PassContainer>
 
 
         <ButtonContainer>
-       <Button  rounded="Primary" color="#2CA1DE" size="small">Change</Button>   
+       <Button  rounded="Primary" color="#2CA1DE" size="small">{t("Transfer.CH")}</Button>   
        </ButtonContainer> 
 
             </useForm>

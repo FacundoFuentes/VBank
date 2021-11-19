@@ -164,7 +164,7 @@ const onSubmit = (data,e) => {
       }
   })
 }
- const { t, i18n } = useTranslation("global");
+ const { t } = useTranslation("global");
 
   return (
     <>

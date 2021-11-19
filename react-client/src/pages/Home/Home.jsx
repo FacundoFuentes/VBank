@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
 import { useMediaQuery } from 'react-responsive'
 
+import { useTranslation } from "react-i18next";
 
 const GridS = styled.div`
   margin: 5px 20px;
@@ -200,17 +201,16 @@ export default function Home() {
   console.log(userTransaction?.map((e) => e).reverse());
 
 
+  const { t, i18n } = useTranslation("global");
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
   const isMobile = useMediaQuery({ query: '(max-width: 940px)' })
-
-
   return (
       <Container direction="column" display="flex" justify="space-evenly"  style={{marginLeft:!isTabletOrMobile ? "20%" : "30px" ,
       overflowX:"hidden" }}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-            My Card
+          {t("Home.card")}
           </Text>
         </Grid>
 
@@ -267,18 +267,19 @@ export default function Home() {
         </BoderShadow>
          <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Latest movements
+          {t("Home.last-movements")}
           </Text>
         </Grid>
         <BoderShadow style={{ height: "350px" }}>
           <Expeses>
             <DateNameTotal>
               <LatestMovements gap={2} justify="space-around">
-                <Spacer x={0} />
-                <GridLatestMovents xs={2}>Date</GridLatestMovents>
+
+                <Spacer x={4} />
+                <GridLatestMovents xs={2}>{t("Home.date")}</GridLatestMovents>
                 <Spacer x={-5} />
                 <GridLatestMovents justify="center" xs={4}>
-                  Name
+                 {t("Home.name")}
                 </GridLatestMovents>
                 <Spacer x={1} />
                 <GridLatestMovents xs={1}>Total</GridLatestMovents>
@@ -324,7 +325,7 @@ export default function Home() {
         </BoderShadow>
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Statistics
+           {t("Home.statistics ")}
           </Text>
         </Grid>
         <BoderShadow>

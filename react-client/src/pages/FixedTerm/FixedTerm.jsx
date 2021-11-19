@@ -1,14 +1,14 @@
 import React, {useState, useRef, useEffect}from 'react'
 import styled from "styled-components"
 import { Button, Text, Input, Modal, Card,Grid, Spacer, Container} from '@nextui-org/react';
-import Sidebar from '../../components/Sidebars/Sidebar';
 import axios from 'axios' 
-import jwt from 'jsonwebtoken'
 import success from "../../img/success.gif"
 import {toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
 
-
+import { useTranslation } from "react-i18next";
+  
+  
   const ContainerS= styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -255,9 +255,9 @@ export default function FixedTerm() {
           myHistory.push("/home")
         }
 
-
+const { t, i18n } = useTranslation("global");
     
-    return (
+return (
       
       <div style={{display:"flex",justifyContent:"center"}}>
 
@@ -265,9 +265,8 @@ export default function FixedTerm() {
       
       
        <TitleContainer>
-          <Text h3 > Fixed Term </Text>
+          <Text h3 > {t("Fixed.tern")} </Text>
         </TitleContainer>
-        
          <BoderShadow>
          <MaxContainer>   
          <form >
@@ -286,8 +285,8 @@ export default function FixedTerm() {
        
        <DetailContainer>
        <Card width="300px"  color="#f3f3f3" bordered borderColor="#D8DBE2" >
-           <Text  >Interest rate: </Text>
-           <Text > from 30 to 365 days: TNA 37% </Text>
+           <Text  >{t("Fixed.interest")} rate: </Text>
+           <Text >{t("Fixed.from")} </Text>
           
         </Card>
        
@@ -295,7 +294,7 @@ export default function FixedTerm() {
  
        
        <ButtonContainer>
-       <Button disabled={!state.amount||!state.due} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Calculate</Button>   
+       <Button disabled={!state.amount||!state.due} onClick={handler} rounded="Primary" color="#2CA1DE" size="small">{t("Fixed.calculate")}</Button>   
        </ButtonContainer> 
 
        
@@ -311,16 +310,16 @@ export default function FixedTerm() {
          <>
          <Modal.Header>
  
-           <Text  h3>Check before send!</Text>
+           <Text  h3>{t("Fixed.before")}</Text>
          </Modal.Header>
         
         <Modal.Body> 
          
-         <Text >How much: {` $ ${state.amount}`} </Text>
-         <Text >Due date: {` ${state.due}`} </Text>
-          <Text>Interest Rate: TNA 37%</Text>
-         <Text >Period:{` ${days_difference} days`}</Text>
-         <Text color="#2CA1DE" size="20px">Total credit: {`$ ${rate37Total}`} </Text>
+         <Text >{t("Fixed.how-much")} {` $ ${state.amount}`} </Text>
+         <Text >{t("Fixed.due-date")} {` ${state.due}`} </Text>
+          <Text>{t("fixed.interest2")}</Text>
+         <Text > period: {` ${days_difference} days`}</Text>
+         <Text color="#2CA1DE" size="20px"> Total credit: {`$ ${rate37Total}`} </Text>
          
         </Modal.Body>
        
@@ -329,7 +328,7 @@ export default function FixedTerm() {
             <>
             <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
-            Close
+            {t("Nav.close-modal")}
             </Button>
             <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
@@ -338,7 +337,7 @@ export default function FixedTerm() {
             :
             <>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
-            Close
+            {t("Nav.close-modal")}
             </Button>
             <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Confirm!

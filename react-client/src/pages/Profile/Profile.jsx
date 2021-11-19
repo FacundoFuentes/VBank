@@ -8,6 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import {toast} from "react-toastify";
 
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
 padding: 150px;
@@ -163,16 +164,16 @@ const onSubmit = (data,e) => {
       }
   })
 }
-
+ const { t, i18n } = useTranslation("global");
 
   return (
     <>
       <Container>
         <Card>
-          <H2> Profile </H2>
+          <H2> {t("Prof.profile")}</H2>
           <In>
             <Info>
-              <span>Birthdate:</span>
+              <span>{t("Prof.birth")}</span>
               {userInfo &&
                 <User> {`${userInfo.birthDate.slice(0, 10)}`} </User>}
             </Info>
@@ -182,12 +183,12 @@ const onSubmit = (data,e) => {
                 <User> {`${userInfo.dni}`} </User>}
             </Info>
             <Info>
-              <span>Firts Name:</span>
+              <span>{t("Prof.firts")}</span>
               {userInfo &&
                 <User>  {`${userInfo.firstname}`} </User>}
             </Info>
             <Info>
-              <span>Last Name:</span>
+              <span>{t("Prof.lastn")}</span>
               {userInfo &&
                 <User> {`${userInfo.lastname}`} </User>}
             </Info>
@@ -197,19 +198,19 @@ const onSubmit = (data,e) => {
                 <User>{`${userInfo.email}`} </User>}
             </Info>
             <Info>
-              <span>Phone Number:</span>
+              <span>{t("Prof.phone")}</span>
               {userInfo &&
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
               <Info>
-                <span>Address:</span>
+                <span>{t("Prof.address")}</span>
                {userInfo &&  userInfo.adress === undefined ?       
                  <User> </User> :
                 userInfo && 
                  <User>{`${userInfo.adress}`} </User> }
               {userInfo &&  userInfo.adress === undefined ?
-             <Edit auto shadow onClick={handler1}>+Add </Edit> :
-             <Edit auto shadow onClick={handler1}>Edit </Edit> }
+             <Edit auto shadow onClick={handler1}>{t("Prof.add")}</Edit> :
+             <Edit auto shadow onClick={handler1}>{t("Prof.edit")}</Edit> }
              <Modal
                   closeButton
                   aria-labelledby="modal-title"
@@ -217,9 +218,9 @@ const onSubmit = (data,e) => {
                   onClose={closeHandler1}>
                   <Modal.Header>
                     <Text id="modal-title" size={18}>
-                      change your..
+                    {t("Prof.change")}
                       <Text b size={18}>
-                        Address
+                      {t("Prof.address")}
                       </Text>
                     </Text>
                   </Modal.Header>
@@ -233,37 +234,37 @@ const onSubmit = (data,e) => {
                       rules={{ pattern: /^[0-9a-zA-Z \_]+$/i, required: true, maxLength: 35 }}
                       render={({ field }) => <Input className="input"       
                         underlined
-                        labelPlaceholder="address.."
+                        labelPlaceholder={t("Prof.address")}
                         tipe="text"
                         color="#696262" {...field} />}
                     />
-                    {errors?.adress?.type === "required" && <p className="error">This field is required</p>}
+                    {errors?.adress?.type === "required" && <p className="error">{t("Prof.err")}</p>}
                     {errors?.adress?.type === "maxLength" && (
-                      <p className="error"> adress cannot exceed 35 characters</p>
+                      <p className="error">{t("Prof.err2")}</p>
                     )}
                     {errors?.adress?.type === "pattern" && (
-                      <p className="error">Alphabetical characters only</p>
+                      <p className="error">{t("Prof.err")}</p>
                     )}
                   </Modal.Body>
                   <Modal.Footer>
                     <Button
                      type="submit"
                      auto onClick={closeHandler1}>
-                      Save
+                      {t("Prof.save")}
                     </Button>
                   </Modal.Footer>
                   </form>
                 </Modal>
               </Info>
               <Info>
-                <span>Zipcode:</span>
+                <span> {t("Prof.zip")}</span>
                 {userInfo &&  userInfo.zipCode === undefined ?       
                  <User> </User> :
                  userInfo &&
                 <User>{`${userInfo.zipCode}`} </User>}
                {userInfo &&  userInfo.zipCode === undefined ? 
-                <Edit auto shadow onClick={handler2}>+Add </Edit> :
-                <Edit auto shadow onClick={handler2}> Edit </Edit>}
+                <Edit auto shadow onClick={handler2}>{t("Prof.add")} </Edit> :
+                <Edit auto shadow onClick={handler2}>{t("Prof.edit")}</Edit>}
                 <Modal
                   closeButton
                   aria-labelledby="modal"
@@ -271,9 +272,9 @@ const onSubmit = (data,e) => {
                   onClose={closeHandler2}>
                   <Modal.Header>
                     <Text id="modal" size={18}>
-                      change your..
+                    {t("Prof.change")}
                       <Text b size={18}>
-                        Zipcode
+                      {t("Prof.zip")}
                       </Text>
                     </Text>
                   </Modal.Header>
@@ -288,26 +289,26 @@ const onSubmit = (data,e) => {
                       render={({ field }) => <Input className="input"
                         underlined
                         type="number"
-                        labelPlaceholder="zipCode"
+                        labelPlaceholder={t("Prof.zip")}
                         color="#c5c5c5" {...field} />}
                     />
-                    {errors.zipCode?.type === 'required' && <p className="error">zipCode is required</p>}
-                    {errors.zipCode?.type === 'pattern' && <p className="error">Number characters only </p>}
-                    {errors.zipCode?.type === 'maxLength' && <p className="error">zipCode cannot be longer than 5</p>}
-                    {errors.zipCode?.type === 'minLength' && <p className="error">zipCode cannot be shorter than 3 characters</p>}
+                    {errors.zipCode?.type === 'required' && <p className="error">{t("Prof.err-zip")}</p>}
+                    {errors.zipCode?.type === 'pattern' && <p className="error">{t("Prof.err2-zip")} </p>}
+                    {errors.zipCode?.type === 'maxLength' && <p className="error">{t("Prof.err3-zip")}</p>}
+                    {errors.zipCode?.type === 'minLength' && <p className="error">{t("Prof.err4-zip")}</p>}
                   </Modal.Body>
                   <Modal.Footer>
                     <Button
                       type="submit"
                       auto onClick={closeHandler2}>
-                      Save
+                      {t("Prof.save")}
                     </Button>
                   </Modal.Footer>
                   </form>
                 </Modal>
               </Info>
             <Link to='/home'>
-              <Button> Back </Button>
+              <Button>{t("Prof.back")}</Button>
             </Link>
           </In>
         </Card>

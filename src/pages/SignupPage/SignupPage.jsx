@@ -473,7 +473,7 @@ onClick={() => {
 setFormStep((currPage) => currPage - 1);
 }}
 >
-{t("Sign.prev")}
+{t("Sing.prev")}
 </Button>
 <Button
 size="mini"
@@ -483,14 +483,14 @@ setFormStep((currPage) => currPage + 1);
 
 }}
 >
-{t("Sign.next")}
+{t("Sing.next")}
 
 </Button>
 </div>
 
 
 {formStep === 2  && isValid ? <>   <Button  type="submit" color="primary" auto>
-{t("Sign.create")}
+{t("Sing.create")}
 </Button></> : null}
           
 

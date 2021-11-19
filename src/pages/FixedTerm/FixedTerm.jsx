@@ -262,7 +262,7 @@ return (
          
          <Text >{t("Fixed.how-much")} {` $ ${state.amount}`} </Text>
          <Text >{t("Fixed.due-date")} {` ${state.due}`} </Text>
-          <Text>{t("fixed.interest2")}</Text>
+          <Text>{t("Fixed.interest2")}</Text>
          <Text > period: {` ${days_difference} days`}</Text>
          <Text color="#2CA1DE" size="20px"> Total credit: {`$ ${rate37Total}`} </Text>
          

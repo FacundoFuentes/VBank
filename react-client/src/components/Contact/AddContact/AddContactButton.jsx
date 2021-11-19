@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
 import {PersonAdd} from "@styled-icons/evaicons-solid/PersonAdd"
 import { addContact, resetAddContact } from '../../../redux/reducers/ContactSlice';
-
-
 const StyledModal = styled(Modal)`
 .error{
     margin:0;
@@ -32,8 +30,6 @@ const AddContactButton = () => {
     const error = useSelector(state => state.contacts.error)
 
    
-
-   
    
 
 
@@ -55,12 +51,21 @@ const AddContactButton = () => {
 
 
  
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
 /*      console.log(data) */
-dispatch(resetAddContact())
-     dispatch(addContact(data))
+try{
+  const response = await dispatch(addContact(data))
+  console.log(response)
+  if(response.type === "contacts/add/fulfilled")  setVisible(false)
   
-      setVisible(false) 
+}catch (error){
+    console.log(error)
+}
+ 
+  
+
+
+      
       
   }
 

@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 
 const ChartStyle = styled.div`
-  width: 600px;
-  height:500px;
+  width: 500px;
+  height:350px;
 `;
 
 

@@ -7,6 +7,8 @@ import {Link} from "react-router-dom"
 import { resetSigninState, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
 
+import { useTranslation } from "react-i18next";
+
 const StyledModal = styled(Modal)`
 &.with-close-button.jsx-1754213264 {
   
@@ -123,10 +125,14 @@ const LoginModal = () => {
       }
   }
 
+  
+  const { t, i18n } = useTranslation("global");
+
     return (
+    
     <div>
        <Button auto ghost color="#2CA1DE"  onClick={handler}>
-           Login
+          {t("Nav.botton-modal")}   
         </Button> 
         <StyledModal
             closeButton
@@ -137,7 +143,7 @@ const LoginModal = () => {
         >
             <Modal.Header className="modal-header">
                 <Text id="modal-title" size="2em" color="#000" weight="bold">
-                    Login
+                {t("Nav.botton-modal")}
                
                 
                 </Text>
@@ -175,7 +181,7 @@ const LoginModal = () => {
        rules={{required:true}}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder="Username"
+        labelPlaceholder={t("Nav.Username")}
          color="#f5f5f5" {...field} />}
       />
        {errors.username?.type === 'required' && <p className="error">This field is required</p>}
@@ -191,7 +197,7 @@ const LoginModal = () => {
         rules={{required:true}}
         render={({ field }) => <Input.Password
            underlined 
-           labelPlaceholder="Password"
+           labelPlaceholder={t("Nav.Pass")}
            
              type="password" 
              className="input"
@@ -207,17 +213,17 @@ const LoginModal = () => {
                 <Row justify="space-between">
                 <Link to="/user/recover">
                 <Text size={14} color="#000" style={{ padding: '20px 0 0 0' }}>
-                    Forgot password?
+                {t("Nav.Pass?")} 
                 </Text>
                 </Link>
                 </Row>
             </Modal.Body>
             <Modal.Footer >
                 <Button auto  onClick={closeHandler}>
-                Close
+                {t("Nav.close-modal")} 
                 </Button>
                 <Button color="#2CA1DE" auto type="submit">
-                Sign in
+                {t("Nav.singin-modal")}
                 </Button>
             </Modal.Footer>
             </form>

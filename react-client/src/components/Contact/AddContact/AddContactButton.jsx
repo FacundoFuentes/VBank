@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
 import {PersonAdd} from "@styled-icons/evaicons-solid/PersonAdd"
 import { addContact, resetAddContact } from '../../../redux/reducers/ContactSlice';
+
+import { useTranslation } from "react-i18next";
+
 const StyledModal = styled(Modal)`
 .error{
     margin:0;
@@ -68,6 +71,7 @@ try{
       
       
   }
+  const { t } = useTranslation("global");
 
     return (
 
@@ -102,7 +106,7 @@ try{
         bordered
         fullWidth
         size="large"
-        labelPlaceholder="Username/ CVU"
+        labelPlaceholder= {t("Prof.TP")}
          color="#f5f5f5" {...field} />}
       />
       {errors.data?.type === 'required' && <p className="error">This field is required</p>}
@@ -118,7 +122,7 @@ try{
         bordered
         fullWidth
         size="large"
-        labelPlaceholder="Ej: Alquiler"
+        labelPlaceholder={t("Prof.TP2")}
          color="#f5f5f5" {...field} />}
       />
       {errors.description?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
@@ -132,10 +136,10 @@ try{
             </Modal.Body>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
-                Close
+                {t("Prof.back")}
                 </Button>
                 <Button  type="submit">
-                     Add
+                {t("Prof.add")}
                 </Button>
             </Modal.Footer>
             </form>

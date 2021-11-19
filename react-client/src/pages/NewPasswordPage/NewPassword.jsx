@@ -11,10 +11,12 @@ import success from "../../img/success.gif"
 
 const PageContainer= styled.div`
 width: 100%;
+
 height 100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
+
 
 `;
 
@@ -54,9 +56,9 @@ form{
 	flex-direction:column;
 	align-items: center;
 
-	width: 60%;
-	margin-top 20px;
-	margin-bottom 30px;
+	width:60%;
+	margin-top:20px;
+	margin-bottom:30px;
 	
 	.jsx-4281389978 {
 		width: 100%;
@@ -69,10 +71,12 @@ form{
 }
 
 #btns{
+
 	width:100%;
 	display:flex;
 	justify-content:center;
 	margin-top: 20px;
+
 	button{
 		width: 60%;
 		border-radius 20px;

@@ -119,7 +119,7 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(getUserInfo())
-  }, []);
+  }, [dispatch]);
   //---------------------Modales-----------------------------
   const [visible1, setVisible1] = useState(false);
   const handler1 = () => setVisible1(true);

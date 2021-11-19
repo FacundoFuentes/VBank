@@ -1,6 +1,6 @@
-import React, {useState, useRef} from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal, Grid, Spacer} from '@nextui-org/react';
+import { Button, Text, Input, Grid, Spacer} from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";

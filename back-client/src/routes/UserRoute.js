@@ -1,8 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
@@ -13,7 +11,6 @@ const crypto = require('crypto')
 
 const { ExtractJwt } = require("passport-jwt");
 const user = express.Router();
-const JwtStrategy = require("../utils/strategy/jwt.strategy");
 const passport = require("passport");
 const jwtDecode = require("jwt-decode");
 const emailUtils = require("../utils/email");
@@ -450,17 +447,17 @@ user.patch("/emailVerification/:username", async (req, res) => {
     if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
 
     if(user.status === 'ACTIVE') {
-      return res.status(200).json({status: 'Account already verified'})
+      return res.status(200).json({status: 'wait', data: 'Account already verified'})
     }
 
     if(utils.decrypt(user.validationCode) === code ) {
       user.status = 'ACTIVE';
       user.save()
 
-      return res.status(200).json({status:'Account verified'})
+      return res.status(200).json({status:'ok', data:'Account verified'})
     }
 
-    return res.status(400).json({status:'failed, invalid code'})
+    return res.status(400).json({status:'failed', data:'failed, invalid code'})
     
   }catch(error){
     res.status(400).send(error.message)
@@ -470,12 +467,10 @@ user.patch("/emailVerification/:username", async (req, res) => {
 
 user.post('/password-reset', async (req, res) => { //Forgot password
   try {
-    const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
-    const decodedToken = jwtDecode(authToken);
-    const username = decodedToken.username
+    const {email} = req.body
   
-    const user = await User.findOne({username})
-    if(!user) return res.status(404).json({sattus: 'failed', data: `'User doesn't exist`})
+    const user = await User.findOne({email})
+    if(!user) return res.status(404).json({status: 'failed', data: `'User doesn't exist`})
   
     let token = await Token.findOne({userId: user._id})
     if(!token){

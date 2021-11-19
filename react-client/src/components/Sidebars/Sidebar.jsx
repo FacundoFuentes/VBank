@@ -25,14 +25,14 @@ const SideNav = styled.div`
   align-items:center;
   flex-direction: flex-start;
   width:80px;
-  height: 100%;
+  height: 200vh;
   background-color:#95BEFE;
   margin:0px;
   padding:0px;
   transition: all 700ms;
   z-index:200;
 
-  @media screen and (max-width: 1100px){
+  @media screen and (max-width: 1080px){
     width:0px;
   }
   
@@ -143,11 +143,11 @@ const dispatch = useDispatch()
 const [navOpen, setNavOpen] = useState(false)
 const logOut = ()=> {
   dispatch(logoutUser())
-
+  
 }
 
   
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1100px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
   const isPortrait = useMediaQuery({ query: '(max-width: 480px)' })
   
   const { t, i18n } = useTranslation("global");
@@ -202,8 +202,10 @@ const logOut = ()=> {
             <Row wrap="nowrap">
                <LinkIcons to="/"><IconLogOut  onClick={logOut}/> 
                <Spacer x={1.4}/>
+
                <TextIcons  color="#f5f5f5;">{t("Side.log-Out")} </TextIcons>
                </LinkIcons>
+
             </Row>
 
           </Col>

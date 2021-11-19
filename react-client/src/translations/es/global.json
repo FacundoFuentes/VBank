@@ -27,8 +27,8 @@
         "log-Out" :"Cerrar sesión"
 },            
        "Home":{
-              "card":"mi tarjeta",
-              "latest-movements":"Últimos movimientos",
+              "card":"Mi tarjeta",
+              "last-movements":"Últimos movimientos",
               "date": "Fecha",
               "name": "Nombre",
               "statistics":"Estadísticas" 
@@ -90,7 +90,7 @@
     "user": "Al usuario",
     "how":"Cuanto?",
     "note":"Nota",  
-    "why" :"¡por que?",
+    "why" :"¿por que?",
     "reason":"Razon",
     "Travel":"Viaje",
     "Food":"Comida",

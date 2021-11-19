@@ -201,7 +201,7 @@ export default function Home() {
   console.log(userTransaction?.map((e) => e).reverse());
 
 
-  const { t, i18n } = useTranslation("global");
+  const { t } = useTranslation("global");
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1080px)' })
   const isMobile = useMediaQuery({ query: '(max-width: 940px)' })
@@ -259,11 +259,6 @@ export default function Home() {
                 )}
               </Grid>
             </Grid.Container>
-
-           
-        
-
-          
         </BoderShadow>
          <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>

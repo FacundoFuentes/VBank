@@ -119,7 +119,7 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(getUserInfo())
-  }, []);
+  }, [dispatch]);
   //---------------------Modales-----------------------------
   const [visible1, setVisible1] = useState(false);
   const handler1 = () => setVisible1(true);
@@ -164,7 +164,7 @@ const onSubmit = (data,e) => {
       }
   })
 }
- const { t, i18n } = useTranslation("global");
+ const { t } = useTranslation("global");
 
   return (
     <>
@@ -307,6 +307,12 @@ const onSubmit = (data,e) => {
                   </form>
                 </Modal>
               </Info>
+              <Info>
+              <span>{t("Nav.Pass")}</span>
+              <Link to='/home/changePassword'>
+              <Edit >{t("Transfer.CH")}</Edit>
+            </Link>
+            </Info>
             <Link to='/home'>
               <Button>{t("Prof.back")}</Button>
             </Link>

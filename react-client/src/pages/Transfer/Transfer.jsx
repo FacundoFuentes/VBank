@@ -143,7 +143,7 @@ const [status, setStatus] =useState(0)
 /* const [input, setInput] = useState(null)
 console.log(input) */
 const [btnLoading, setBtnLoading] = useState(false)
-const [btnValidate, setBtnValidate] = useState(true)
+
 
 function handleInputChange(e){
 
@@ -222,7 +222,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
     myHistory.push("/home")
   }
 
-  const { t, i18n } = useTranslation("global");
+  const { t } = useTranslation("global");
     
   return (
     
@@ -262,7 +262,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
        <BranchContainer>
         <Text>{t("Transfer.why")}</Text>
           <Select ref={myHistory} onChange={handleBranch}>
-          <option  value="Branch">select {t("Transfer.reason")}</option>
+          <option  value="Branch">{t("Transfer.reason")}</option>
                     <option value="Travel">{t("Transfer.Travel")}</option>
                     <option value="Food">{t("Transfer.Food")}</option>
                     <option value="Shopping">{t("Transfer.Shopping")}</option>
@@ -309,9 +309,9 @@ const token = JSON.parse(localStorage.getItem("token")).data
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             {t("Nav.close-modal")} 
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+    {/*         <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
-            </Button>
+            </Button> */}
             </>
             :
             <>

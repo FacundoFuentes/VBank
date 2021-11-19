@@ -6,6 +6,7 @@ import success from "../../img/success.gif"
 import {toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
 import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
+import { useTranslation } from "react-i18next";
 
 
    

@@ -28,7 +28,7 @@
   },            
           "Home":{
               "card":"My Card",
-              "latest-movements":"Latest movements",
+              "last-movements":"Latest movements",
               "date": "Date", 
               "name": "Name",
               "statistics":"Statistics" 

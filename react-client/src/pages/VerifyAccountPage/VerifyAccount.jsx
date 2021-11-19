@@ -3,9 +3,9 @@ import { useForm, Controller } from "react-hook-form";
 import { Button, Input} from '@nextui-org/react';
 import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
-
 import Nav from "../../components/Nav/Nav"
 import axios from "axios"
+import { useTranslation } from "react-i18next";
 
 const PageContainer= styled.div`
 width: 100%;
@@ -84,6 +84,7 @@ form{
 }
 `;
 
+    
 
 const VerifyAccount =()=>{
 
@@ -121,18 +122,21 @@ const VerifyAccount =()=>{
     
    })
   }
-	return(
+
+  const handleClick=()=>{
+  		history.push("/")
+  }
+  const { t } = useTranslation("global");
+	
+  return(
 
 		<PageContainer>
 		<Nav/>
 		<Box>
 		<div id="title">
-		<h2> Verify Account</h2>
+		<h2> {t("Side.DL")}</h2>
 		</div>
-		<span>
-			Introduce el codigo  de verificacion:		</span>
-		
-		
+		<span>{t("Side.HP")}</span>
 		 <form onSubmit={handleSubmit(onSubmit)}>
 		<div  className="field">
           <Controller
@@ -143,20 +147,25 @@ const VerifyAccount =()=>{
         rules={{required:true, pattern:/[A-Za-z]{2,254}/i }}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder="Code"
+        labelPlaceholder={t("Side.Code")}
          color="#f5f5f5" {...field} />}
       />
-      {errors?.code?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.code?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.code?.type === "pattern" && (
-        <p className="error">Alphabetical characters only</p>
+        <p className="error">{t("Prof.err3")}</p>
       )}
        { error && (
         <p className="error">{error}</p>
       )}
             </div>
 		<div id="btns">
-                <Button color="#2ca1de" auto type="submit">
-                     Verify
+
+			<Button auto flat color="error" onClick={handleClick}>
+               {t("Home.CANCEL")}
+                </Button>
+                <Button auto type="submit">
+				{t("Home.Send")}
+
                 </Button>
 		</div>
 		</form>

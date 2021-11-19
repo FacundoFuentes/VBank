@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Grid, Spacer} from '@nextui-org/react';
+import { Button, Text, Input,Spacer} from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
 import axios from 'axios'
 import {toast } from 'react-toastify';
@@ -192,7 +192,7 @@ const { t } = useTranslation("global");
             <form onSubmit={handleSubmit(onSubmit)}>
             
             <PassContainer>
-            <Text> Type current password </Text>
+            <Text>{t("Transfer.PS")} </Text>
             <Controller
         name="prevPassword"
         control={control}
@@ -206,7 +206,7 @@ const { t } = useTranslation("global");
     />
           {/* {errors?.prevPassword?.type === "required" && <Text size="10px" margin="0px">This field is required</Text>}  */}
 
-         {errors?.prevPassword?.type === "pattern" && <PText margin="0px">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</PText>}
+         {errors?.prevPassword?.type === "pattern" && <PText margin="0px">{t("Sign.err3")}</PText>}
            
             </PassContainer>
 
@@ -224,14 +224,14 @@ const { t } = useTranslation("global");
          color="#f5f5f5" {...field} />}
     />
          {/* {errors?.newPassword?.type === "required" && <PText>This field is required</PText>}  */}
-        {errors?.newPassword?.type === "validate" && <PText className="error">New password should be different from previous password</PText>}
-         {errors?.newPassword?.type === "pattern" && <PText className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</PText>}
+        {errors?.newPassword?.type === "validate" && <PText className="error">{t("Transfer.chag")}</PText>}
+         {errors?.newPassword?.type === "pattern" && <PText className="error">{t("Sign.err3")}</PText>}
       
            
             </PassContainer>
 
             <PassContainer className="fields">
-            <Text> New password again!</Text>
+            <Text> {t("Transfer.Chpass")}</Text>
             <Controller
         name="samePassword"
         control={control}
@@ -246,8 +246,8 @@ const { t } = useTranslation("global");
          color="#f5f5f5" {...field} />}
       />
       {/* {errors?.samePassword?.type === "required" && <PText className="error">This field is required</PText>} */} 
-     {errors?.samePassword?.type === "validate" && <PText className="error">Password does not match</PText>} 
-      {errors?.samePassword?.type === "pattern" && <PText className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</PText>}
+     {errors?.samePassword?.type === "validate" && <PText className="error">{t("Transfer.muc")}</PText>} 
+      {errors?.samePassword?.type === "pattern" && <PText className="error">{t("Sign.err3")}</PText>}
             </PassContainer>
 
             {
@@ -259,14 +259,14 @@ const { t } = useTranslation("global");
         </DivCheck>
 
         <ButtonContainer>
-       <Button disabled={!prevPassword||!newPassword||!samePassword} rounded="Primary" color="#2CA1DE" size="small" type="submit"  >Change</Button>   
+       <Button disabled={!prevPassword||!newPassword||!samePassword} rounded="Primary" color="#2CA1DE" size="small" type="submit"  >{t("Transfer.CH")}</Button>   
        </ButtonContainer> 
         </>
         :
         <>
         
         <DivCheck>
-          <Text>Password changed successfully!</Text> 
+          <Text>{t("Transfer.Sip")}</Text> 
           </DivCheck>
           
           <DivBack>

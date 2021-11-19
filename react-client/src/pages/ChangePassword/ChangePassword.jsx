@@ -8,7 +8,7 @@ import {useHistory} from 'react-router-dom'
 import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
 import { useTranslation } from "react-i18next";
 
-import { useTranslation } from "react-i18next";
+
 
 const IconBack = styled(ArrowReturnLeft)`
   color: #f5f5f5;

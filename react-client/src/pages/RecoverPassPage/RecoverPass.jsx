@@ -1,22 +1,25 @@
 import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
-import {useDispatch} from "react-redux"
-import { Button, Input} from '@nextui-org/react';
-import { useHistory, useParams } from 'react-router';
+import { Modal, Button, Input} from '@nextui-org/react';
+import { useHistory} from 'react-router';
 import styled from "styled-components";
-
+import Nav from "../../components/Nav/Nav"
 import axios from "axios"
+
+import successEmail from "../../img/successEmail.gif"
 
 const PageContainer= styled.div`
 width: 100%;
 height 100vh;
-display: grid;
-place-items: center;
+display:flex;
+flex-direction:column;
+align-items:center;
 
 `;
 
 
 const Box= styled.div`
+margin:auto 0;
 width: 50%;
 height: 60%;
 background-color: white;
@@ -37,12 +40,16 @@ margin-bottom:25px;
 		text-align:center;
 	}
 }
+span{
+	text-align:center;
+}
 
 form{
+	margin-top: 20px;
 	display:flex;
 	flex-direction:column;
 	align-items:center;
-	justify-content:space-around;
+	justify-content:flex-start;
 	height: 80%;
 }
 .field{
@@ -62,14 +69,21 @@ form{
 		color:red;
 		font-size: 15px;
 	}
+	.success{
+		color: green;
+		font-size: 15px;
+
+	}
 }
 
 #btns{
-
-	margin-bottom 50px;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	margin-top: 35px;
 	button{
-		margin-right: 10px;
-		margin-left: 10px;
+		width: 60%;
+		border-radius 20px;
 	}
 }
 `;
@@ -77,18 +91,28 @@ form{
 
 const RecoverPass =()=>{
 
-	 const { control, handleSubmit,reset, formState: { errors }} = useForm();
+	 const { control, handleSubmit,formState: { errors }} = useForm();
 	 const [error, setError] = useState("")
 	 const [msg, setMsg] = useState("");
-	 const dispatch= useDispatch()
 	 const history = useHistory()
+
+	  const [visible, setVisible] = useState(false);
+	  const handler = () => setVisible(true);
+  const closeHandler = () => {
+      setVisible(false);
+      setError('');
+   
+  }
 
 	 const onSubmit = async(data) => {
 	 	console.log(data)
      axios.post('http://localhost:3001/user/password-reset', data)
   .then(response=> {
    console.log(response)
-   if(response.data.status === "ok") setMsg(response.data.data)
+   if(response.data.status === "ok") {
+   	setMsg(response.data.data)
+   	setVisible(true)
+   }
    
    
    }).catch(error=>{
@@ -117,6 +141,7 @@ const RecoverPass =()=>{
   }
 	return(
 		<PageContainer>
+		<Nav/>
 		<Box>
 		<div id="title">
 		<h2> Recover Password</h2>
@@ -147,14 +172,30 @@ const RecoverPass =()=>{
         <p className="error">{error}</p>
       )}
        { msg && (
-        <p className="error">{msg}</p>
+       	<Modal
+       	closeButton
+            preventClose
+            aria-labelledby="modal-title"
+            open={visible}
+            onClose={closeHandler}
+       	>
+       	 <img src={successEmail} alt='loading gif' />
+       	</Modal>
+       
+
       )}
+        	<Modal
+       	closeButton
+            preventClose
+            aria-labelledby="modal-title"
+            open={visible}
+            onClose={closeHandler}
+       	>
+       	  <img src={successEmail} alt='loading gif' />
+       	</Modal>
             </div>
 		<div id="btns">
-			<Button auto flat color="error" onClick={handleClick}>
-                Cancel
-                </Button>
-                <Button auto type="submit">
+                <Button color="#2ca1de"auto type="submit">
                      Send
                 </Button>
 		</div>

@@ -379,7 +379,7 @@ const SignupPage = () => {
         name="lastName"
         control={control}
         defaultValue=""
-        rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:32 }}
+        rules={{ pattern: /[A-Za-z]{2,254}/i, required: true, maxLength:32 }}
         render={({ field }) => <Input className="input"
         underlined 
         labelPlaceholder="Last Name"

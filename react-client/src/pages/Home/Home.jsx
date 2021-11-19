@@ -212,17 +212,19 @@ export default function Home() {
       display="flex"
       justify="space-evenly"
       style={{
-        marginLeft: !isTabletOrMobile ? "20%" : "30px",
+        marginLeft: isSmallMobile ? "-10px" : !isTabletOrMobile ? "22%" : "60px",
         overflowX: "hidden",
-        margin: isSmallMobile && "-10px"
+        
       }}
     >
-      <Grid width="100%" justify="center">
-        <Text width="300px" margin="20px" h2 weight={"bolder"}>
+      <Grid.Container width="100px" style={{width:"300px"}}>
+      <Grid width="50px" justify="center">
+        <Text width="50px" margin="20px" h2 weight={"bolder"}
+        >
           My Card
         </Text>
       </Grid>
-
+      </Grid.Container>
       <BoderShadow style={{ height: "auto", padding: "20px" }}>
         <Spacer y={0} />
 
@@ -274,11 +276,13 @@ export default function Home() {
           </Grid>
         </Grid.Container>
       </BoderShadow>
-      <Grid width="100%" justify="center">
+      <Grid.Container  style={{width:"400px"}}>
+      <Grid width="300px" justify="center">
         <Text width="300px" margin="20px" h2 weight={"bolder"}>
           Latest movements
         </Text>
       </Grid>
+      </Grid.Container>
       <BoderShadow style={{ height: "350px" }}>
         <Expeses>
           <DateNameTotal>
@@ -333,11 +337,13 @@ export default function Home() {
           </GridContainer>
         </Expeses>
       </BoderShadow>
-      <Grid width="100%" justify="center">
-        <Text width="300px" margin="20px" h2 weight={"bolder"}>
+      <Grid.Container width="100px" style={{width:"300px"}}>
+      <Grid width="100%" justify="flex-start">
+        <Text width="100px" margin="20px" h2 weight={"bolder"}>
           Statistics
         </Text>
       </Grid>
+      </Grid.Container>
       <BoderShadow>
         {data2?.length > 0 ? (
           <ChartContainer>

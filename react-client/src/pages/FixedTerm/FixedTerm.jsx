@@ -8,7 +8,7 @@ import {useHistory} from 'react-router-dom'
 import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
 
 
-   
+import { useTranslation } from "react-i18next";
 
   const ContainerS= styled.div`
   display: flex;
@@ -259,7 +259,7 @@ export default function FixedTerm() {
           myHistory.push("/home")
         }
 
-const { t, i18n } = useTranslation("global");
+const { t } = useTranslation("global");
     
 return (
       

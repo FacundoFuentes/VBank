@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken'
 import {useHistory} from 'react-router-dom'
 import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
 
+import { useTranslation } from "react-i18next";
+
 const IconBack = styled(ArrowReturnLeft)`
   color: #f5f5f5;
   width:30px;
@@ -33,8 +35,6 @@ const ButtonBack= styled.div`
     
 
 `
-
-import { useTranslation } from "react-i18next";
 
 const TitleContainer= styled.div` 
 position:relative;
@@ -176,6 +176,7 @@ export default function ChangePassword() {
 
 })
 }
+const { t } = useTranslation("global");
   
     return (
         <div style={{display:"flex",justifyContent:"center"}}>

@@ -5,8 +5,9 @@
         "singin-modal":"Sing in",
         "Username":"Username",
          "Pass":"Password",
-        "Pass?": "Forgot password?"  
-   
+        "Pass?": "Forgot password?",  
+        "DL":"Delete Contact",
+        "DL2":"Delete"
     } 
 ,
     "Lan":{
@@ -16,23 +17,31 @@
        "botton-lan":"Get started",
        "TitleCard": "We are the light side of money",
         "Text":"Just an app and a card",
-        "Text2":  "Simple. Transparent. And for free."
-     }, 
+        "Text2":  "Simple. Transparent. And for free.",
+        "16": "It should only have a max of 16 characters"
+    
+    
+    }, 
         "Side":{
                 "home":"Home",
                 "transfer":"Transfer",
                 "charge":"Charge",
                 "fixed-Term":"Fixed Term",
                 "profile":"Profile",
-                "log-Out" :"Log Out"
-  },            
+                "log-Out" :"Log Out",
+                "Code":"Code",
+                "HP" : "Enter the verification code:", 
+                "DL":"Verify Account"
+            },            
      "Home":{
               "card":"My Card",
               "last-movements":"Latest movements",
               "date": "Date", 
               "name": "Name",
-              "sta":"Statistics" 
-          },
+              "sta":"Statistics", 
+              "CANCEL": "Cancel",
+             "Send": "Send"
+            },
  "Prof":{
               "profile":"Profile",
                "birth":"Birthdate:",
@@ -70,7 +79,9 @@
                "err-dni3": "DNI cannot be longer than 8 caracters or shorter than 7",
                "prev": "Prev",
                "next":"Next",
-               "create":"Create Account"
+               "create":"Create Account",
+              "FT": "Password don´t match"
+            
             },
     
  "Fixed":{
@@ -111,9 +122,16 @@
      "PS2":"Type new password",
     "CH": "Change",
     "Con": "My Contacts",
-     "Agr" : "Empty, Add One"
+     "Agr" : "Empty, Add One",
+    "Sip": "Password changed successfully!", 
+    "Chpass": "New password again!", 
+    "chag": "New password should be different from previous password",
+    "muc":"Password does not match"
+},
+"Nwpass": {
+    "nw": "New Password",
+    "1":"Recover Password",
+    "2" :"Enter your email to find your account."
+}
 
 }
-           
-
-    }

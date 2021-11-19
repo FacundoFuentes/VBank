@@ -4,8 +4,9 @@ import {useDispatch} from "react-redux"
 import { Button, Input} from '@nextui-org/react';
 import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
-
 import axios from "axios"
+
+import { useTranslation } from "react-i18next";
 
 const PageContainer= styled.div`
 width: 100%;
@@ -74,6 +75,7 @@ form{
 }
 `;
 
+    
 
 const VerifyAccount =()=>{
 
@@ -115,16 +117,15 @@ const VerifyAccount =()=>{
   const handleClick=()=>{
   		history.push("/")
   }
-	return(
+  const { t } = useTranslation("global");
+	
+  return(
 		<PageContainer>
 		<Box>
 		<div id="title">
-		<h2> Verify Account</h2>
+		<h2> {t("Side.DL")}</h2>
 		</div>
-		<span>
-			Introduce el codigo  de verificacion:		</span>
-		
-		
+		<span>{t("Side.HP")}</span>
 		 <form onSubmit={handleSubmit(onSubmit)}>
 		<div  className="field">
           <Controller
@@ -135,12 +136,12 @@ const VerifyAccount =()=>{
         rules={{required:true, pattern:/[A-Za-z]{2,254}/i }}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder="Code"
+        labelPlaceholder={t("Side.Code")}
          color="#f5f5f5" {...field} />}
       />
-      {errors?.code?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.code?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.code?.type === "pattern" && (
-        <p className="error">Alphabetical characters only</p>
+        <p className="error">{t("Prof.err3")}</p>
       )}
        { error && (
         <p className="error">{error}</p>
@@ -148,10 +149,10 @@ const VerifyAccount =()=>{
             </div>
 		<div id="btns">
 			<Button auto flat color="error" onClick={handleClick}>
-                Cancel
+               {t("Home.CANCEL")}
                 </Button>
                 <Button auto type="submit">
-                     Send
+				{t("Home.Send")}
                 </Button>
 		</div>
 		</form>

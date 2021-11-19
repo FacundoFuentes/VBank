@@ -6,6 +6,7 @@ import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
 
 import axios from "axios"
+import { useTranslation } from "react-i18next";
 
 const PageContainer= styled.div`
 width: 100%;
@@ -119,11 +120,13 @@ const NewPassword =()=>{
   const handleClick=()=>{
   		history.push("/")
   }
+
+  const { t } = useTranslation("global");
 	return(
 		<PageContainer>
 		<Box>
 		<div id="title">
-		<h2> New Password</h2>
+		<h2> {t("Nwpass.nw")}</h2>
 		</div>
 	
 		
@@ -140,9 +143,9 @@ const NewPassword =()=>{
         labelPlaceholder="New Password"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.password?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.password?.type === "pattern" && (
-        <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
+        <p className="error">{t("Sign.err3")}</p>
       )}
             </div>
 
@@ -163,12 +166,12 @@ const NewPassword =()=>{
         labelPlaceholder="Confirm Password"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.samePassword?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.samePassword?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.samePassword?.type === "pattern" && (
-        <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
+        <p className="error"> {t("Sign.err3")}</p>
       )}
        {errors?.samePassword?.type === "validate" && (
-        <p className="error">Password don´t match</p>
+        <p className="error">{t("Sign.FT")}</p>
       )}
 
        { error && (
@@ -180,10 +183,10 @@ const NewPassword =()=>{
             </div>       
 		<div id="btns">
 			<Button auto flat color="error" onClick={handleClick}>
-                Cancel
+         {t("Home.CANCEL")}
                 </Button>
                 <Button auto type="submit">
-                     Send
+                {t("Home.Send")}
                 </Button>
 		</div>
 		</form>

@@ -102,8 +102,8 @@ dispatch(resetAddContact())
         labelPlaceholder= {t("Prof.TP")}
          color="#f5f5f5" {...field} />}
       />
-      {errors.data?.type === 'required' && <p className="error">This field is required</p>}
-      {errors.data?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
+      {errors.data?.type === 'required' && <p className="error">{t("Prof.err")}</p>}
+      {errors.data?.type === 'maxLength' && <p className="error">{t("Lan.16")}</p>}
  
             <Controller
         className="fields"
@@ -118,7 +118,7 @@ dispatch(resetAddContact())
         labelPlaceholder={t("Prof.TP2")}
          color="#f5f5f5" {...field} />}
       />
-      {errors.description?.type === 'maxLength' && <p className="error">It should only have a max of 16 characters</p>}
+      {errors.description?.type === 'maxLength' && <p className="error">{t("Lan.16")}</p>}
 
       {error && <p className="error">{error.error}</p>}
      

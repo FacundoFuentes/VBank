@@ -5,8 +5,9 @@
      "singin-modal":"Iniciar",
      "Username":"Nombre de usuario",
      "Pass":"Contraseña",
-     "Pass?":"¿Se te olvidó tu contraseña?"
-   
+     "Pass?":"¿Se te olvidó tu contraseña?",
+     "DL":"Borrar contacto",
+     "DL2":"Borrar"
     },
      
      "Lan":{
@@ -16,7 +17,8 @@
         "botton-lan":"Empezar",
         "TitleCard": "Somos el lado bueno del dinero",
         "Text":"Solo una aplicación y una tarjeta",
-        "Text2":"Sencillo. Transparente. Y gratis."
+        "Text2":"Sencillo. Transparente. Y gratis.",
+        "16": "Solo debe tener un máximo de 16 caracteres"
     }, 
        "Side":{
         "home":"Principal",
@@ -24,15 +26,20 @@
         "charge":"Carga",
         "fixed-Term":"Plazo fijo",
         "profile":"Perfil",
-        "log-Out" :"Cerrar sesión"
-},            
+        "log-Out" :"Cerrar sesión",
+        "Code":"Codigo",
+       "HP" : " Introduce el codigo  de verificacion: ",   
+       "DL":"Verificar Cuenta"
+    },            
        "Home":{
               "card":"Mi tarjeta",
               "last-movements":"Últimos movimientos",
               "date": "Fecha",
               "name": "Nombre",
-              "sta":"Estadísticas" 
-},
+              "sta":"Estadísticas", 
+              "CANCEL": "CanceLar",
+              "Send": "Enviar"
+            },
          "Prof":{
                  "profile":"Perfil",
                  "birth":"Fecha de nacimiento:",
@@ -70,8 +77,8 @@
     "err-dni3": "El DNI no puede tener más de 8 caracteres ni menos de 7",
     "prev": "Anterior",
     "next":"Siguiente",
-    "create": "Crear una cuenta"
-
+    "create": "Crear una cuenta",
+    "FT": "La contraseña no coincide"
 },
     
 "Fixed":{
@@ -112,10 +119,16 @@
     "PS2":"Escriba la nueva contraseña",
     "CH": "Cambiar", 
     "Con": "Mis contactos",
-    "Agr" : "Vacio, agrega uno"
+    "Agr" : "Vacio, agrega uno",
+    "Sip": "¡Contraseña cambiada con éxito!", 
+    "Chpass": "Repita la nueva contraseña", 
+    "chag": "La nueva contraseña debe ser diferente a la anterior",
+    "muc":"Las contraseñas no coinciden"
+},
+"Nwpass": {
+    "nw": "Nueva contraseña",
+    "1":"Recuperar contraseña",
+    "2" :"Introduce tu correo electrónico para buscar tu cuenta."
 }
-           
-
-       
 
 }

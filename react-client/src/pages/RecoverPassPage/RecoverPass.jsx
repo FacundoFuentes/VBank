@@ -2,10 +2,13 @@ import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
 import {useDispatch} from "react-redux"
 import { Button, Input} from '@nextui-org/react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory} from 'react-router';
 import styled from "styled-components";
 
 import axios from "axios"
+
+import { useTranslation } from "react-i18next";
+
 
 const PageContainer= styled.div`
 width: 100%;
@@ -115,17 +118,18 @@ const RecoverPass =()=>{
   const handleClick=()=>{
   		history.push("/")
   }
+
+  const { t } = useTranslation("global");
+
 	return(
 		<PageContainer>
 		<Box>
 		<div id="title">
-		<h2> Recover Password</h2>
+		<h2> {t("Nwpass.1")}</h2>
 		</div>
 		<span>
-			Introduce tu correo electrónico para buscar tu cuenta.
+		{t("Nwpass.2")}
 		</span>
-		
-		
 		 <form onSubmit={handleSubmit(onSubmit)}>
 		<div  className="field">
           <Controller
@@ -139,9 +143,9 @@ const RecoverPass =()=>{
         labelPlaceholder="Email"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.email?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.email?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.email?.type === "pattern" && (
-        <p className="error">Please, enter a valid email</p>
+        <p className="error">{t("Sign.err2")}</p>
       )}
        { error && (
         <p className="error">{error}</p>
@@ -152,24 +156,14 @@ const RecoverPass =()=>{
             </div>
 		<div id="btns">
 			<Button auto flat color="error" onClick={handleClick}>
-                Cancel
+			{t("Home.CANCEL")}
                 </Button>
                 <Button auto type="submit">
-                     Send
+				{t("Home.Send")}
                 </Button>
 		</div>
 		</form>
-		
-
-
-
-
-		
-
-
-
 		</Box>
-
 		</PageContainer>
 		)
 }

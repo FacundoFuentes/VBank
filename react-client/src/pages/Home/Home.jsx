@@ -109,12 +109,6 @@ const BoderShadow = styled(GridS)`
   }
 `;
 
-
-
-
-
-
-
 export default function Home() {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const userInfo = useSelector((state) => state.user.userInfo.info);

@@ -1,14 +1,23 @@
 import React, {useState, useRef, useEffect}from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Modal, Card,Grid, Spacer, Container} from '@nextui-org/react';
+import { Button, Text, Input, Modal, Card,Grid, Spacer} from '@nextui-org/react';
 import axios from 'axios' 
 import success from "../../img/success.gif"
 import {toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
-
 import { useTranslation } from "react-i18next";
-  
-  
+
+
+   
+const MaxContainer=styled.div`
+height: 500px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: 40%;
+padding:0px 30px
+`
   const ContainerS= styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -21,16 +30,6 @@ import { useTranslation } from "react-i18next";
   /* padding:0px 30px */
   
   `
-
-const MaxContainer=styled.div`
-height: 500px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-width: 40%;
-padding:0px 30px
-`
 
 const TitleContainer= styled.div` 
   position:relative;
@@ -90,52 +89,12 @@ const BoderShadow = styled.div`
   }
 `;
 
-const Expeses = styled.div`
-  display:flex;
-  flex-direction:column;
-  border-radius:20px;
-  width: 90%;
-  height: 320px;
-  
-`;
-
-const DateNameTotal = styled.div`
-  padding-top: 15px;
-  margin-bottom:10px;
-  display:flex;
-  justify-content:space-around;
-  width: 100%;
-  height:50px;
-`;
-
-const LatestMovements = styled(Grid.Container)`
-  color:black;
-  width:100%;
-  padding-bottom:10px;
-  @media screen and (max-width: 1100px) {
-    width:100%;
-  }
-`;
-
-const GridLatestMovents = styled(Grid)`
-  border-radius:10px;
-  
-`;
-
-const GridContainer = styled.div`
-  border-radius:10px;
-  height:100%;
-  width:100%;
-  overflow:auto;
-  overflow-x:hidden;
-  
-`;
 
 export default function FixedTerm() {
 
   let myHistory = useHistory()
    
-    const [info, setInfo] = useState()
+    
     const [visible, setVisible] = useState(false);
     const handler = () => setVisible(true);
     const closeHandler = () => {
@@ -145,7 +104,7 @@ export default function FixedTerm() {
     }
     
     const defaultForm = {
-      amount: 0,
+      amount: '',
       due: '',
       total:0
     }
@@ -198,21 +157,7 @@ export default function FixedTerm() {
       }, [rate37Total]) 
     
       const token = JSON.parse(localStorage.getItem("token")).data
-      
-      
-      useEffect(()=>{
-        axios.get("http://localhost:3001/fixedDeposit" , {headers:{'Authorization':'Bearer ' + token}} )
-        .then(response=> {
-          
-          setInfo(response.data.fixedDeposits)
-          
-          
-          
-          }).catch(error=>{
-            
-             console.log(error)
-          })
-      },[])
+
         
       
 
@@ -255,7 +200,7 @@ export default function FixedTerm() {
           myHistory.push("/home")
         }
 
-const { t, i18n } = useTranslation("global");
+const { t } = useTranslation("global");
     
 return (
       
@@ -265,27 +210,27 @@ return (
       
       
        <TitleContainer>
-          <Text h3 > {t("Fixed.tern")} </Text>
+          <Text h3 > {t("Fixed.term")} </Text>
         </TitleContainer>
          <BoderShadow>
          <MaxContainer>   
          <form >
          <ContainerS style={{overflow:"hidden"}} >
           <ToContainer>
-            <Text >How much?</Text>
+            <Text >{t("Fixed.mon")}</Text>
             <Input name="amount" type="number" min="1"  step="0.01" value={state.amount} contentClickable="true" onChange={(e)=>handleAmount(e)}  width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text>How long?</Text>
+           <Text>{t("Fixed.how")}</Text>
            <Input name="due" value={state.due} type="date"  width="300px" onChange={(e)=>handleChange(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
        <Card width="300px"  color="#f3f3f3" bordered borderColor="#D8DBE2" >
-           <Text  >{t("Fixed.interest")} rate: </Text>
+           <Text  >{t("Fixed.int")}</Text>
            <Text >{t("Fixed.from")} </Text>
           
         </Card>
@@ -330,9 +275,9 @@ return (
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             {t("Nav.close-modal")}
             </Button>
-            <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+{/*             <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
-            </Button>
+            </Button> */}
             </>
             :
             <>
@@ -364,46 +309,6 @@ return (
        </MaxContainer>
        </BoderShadow>
 
- {/*       <TextS>Latest movements</TextS>
-        <BoderShadow style={{height:"350px"}} >
-          <Expeses>
-            <DateNameTotal>
-            <LatestMovements gap={2} justify="space-between">
-                <Spacer x={4} />
-                <GridLatestMovents xs={2}>Date</GridLatestMovents>
-                <Spacer x={-5}/>
-                <GridLatestMovents justify="center" xs={4}>Initial amount</GridLatestMovents>
-                <Spacer x={1}/>
-                <GridLatestMovents xs={1}>Total</GridLatestMovents>
-                <Spacer x={2} />
-              </LatestMovements>     
-            </DateNameTotal>
-              <Divider x={0} y={1} />
-              <GridContainer >
-              {info?.map((e, i) => {
-               
-                  return (
-                <LatestMovements key={i} gap={2} justify="space-between" style={{marginBottom:"10px"}}>
-                <Spacer x={3} />
-                <GridLatestMovents xs={2}>{` ${e.finishDate.slice(0,10)} `} </GridLatestMovents>
-                <Spacer x={-4}/>
-                <GridLatestMovents justify="center" xs={4}>{`$ ${e.amount} `} </GridLatestMovents>
-                <Spacer x={1}/>
-                <GridLatestMovents xs={1}>{ `$ ${e.total}` } </GridLatestMovents>
-                <Spacer x={2} />
-                <Divider x={0} y={0} />
-              </LatestMovements>
-                  )
-                
-                
-              }
-              )}
-
-              </GridContainer>
-              </Expeses>
-        </BoderShadow>
- */}
-      
       
         <Spacer y={3}/>
       

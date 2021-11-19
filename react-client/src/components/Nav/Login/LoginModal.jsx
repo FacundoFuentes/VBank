@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Link} from "react-router-dom"
 import { resetSigninState, signinUser } from '../../../redux/reducers/userSlice';
 import styled from "styled-components";
-import axios from "axios";
-import jwt from 'jsonwebtoken'
 
 import { useTranslation } from "react-i18next";
 

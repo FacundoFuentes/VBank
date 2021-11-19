@@ -1,24 +1,30 @@
 import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
 import {useDispatch} from "react-redux";
-import { Button, Input} from '@nextui-org/react';
+import { Modal, Button, Input} from '@nextui-org/react';
 import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
-
+import Nav from "../../components/Nav/Nav"
 import axios from "axios"
+import {toast} from 'react-toastify'
+import success from "../../img/success.gif"
 
 const PageContainer= styled.div`
 width: 100%;
+
 height 100vh;
-display: grid;
-place-items: center;
+display:flex;
+flex-direction:column;
+align-items:center;
+
 
 `;
 
 
 const Box= styled.div`
+margin: auto 0;
 width: 50%;
-height: 60%;
+height: 65%;
 background-color: white;
 border-radius: 20px;
 display: flex;
@@ -42,7 +48,7 @@ form{
 	display:flex;
 	flex-direction:column;
 	align-items:center;
-	justify-content:space-around;
+	justify-content:flex-start;
 	height: 100%;
 }
 .fields{
@@ -50,9 +56,9 @@ form{
 	flex-direction:column;
 	align-items: center;
 
-	width: 60%;
-	margin-top 20px;
-	margin-bottom 30px;
+	width:60%;
+	margin-top:20px;
+	margin-bottom:30px;
 	
 	.jsx-4281389978 {
 		width: 100%;
@@ -60,29 +66,43 @@ form{
 	}
 	.error{
 		color:red;
-		font-size: 15px;
+		font-size: 10px;
 	}
 }
 
 #btns{
 
-	margin-bottom 50px;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	margin-top: 20px;
+
 	button{
-		margin-right: 10px;
-		margin-left: 10px;
+		width: 60%;
+		border-radius 20px;
 	}
+}
 }
 `;
 
 
 const NewPassword =()=>{
 
-	 const { control, getValues, handleSubmit,reset, formState: { errors }} = useForm();
+	 const { control, getValues, handleSubmit,formState: { errors }} = useForm();
 	 const [error, setError] = useState("")
 	 const [msg, setMsg] = useState("");
 	 const {userId, token} = useParams();
 	 const dispatch= useDispatch()
 	 const history = useHistory()
+
+	  const [visible, setVisible] = useState(false);
+	  const handler = () => setVisible(true);
+  const closeHandler = () => {
+      setVisible(false);
+      setError('');
+      history.push("/")
+   
+  }
 
 	 const onSubmit = async(data) => {
 	 
@@ -92,15 +112,17 @@ const NewPassword =()=>{
 	 	
   .then(response=> {
    console.log(response)
+   if(response.data.status ==="ok")setVisible(true)
+   
    
    
    
    }).catch(error=>{
    	console.log(error.response)
-     /*setError(error.response.data.data)*/
+     setError(error.response.data.data)
    
      
-    /* if (error.response.data.data === "Unauthorized"){
+    if (error.response.data.data === "Unauthorized"){
        localStorage.removeItem('token')
        toast.error(`Session expired, you must sign in again`, {
         position: "top-right",
@@ -112,7 +134,7 @@ const NewPassword =()=>{
         draggable: true,
         progress: undefined,
         }); 
-     }*/
+     }
     
    })
   }
@@ -121,6 +143,7 @@ const NewPassword =()=>{
   }
 	return(
 		<PageContainer>
+		<Nav/>
 		<Box>
 		<div id="title">
 		<h2> New Password</h2>
@@ -174,15 +197,19 @@ const NewPassword =()=>{
        { error && (
         <p className="error">{error}</p>
       )}
-       { msg && (
-        <p className="error">{msg}</p>
-      )}
+      
+       	<Modal
+       	closeButton
+            preventClose
+            aria-labelledby="modal-title"
+            open={visible}
+            onClose={closeHandler}
+       	>
+       	 <img src={success} alt='loading gif' />
+       	</Modal>
             </div>       
 		<div id="btns">
-			<Button auto flat color="error" onClick={handleClick}>
-                Cancel
-                </Button>
-                <Button auto type="submit">
+                <Button color="#2ca1de"auto type="submit">
                      Send
                 </Button>
 		</div>

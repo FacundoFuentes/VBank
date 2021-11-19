@@ -16,6 +16,10 @@ import jwt from "jsonwebtoken";
 import rapiPago from "../../img/rapi-pago.png";
 import pagoFacil from "../../img/pago-facil.png";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+
+
+
 
 
 import { useTranslation } from "react-i18next";
@@ -87,6 +91,21 @@ export default function Charge() {
         .catch((error) => {
           setBtnLoading(false);
           console.log(error);
+
+          if (error) {
+            localStorage.removeItem("token");
+            toast.error("Session expired, sign in again!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              onClose: () => (window.location.href = "http://localhost:3000/"),
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+            });
+            console.log(error);
+          }
         });
     }
   };

@@ -112,7 +112,7 @@ fixedDeposit.post("/new", async (req, res) => {
       amount,
       from: userFound,
       to: userFound,
-      description: `Fixed Deposit on ${todayDate.getMonth()}/${todayDate.getDay()}/${todayDate.getFullYear()}`,
+      description: `Fixed Deposit on ${todayDate.getDate()}/${todayDate.getMonth()+1}/${todayDate.getFullYear()}`,
       type: "FIXED DEPOSIT",
       transactionCode: generateCargeNumber(),
     });

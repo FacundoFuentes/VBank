@@ -33,8 +33,6 @@ const AddContactButton = () => {
     const error = useSelector(state => state.contacts.error)
 
    
-
-   
    
 
 
@@ -56,12 +54,21 @@ const AddContactButton = () => {
 
 
  
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
 /*      console.log(data) */
-dispatch(resetAddContact())
-     dispatch(addContact(data))
+try{
+  const response = await dispatch(addContact(data))
+  console.log(response)
+  if(response.type === "contacts/add/fulfilled")  setVisible(false)
   
-      /* setVisible(false) */
+}catch (error){
+    console.log(error)
+}
+ 
+  
+
+
+      
       
   }
   const { t } = useTranslation("global");

@@ -6,8 +6,9 @@ import axios from 'axios'
 import {toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
 import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
-
 import { useTranslation } from "react-i18next";
+
+
 
 const IconBack = styled(ArrowReturnLeft)`
   color: #f5f5f5;
@@ -34,6 +35,8 @@ const ButtonBack= styled.div`
     
 
 `
+
+
 
 const TitleContainer= styled.div` 
 position:relative;
@@ -112,7 +115,7 @@ width:300px
 
 
 export default function ChangePassword() {
-    const {control, handleSubmit, formState: { errors, isValid }, getValues} = useForm({mode:"all"});
+    const {control, handleSubmit, formState: { errors}, getValues} = useForm({mode:"all"});
     
     const prevPassword = getValues('prevPassword')
     const newPassword = getValues('newPassword')
@@ -126,7 +129,7 @@ export default function ChangePassword() {
 
       }
   
-      const [state, setState] = useState(defaultForm)
+      const [state, setState] = useState(defaultForm) 
       const [error,setError] = useState('')
       const [status, setStatus] =useState(0)
       const [btnLoading, setBtnLoading] = useState(false)
@@ -176,7 +179,6 @@ export default function ChangePassword() {
 })
 }
 const { t } = useTranslation("global");
-  
     return (
         <div style={{display:"flex",justifyContent:"center"}}>
 
@@ -273,10 +275,6 @@ const { t } = useTranslation("global");
         </>
 
         }
-
-       
-
-       
        
             </form>
 

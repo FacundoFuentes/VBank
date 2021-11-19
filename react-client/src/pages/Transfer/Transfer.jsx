@@ -143,7 +143,7 @@ const [status, setStatus] =useState(0)
 /* const [input, setInput] = useState(null)
 console.log(input) */
 const [btnLoading, setBtnLoading] = useState(false)
-const [btnValidate, setBtnValidate] = useState(true)
+
 
 function handleInputChange(e){
 

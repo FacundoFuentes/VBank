@@ -1,23 +1,23 @@
 import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
-import {useDispatch} from "react-redux"
 import { Button, Input} from '@nextui-org/react';
 import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
+import Nav from "../../components/Nav/Nav"
 import axios from "axios"
-
 import { useTranslation } from "react-i18next";
 
 const PageContainer= styled.div`
 width: 100%;
 height 100vh;
-display: grid;
-place-items: center;
-
+display:flex;
+flex-direction:column;
+align-items:center;
 `;
 
 
 const Box= styled.div`
+margin: auto 0;
 width: 50%;
 height: 60%;
 background-color: white;
@@ -31,12 +31,18 @@ padding: 0 15px;
     5px 5px 15px 5px rgba(0, 0, 0, 0);
 
 #title{
+	width: 100%;
+	display:flex;
+	justify-content:center;
 margin-top: 20px;
 margin-bottom:25px;
 	h2{
 		font-size: 24px;
 		text-align:center;
 	}
+}
+span{
+	text-align:center;
 }
 
 form{
@@ -66,12 +72,15 @@ form{
 }
 
 #btns{
-
-	margin-bottom 50px;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	margin-top: 35px;
 	button{
-		margin-right: 10px;
-		margin-left: 10px;
+		width: 60%;
+		border-radius 20px;
 	}
+}
 }
 `;
 
@@ -79,9 +88,8 @@ form{
 
 const VerifyAccount =()=>{
 
-	 const { control, handleSubmit,reset, formState: { errors }} = useForm();
+	 const { control, handleSubmit,formState: { errors }} = useForm();
 	 const [error, setError] = useState("")
-	 const dispatch= useDispatch()
 	 const history = useHistory()
 	 const {username}= useParams();
 	 const onSubmit = async(code) => {
@@ -114,13 +122,16 @@ const VerifyAccount =()=>{
     
    })
   }
+
   const handleClick=()=>{
   		history.push("/")
   }
   const { t } = useTranslation("global");
 	
   return(
+
 		<PageContainer>
+		<Nav/>
 		<Box>
 		<div id="title">
 		<h2> {t("Side.DL")}</h2>
@@ -148,11 +159,13 @@ const VerifyAccount =()=>{
       )}
             </div>
 		<div id="btns">
+
 			<Button auto flat color="error" onClick={handleClick}>
                {t("Home.CANCEL")}
                 </Button>
                 <Button auto type="submit">
 				{t("Home.Send")}
+
                 </Button>
 		</div>
 		</form>

@@ -307,6 +307,12 @@ const onSubmit = (data,e) => {
                   </form>
                 </Modal>
               </Info>
+              <Info>
+              <span>{t("Nav.Pass")}</span>
+              <Link to='/home/changePassword'>
+              <Edit >{t("Transfer.CH")}</Edit>
+            </Link>
+            </Info>
             <Link to='/home'>
               <Button>{t("Prof.back")}</Button>
             </Link>

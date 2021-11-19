@@ -60,7 +60,7 @@ const AddContactButton = () => {
 dispatch(resetAddContact())
      dispatch(addContact(data))
   
-      /* setVisible(false) */
+      setVisible(false) 
       
   }
 

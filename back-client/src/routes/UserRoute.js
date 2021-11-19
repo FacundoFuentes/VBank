@@ -1,17 +1,16 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
 const AccountTransaction = require("../models/AccountTransaction");
 const Transaction = require("../models/Transaction");
 const Card = require("../models/Card");
 const Contact = require("../models/Contact");
+const Token = require('../models/Token')
+const crypto = require('crypto')
 
 const { ExtractJwt } = require("passport-jwt");
 const user = express.Router();
-const JwtStrategy = require("../utils/strategy/jwt.strategy");
 const passport = require("passport");
 const jwtDecode = require("jwt-decode");
 const emailUtils = require("../utils/email");
@@ -32,6 +31,9 @@ user.post("/register", async (req, res) => {
     phoneNumber,
     zipCode,
   } = req.body;
+
+  const userCheck = await User.findOne({username, dni})
+  if(userCheck) return res.status(301).json({status: 'failed', data: "Already registered user, did you want to log in? "})
 
   const HashedPassword = await bcrypt.hash(password, 10);
 
@@ -137,7 +139,7 @@ user.post("/changePassword", async (req, res) => {
         .status(400)
         .json({
           status: "failed",
-          data: "The previous password does not match ",
+          data: "The current password does not match ",
         });
 
     else userFound.password = await bcrypt.hash(newPassword, 10);
@@ -157,7 +159,8 @@ user.post("/login", async (req, res) => {
 
   const userFound = await User.findOne({ username, dni });
   todayDate = new Date();
-  if(userFound.status === "WAITING EMAIL VERIFICATION"){
+if(!userFound) return res.status(400).json({status: 'failed', error: 'Invalid Credentials'})
+if(userFound.status === "WAITING EMAIL VERIFICATION"){
     return res.status(400).json({status: 'failed', error: 'You must verify your account, check your email !!!'})
   }
 
@@ -181,11 +184,6 @@ user.post("/login", async (req, res) => {
       error: `Too many login attempts, you can try again on ${userFound.banDate.getDay()}/${userFound.banDate.getMonth()}/${userFound.banDate.getFullYear()}`,
     });
   }
-
-  if (!userFound)
-    return res
-      .status(404)
-      .json({ status: "failed", error: "Invalid Credentials" });
 
   if (await bcrypt.compare(password, userFound.password)) {
     const token = utils.signToken({
@@ -216,15 +214,36 @@ user.post("/userInfo", async (req, res) => {
       lastname: user.lastName,
       email: user.email,
       dni: user.dni,
-      adress: user.adress, //Recently added
-      phoneNumber: user.phoneNumber, //Recently added
-      zipCode: user.zipCode, //Recently added
-      birthDate: user.birthDate, //Recently added
+      adress: user.adress,
+      phoneNumber: user.phoneNumber,
+      zipCode: user.zipCode,
+      birthDate: user.birthDate,
     });
   } catch (error) {
     res.status(400).json({ status: "failed", error: error.message });
   }
 });
+
+user.post("/updateInfo", async (req, res )  => {
+  const authToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req); //Extraigo el token que me llega por head
+  const decodedToken = jwtDecode(authToken); // Decodeo el token
+  const username = decodedToken.username;
+
+  const {zipCode, adress} = req.body
+  console.log(zipCode, adress)
+  try {
+    const userFound = await User.findOne({username})
+    if(!userFound) return res.status(400).json({status: 'failed', data: 'User not found, please reload the page'})
+
+    if(zipCode) userFound.zipCode = zipCode
+    if(adress) userFound.adress = adress
+
+    await userFound.save()
+    res.json({status: 'ok', data: userFound})
+  } catch (error) {
+    res.status(400).json({status: 'failed', data: "Error: " + error})
+  }
+})
 
 user.post("/userAccountInfo", async (req, res) => {
   const { username } = req.body; // add token
@@ -392,6 +411,7 @@ user.patch("/updateContact", async (req, res) => {
   const { _Id, description } = req.body;
   try {
     const contact = await Contact.findOne({ _Id });
+    if(!contact) return res.status(404).json({status: 'failed', data: 'Contact not found'})
     contact.description = description;
     contact.save();
 
@@ -424,24 +444,75 @@ user.patch("/emailVerification/:username", async (req, res) => {
     const {code} = req.body;
     const {username} = req.params
     const user = await User.findOne({ username })
+    if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
 
     if(user.status === 'ACTIVE') {
-      return res.status(200).json({status: 'Account allready verified'})
+      return res.status(200).json({status: 'wait', data: 'Account already verified'})
     }
 
     if(utils.decrypt(user.validationCode) === code ) {
       user.status = 'ACTIVE';
       user.save()
 
-      return res.status(200).json({status:'Account verified'})
+      return res.status(200).json({status:'ok', data:'Account verified'})
     }
 
-    return res.status(400).json({status:'failed, invalid code'})
+    return res.status(400).json({status:'failed', data:'failed, invalid code'})
     
   }catch(error){
     res.status(400).send(error.message)
   }
 
+})
+
+user.post('/password-reset', async (req, res) => { //Forgot password
+  try {
+    const {email} = req.body
+  
+    const user = await User.findOne({email})
+    if(!user) return res.status(404).json({status: 'failed', data: `'User doesn't exist`})
+  
+    let token = await Token.findOne({userId: user._id})
+    if(!token){
+      token = await Token.create({
+        userId: user._id,
+        token: crypto.randomBytes(32).toString("hex")
+      })
+    } else return res.status(301).json({
+      status: 'failed',
+      data: 'You already requested a password change, please check your e-mail'
+    })
+  
+    const passwordChangeLink = `http://localhost:3000/user/password-reset/${user._id}/${token.token}`
+    await emailUtils.passwordResetEmail(user.email, "VBank Password Reset", passwordChangeLink)
+  
+    return res.status(200).json({status: 'ok', data: 'Password Reset link sent to your email account'})
+  } catch (error) {
+    console.log(error, error.message)
+    return res.status(400).json({status: 'failed', data: 'We have an error on password-reset route :('})
+  }
+
+})
+
+user.post('/password-reset/:userId/:token', async (req, res) => {
+
+  const {userId, token} = req.params
+  const {password} = req.body
+
+  const user = await User.findById(userId)
+  if(!user) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
+
+  const tokenFind = await Token.findOne({
+    userId: user._id,
+    token: token
+  })
+  if(!tokenFind) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
+
+  user.password = await bcrypt.hash(password, 10)
+  await user.save()
+  await tokenFind.delete()
+
+  return res.status(200).json({status: 'ok', data: 'Password changed succesfully'})
 })
 
 

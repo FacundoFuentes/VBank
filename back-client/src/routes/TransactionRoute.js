@@ -12,6 +12,8 @@ const {ExtractJwt} = require('passport-jwt')
 const jwtDecode = require('jwt-decode')
 require("dotenv").config();
 passport.use(JwtStrategy)
+const path = require('path')
+const pages = require('../utils/HTML/TransactionPage')
 
 transaction.post("/new",
 passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -29,9 +31,11 @@ passport.authenticate('jwt', {session: false}), async (req, res) => {
     
     if(to.length > 16){ //Si es CVU
       accountTo = await Account.findOne({cvu: to}).populate('user')//Busco la cuenta del usuario RECEIVER
+      if(!accountTo) return res.status(404).json({status: 'failed', data: 'Failed to find an account with provided CVU'})
       userTo = await User.findOne({_id: accountTo.user}).populate('account')
     } else{
       userTo = await User.findOne({ username: to}).populate('account')
+      if(!userTo) return res.status(404).json({status: 'failed', data: 'Failed to find a user with provided username'})
       accountTo = await Account.findOne({_id: userTo.account})
     } 
 
@@ -111,6 +115,7 @@ transaction.post("/", async (req, res) => {
   try {
     
     const user = await User.findOne({ username }).populate('account')
+    if(!user) return res.status(404).json({status: 'failed', data: 'User not found'})
     const accountTransactions = await Account.findOne({_id: user.account._id}).populate({
       path: 'transactions',
       model: 'AccountTransaction',
@@ -134,20 +139,20 @@ transaction.get("/authorize/:code", async (req, res) => {
 
   const {code} = req.params
   try {
-    
+    console.log(__dirname)
     const transaction = await Transaction.findOne({transactionCode: code}).populate('to')
     
     if(!transaction){
-      res.status(400).send('Invalid transaction code')
+      res.send(pages.TransactionTemplate('red', 'Invalid transaction code', 'Error', 'fas fa-times'))
     }
     else {
       const account = await Account.findOne({_id: transaction.to.account})
       if(!account){
-        res.status(400).send('That account no longer exist')
+        res.send(pages.TransactionTemplate('red', 'That account does not exists anymore', 'Error', 'fas fa-times'))
       }
   
       else if(transaction.status === 'DONE'){
-        res.status(400).send('Charge already done!')
+        res.send(pages.TransactionTemplate('red', 'Charge has already been done', 'Error', 'fas fa-times'))
       }
       else{
         account.balance += Number(transaction.amount)
@@ -155,8 +160,7 @@ transaction.get("/authorize/:code", async (req, res) => {
     
         transaction.status = 'DONE';
         transaction.save()
-    
-        res.status(200).send('Enjoy Your Money')
+        res.send(pages.TransactionTemplate('green', 'Charge done, thank you for choosing VBank', 'Success', 'fas fa-check'))
       }
     }
 

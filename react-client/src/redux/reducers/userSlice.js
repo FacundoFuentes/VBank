@@ -114,10 +114,6 @@ export const signinUser= createAsyncThunk("user/login", async (userInfo,thunkAPI
     }
 })
 
-
-
-
-
 const userSlice = createSlice({
   name: 'user',
   initialState: initUserState,

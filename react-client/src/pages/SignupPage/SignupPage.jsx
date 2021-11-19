@@ -12,6 +12,7 @@ import Nav from '../../components/Nav/Nav';
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useTranslation } from "react-i18next";
 
 
 const Page = styled.div`
@@ -21,7 +22,7 @@ display: flex;
 
 justify-content: center;
 align-items: center;
-margin-top:30px;
+margin-top:15px;
 @media only screen and (max-width:725px){
   margin-top:15px;
 }
@@ -30,10 +31,10 @@ margin-top:30px;
 
 const FormContainer = styled.div`
 
-width: 85%;
+width: 70%;
 background-color:white;
-height: 700px;
-max-height: 700px;
+height: 600px;
+max-height: 600px;
 display: grid;
 grid-template-columns: 1fr 1fr;
  img{
@@ -79,7 +80,7 @@ grid-template-columns: 1fr 1fr;
   padding-bottom: 15px;
 }
 .step.selected {
-  border: 2px solid #4B81BD; 
+  border: 2px solid #0070f3; 
   color:  #fff; 
 
 }
@@ -112,7 +113,8 @@ h2{
   flex-direction: column;
   align-items: center;
   color: #f5f5f5;
-  height: auto;
+ 
+  min-height: 520px;
   border-radius:10px;
   padding-top:25px;
   padding-bottom:5%;
@@ -122,7 +124,12 @@ form{
   padding-top: 60px;
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 50%;
+
+  @media screen and (max-width:520px){
+        width: 55%;
+   
+        }
 
   .fields{
     margin-top:10px;
@@ -157,11 +164,18 @@ form{
   
   }
   .navigation{
-      margin-top:10px;
+           margin-top:10px;
       display:flex;
       width: 100%;
       justify-content: space-between;
+
       margin-bottom: 12px;
+      @media screen and (max-width:467px){
+        button{
+          padding: 5px 10px 5px 10px;
+
+        }
+      }
     }
 
 }
@@ -231,7 +245,7 @@ const SignupPage = () => {
   }
   const [formStep, setFormStep] = useState(0)
   const FormTitles = ["Sign Up", "Personal Info", "Contact"];
-
+  
   const handleInput=(e) => {
     if (e.currentTarget === e.target) {
         document.getElementById('date').type= 'date';
@@ -240,7 +254,7 @@ const SignupPage = () => {
         document.getElementById('date').type= 'text';
       }
   }
-
+  const { t, i18n } = useTranslation("global");
 /*   style={{ width: formStep === 0 ? "33.3%" : formStep == 1 ? "66.6%" : "100%" }} */
   return (
     <>
@@ -287,11 +301,11 @@ const SignupPage = () => {
        rules={{required:true, pattern:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/}}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder="Username"
+        labelPlaceholder={t("Nav.Username")}
          color="#f5f5f5" {...field} />}
       />
-       {errors?.username?.type === "required" && <p className="error">This field is required</p>}
-       {errors?.username?.type === "pattern" && <p className="error">Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number</p>}
+       {errors?.username?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+       {errors?.username?.type === "pattern" && <p className="error">{t("Sing.err")}</p>}
       
 
             </div>
@@ -307,9 +321,9 @@ const SignupPage = () => {
         labelPlaceholder="Email"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.email?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.email?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.email?.type === "pattern" && (
-        <p className="error">Please, enter a valid email</p>
+        <p className="error">{t("Sing.err2")}</p>
       )}
             </div>
             <div  className="fields">
@@ -321,15 +335,14 @@ const SignupPage = () => {
         rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/}}
         render={({ field }) => <Input.Password
            underlined 
-           labelPlaceholder="Password"
-           
+           labelPlaceholder={t("Nav.Pass")}
              type="password" 
              className="input"
          color="#f5f5f5" {...field} />}
       />
-     {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+     {errors?.password?.type === "required" && <p className="error">{t("Prof.err")}</p>}
 
-     {errors?.password?.type === "pattern" && <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
+     {errors?.password?.type === "pattern" && <p className="error">{t("Sing.err3")}</p>}
    
             </div>
 
@@ -347,15 +360,15 @@ const SignupPage = () => {
         rules={ { pattern: /[A-Za-z]{2,254}/i, required:true, maxLength:32}}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder="First Name"
+        labelPlaceholder={t("Prof.firts")}
          color="#f5f5f5" {...field} />}
       />
-       {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}
+       {errors?.firstName?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.firstName?.type === "maxLength" && (
-        <p className="error">First name cannot exceed 32 characters</p>
+        <p className="error"> {t("Sing.err-first")}</p>
       )}
       {errors?.firstName?.type === "pattern" && (
-        <p className="error">Alphabetical characters only</p>
+        <p className="error">{t("Sing.err-first2")}</p>
       )}
       
             </div>
@@ -369,15 +382,15 @@ const SignupPage = () => {
         rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:32 }}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder="Last Name"
+        labelPlaceholder={t("Prof.lastn")}
          color="#f5f5f5" {...field} />}
       />
-       {errors?.lastName?.type === "required" && <p className="error">This field is required</p>}
+       {errors?.lastName?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.lastName?.type === "maxLength" && (
-        <p className="error">First name cannot exceed 32 characters</p>
+        <p className="error">{t("Sing.err-first3")}</p>
       )}
       {errors?.lastName?.type === "pattern" && (
-        <p className="error">Alphabetical characters only</p>
+        <p className="error">{t("Sing.err-first2")}</p>
       )}
 
             </div>
@@ -395,9 +408,9 @@ const SignupPage = () => {
         labelPlaceholder="DNI"
          color="#f5f5f5" {...field} />}
       />
-      {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
-      {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
-      {errors.dni?.type === 'maxLength' && <p className="error"> DNI cannot be longer than 8 caracters or shorter than 7</p>}
+      {errors.dni?.type === 'required' && <p className="error">{t("Sing.err-dni")}</p>}
+      {errors.dni?.type === 'pattern' && <p className="error">{t("Sing.err-dni2")} </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error">{t("Sing.err-dni3")} </p>}
 
             </div>
             <div  className="fields">
@@ -412,10 +425,10 @@ const SignupPage = () => {
         type="text"
         id="date"
         underlined 
-        labelPlaceholder="Birth Date"
+        labelPlaceholder={t("Prof.birth")}
          color="#f5f5f5" {...field} />}
       />
-      {errors.birthDate?.type === 'required' && <p className="error"> This is required</p>}
+      {errors.birthDate?.type === 'required' && <p className="error"> {t("Prof.err")}</p>}
 
             </div>
               </section>
@@ -437,14 +450,14 @@ const SignupPage = () => {
                     <Input
                       className="input"
                       underlined
-                      labelPlaceholder="Phone Number"
+                      labelPlaceholder={t("Prof.phone")}
                       color="#f5f5f5"
                       {...field}
                     />
                   )}
                 />
                 {errors.dni?.type === "required" && (
-                  <p className="error">phone is required</p>
+                  <p className="error">{t("Prof.err")}</p>
                 )}
               {error && <p className="error">{error}</p>}
               </div> 
@@ -460,7 +473,7 @@ onClick={() => {
 setFormStep((currPage) => currPage - 1);
 }}
 >
-Prev
+{t("Sign.prev")}
 </Button>
 <Button
 size="mini"
@@ -470,14 +483,14 @@ setFormStep((currPage) => currPage + 1);
 
 }}
 >
-Next
+{t("Sign.next")}
 
 </Button>
 </div>
 
 
 {formStep === 2  && isValid ? <>   <Button  type="submit" color="primary" auto>
-          Create Account
+{t("Sign.create")}
 </Button></> : null}
           
 

@@ -1,38 +1,43 @@
-import React, {useState, useRef} from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components"
-import { Button, Text, Input, Textarea, Modal} from '@nextui-org/react';
-
-import Sidebar from '../../components/Sidebars/Sidebar';
+import { Button, Text, Input, Textarea, Modal, Grid} from '@nextui-org/react';
 import axios from 'axios' 
-import jwt from 'jsonwebtoken'
 import {useHistory} from 'react-router-dom'
-
 import success from "../../img/success.gif"
 import ContactModal from '../../components/Contact/Contact';
 import {toast } from 'react-toastify';
 
-const Container= styled.div`
+import { useTranslation } from "react-i18next";
+
+
+const ContainerS= styled.div`
 display: flex;
 justify-content: space-evenly;
 flex-direction: column;
 align-items: center;
 height: 450px;
-width: 700px;
+width:100%;
 background-color: white;
 border-radius: 10px;
+padding:0px 30px
 
 `
 const MaxContainer=styled.div`
-height: 800px;
+height: 600px;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+width: 50%;
+padding:0px 30px
 `
-const TitleContainer= styled.div`
-margin-right: 85px;
-margin-bottom: 10px;
-padding: 5px;
+const TitleContainer= styled.div` 
+  position:relative;
+  left:130px;
+  top:-50px;
+  @media screen and (max-width:1100px){
+  display:none
+  }
 `
 
 const TextContainer = styled.div`
@@ -53,28 +58,40 @@ margin-bottom: 10px;
 const MoneyContainer = styled.div`
 margin-top:10px;
 margin-bottom: 10px;
-padding:5px
-`
+padding:5px;
+`;
 const DetailContainer = styled.div `
 margin-top: 10px;
 margin-bottom: 10px;
-padding:5px
+padding:5px;
 `
 const BranchContainer = styled.div`
 margin-top:10px;
 margin-bottom:10px;
-padding:5px
+padding:5px;
 `
 const ButtonContainer = styled.div`
 margin-left:155px;
 padding: 5px;
 
 `
-/* const ContactBlack = styled(Contact)`
-  color: black;
-  height: 50px;
-  
-` */
+const BoderShadow = styled.div`
+  border:solid 0.5px #03030349;
+  border-radius:10px;
+  display:flex;
+  justify-content :center;
+  padding: 0px 30px;
+  width:30%;
+  overflow:hidden;
+  -webkit-box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0,0,0,0);
+  @media screen and (max-width:1100px){
+    width:100%;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    border:none;
+  }
+`;
 
 
 const DivCheck = styled.div`
@@ -164,8 +181,7 @@ const handleBranch = () => {
 
 
 const token = JSON.parse(localStorage.getItem("token")).data
-let {username} = jwt.decode(token)
-let history= useHistory();
+
 
  function handleSubmit(e){
   e.preventDefault()
@@ -203,52 +219,58 @@ let history= useHistory();
     e.preventDefault()
     setState(defaultForm)
     closeHandler()
+    myHistory.push("/home")
   }
 
+  const { t, i18n } = useTranslation("global");
+    
+  return (
+    
+      <div style={{display:"flex",justifyContent:"center"}}>
 
-    return (
-      <div>
+      <Grid.Container display="flex" justify="center" style={{marginTop:"150px" }}>
       
-       <MaxContainer>
-        
         <TitleContainer>
-          <Text h3 > Send Money </Text>
+          <Text h3 > {t("Transfer.Send-Money")} </Text>
         </TitleContainer>
+       <BoderShadow>
+       
+       <MaxContainer>
          
          <form >
       
-      <Container>    
+      <ContainerS>    
         <TextContainer> 
          
           <ToContainer>
-            <Text weight='bold'>To Username</Text>
+            <Text weight='bold'>{t("Transfer.user")}</Text>
             <Input  className="field "name="to" value={state.to} contentClickable="true" onChange={(e)=>handleChange(e)} contentRight={<ContactModal handleInputChange={handleInputChange}/>} width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text >How much?</Text>
+           <Text >{t("Transfer.how")}</Text>
            <Input name="amount" value={state.amount} type="number" min="1" step="0.01" width="300px"  onChange={(e)=>handleAmount(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
-           <Text >Note</Text>
+           <Text>{t("Transfer.note")} </Text>
            <Textarea name="description" value={state.description} maxlength="120" width="300px" onChange={(e)=>handleChange(e)}/>
  
        </DetailContainer>   
        <BranchContainer>
-        <Text>Why?</Text>
+        <Text>{t("Transfer.why")}</Text>
           <Select ref={myHistory} onChange={handleBranch}>
-          <option  value="Branch">select reason</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Food">Food</option>
-                    <option value="Shopping">Shopping</option>
-                    <option value="Games">Games</option>
-                    <option value="Sport">Sport</option>
-                    <option value="Tech">Tech</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
+          <option  value="Branch">select {t("Transfer.reason")}</option>
+                    <option value="Travel">{t("Transfer.Travel")}</option>
+                    <option value="Food">{t("Transfer.Food")}</option>
+                    <option value="Shopping">{t("Transfer.Shopping")}</option>
+                    <option value="Games">{t("Transfer.Games")}</option>
+                    <option value="Sport">{t("Transfer.Sport")}</option>
+                    <option value="Tech">{t("Transfer.Tech")}</option>
+                    <option value="Rent">{t("Transfer.Rent")}</option>
+                    <option value="Miscellaneous">{t("Transfer.Miscellaneous")}</option>
           </Select>
  
        </BranchContainer>   
@@ -256,7 +278,7 @@ let history= useHistory();
        </TextContainer>
        
        <ButtonContainer>
-       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">Check</Button>   
+       <Button disabled={!state.to||!state.amount||!state.description}  onClick={handler} rounded="Primary" color="#2CA1DE" size="small">{t("Fixed.check")}</Button>   
        </ButtonContainer> 
        
        <Modal  
@@ -268,15 +290,15 @@ let history= useHistory();
          status !== 200 ?
          <>
          <Modal.Header>
-           <Text h3>Check before send!</Text>
+           <Text h3>{t("Fixed.before")}</Text>
          </Modal.Header>
         
         <Modal.Body> 
          
-         <Text>To Username: {` ${state.to}`} </Text>
-         <Text>How much?: {` $${state.amount}`} </Text>
-         <Text>Note:{` ${state.description}`}</Text>
-         <Text>Why?:{`  ${state.branch}`}</Text>
+         <Text>{t("Transfer.user")}{` ${state.to}`} </Text>
+         <Text>{t("Transfer.how")} {` $${state.amount}`} </Text>
+         <Text>{t("Transfer.note")}{` ${state.description}`}</Text>
+         <Text>{t("Transfer.why")}{`  ${state.branch}`}</Text>
          <Input name="cvv" value={state.cvv} label="CVV:" type="text" width="60px" onChange={(e)=>handleChange(e)}></Input>
         </Modal.Body>
        
@@ -285,7 +307,7 @@ let history= useHistory();
             <>
             <Text color="red">{error}</Text>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
-            Close
+            {t("Nav.close-modal")} 
             </Button>
             <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
@@ -294,7 +316,7 @@ let history= useHistory();
             :
             <>
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
-            Close
+            {t("Nav.close-modal")} 
             </Button>
             <Button auto rounded="Primary" color="#2CA1DE"  onClick={(e)=>handleSubmit(e)}>
             Ok!
@@ -315,13 +337,14 @@ let history= useHistory();
           }  
         </Modal> 
       
-      </Container>
+      </ContainerS>
       
        </form>
-      
       </MaxContainer>
-
+       </BoderShadow>
+       </Grid.Container>
       </div>
     )
+    
 }
 

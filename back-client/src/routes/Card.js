@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const Card = require("../models/Card.js");
 const bcrypt = require("bcrypt");
 
@@ -21,6 +20,7 @@ card.get("/", async (req, res) => {
   const { account } = req.body; 
   try {
     const findCards = await Card.find({ account });
+    if(!findCards) return res.status(404).json({status: 'failed', data: 'Could not find an account'})
     res.json({ status: "ok", data: findCards });
   } catch (error) {
     res.json({ status: "failed", data: error });

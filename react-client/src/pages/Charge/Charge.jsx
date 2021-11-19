@@ -16,6 +16,8 @@ import jwt from "jsonwebtoken";
 import rapiPago from "../../img/rapi-pago.png";
 import pagoFacil from "../../img/pago-facil.png";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+import { useMediaQuery } from "react-responsive";
 
 const GridS = styled(Grid.Container)`
   border: solid 0.5px #03030349;
@@ -27,11 +29,20 @@ const GridS = styled(Grid.Container)`
     10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
+
+  @media (max-width: 1080px) {
+    border: none;
+    box-shadow: none;
+    background-color: white;
+    margin:0px;
+    padding:0px;
+  }
 `;
 
 export default function Charge() {
   const token = JSON.parse(localStorage.getItem("token")).data;
   let { username } = jwt.decode(token);
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1080px)" });
 
   const form = {
     username: username,
@@ -83,44 +94,66 @@ export default function Charge() {
         .catch((error) => {
           setBtnLoading(false);
           console.log(error);
+
+          if (error) {
+            localStorage.removeItem("token");
+            toast.error("Session expired, sign in again!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              onClose: () => (window.location.href = "http://localhost:3000/"),
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+            });
+            console.log(error);
+          }
         });
     }
   };
 
   return (
-    <div>
+    
       <Container
         display="flex"
-        direction="column"
         justify="center"
-        alignItems="center"
-        style={{ height: "100vh", width: "100vh" }}
+        style={{ height: "100vh", width: "80vw" , padding:"auto", margin:"auto" }}
       >
+       <Grid.Container display="flex"  direction="column"  width="100px" style={{marginLeft:"25%", marginTop:"20%", padding:"auto"}}>
+         
+       {!isTabletOrMobile && 
+        <Grid>
         <Text
-          style={{ position: "relative", left: "-245px", marginBottom: "10px" }}
-          h3
-        >
-          Charge
-        </Text>
+        display="flex"
+        direction="flex-start"
+        h3
+      >
+        Charge
+      </Text>
+      <Spacer y={1}/>
+      </Grid>
+      }
         <GridS
           gap={2}
           display="flex"
           justify="center"
           alignItems="center"
           style={{
-            backgroundColor: "#F6F6F6",
+            backgroundColor: "#ffffff",
             width: "60%",
             height: "350px",
             borderRadius: "10px",
           }}
         >
+          
           <Row display="flex" justify="center">
             <img style={{ width: "180px" }} src={rapiPago} alt="rapiPago" />
             <Spacer x={2} />
             <img style={{ width: "150px" }} src={pagoFacil} alt="pagofacil" />
           </Row>
           <Row display="flex" justify="center">
-            <Spacer x={1} />
+            <Spacer x={0} />
             <Checkbox
               onClick={() => {
                 setPago2(true);
@@ -179,11 +212,11 @@ export default function Charge() {
             </Modal.Header>
             <Modal.Body display="flex" justify="center" alignItems="center">
               <Grid.Container alignItems="center">
-                <Grid >
+                <Grid>
                   <Text>{pago2 ? "Rapi Pago" : "Pago Facil"}</Text>
                   <Text> Payment Code: {`${paymentCode}`}</Text>
                 </Grid>
-                
+
                 <Spacer x={1} />
                 <Grid>
                   <img
@@ -202,7 +235,8 @@ export default function Charge() {
             </Modal.Footer>
           </Modal>
         </GridS>
+        </Grid.Container>
       </Container>
-    </div>
+    
   );
 }

@@ -1,0 +1,134 @@
+{
+    "Nav":{
+     "botton-modal":"Acceso",
+     "close-modal":"Cerrar",
+     "singin-modal":"Iniciar",
+     "Username":"Nombre de usuario",
+     "Pass":"Contraseña",
+     "Pass?":"¿Se te olvidó tu contraseña?",
+     "DL":"Borrar contacto",
+     "DL2":"Borrar"
+    },
+     
+     "Lan":{
+        "welcome": " Bienvenidos a VBanck",
+        "welcome-sub":"Perdemos todo después de esto. Gástalo (sabiamente).",
+        "welcome-sub2": "Servicios financieros para clientes millennials",
+        "botton-lan":"Empezar",
+        "TitleCard": "Somos el lado bueno del dinero",
+        "Text":"Solo una aplicación y una tarjeta",
+        "Text2":"Sencillo. Transparente. Y gratis.",
+        "16": "Solo debe tener un máximo de 16 caracteres"
+    }, 
+       "Side":{
+        "home":"Principal",
+        "transfer":"Transferir",
+        "charge":"Carga",
+        "fixed-Term":"Plazo fijo",
+        "profile":"Perfil",
+        "log-Out" :"Cerrar sesión",
+        "Code":"Codigo",
+       "HP" : " Introduce el codigo  de verificacion: ",   
+       "DL":"Verificar Cuenta"
+    },            
+       "Home":{
+              "card":"Mi tarjeta",
+              "last-movements":"Últimos movimientos",
+              "date": "Fecha",
+              "name": "Nombre",
+              "sta":"Estadísticas", 
+              "CANCEL": "CanceLar",
+              "Send": "Enviar"
+            },
+         "Prof":{
+                 "profile":"Perfil",
+                 "birth":"Fecha de nacimiento:",
+                 "firts" : "Nombre:",
+                 "lastn" :"Apellido:",
+                 "phone":"Telefono:",
+                 "address":"Direccion:", 
+                 "add": "agregar!",
+                 "edit":  "Editar",
+                 "change":"Cambia tu..",
+                 "save": "Guardar",
+                 "zip":"Codigo Postal:",
+                 "err":"Este campo es obligatorio",
+                 "err2":"la dirección no puede exceder los 35 caracteres",  
+                 "err3":"Solo caracteres alfabéticos",
+                 "err-zip":"Se requiere el código postal",
+                 "err2-zip": "Caracteres numericos unicamente",
+                 "err3-zip": "El código postal no puede ser mayor de 5 digitos",
+                 "err4-zip": "El código postal no puede tener menos de 3 caracteres.",
+                 "back":"Atras",
+                 "TP":"Usuario o CVU",
+                "TP2" :"Ej: Alquiler"
+                },
+
+"Sign":{
+
+    "err":"El nombre de usuario debe tener un mínimo de 6 y un máximo de 16 caracteres, al menos una letra mayúscula, una letra minúscula y un número",
+    "err2":"Por favor introduzca una dirección de correo electrónico válida",
+    "err3": "La contraseña debe tener un mínimo de 6 y un máximo de 16 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial",
+    "err-first": "El nombre no puede superar los 32 caracteres",
+    "err-first2": "Solo caracteres alfabéticos",
+    "err-first3": "El apellido no puede superar los 32 caracteres",
+    "err-dni": "DNI es requerido",
+    "err-dni2": "Solo numeros",
+    "err-dni3": "El DNI no puede tener más de 8 caracteres ni menos de 7",
+    "prev": "Anterior",
+    "next":"Siguiente",
+    "create": "Crear una cuenta",
+    "FT": "La contraseña no coincide"
+},
+    
+"Fixed":{
+  "term": "Plazo fijo",
+  "calculate": "Calcular",
+  "int":" Indice de interes:",
+  "from" : "de 30 a 365 días: TNA 37%",
+  "check":"Chequear",
+  "send":"enviar!",
+  "how-much":"Monto",
+  "due-date:":"Fecha de vencimiento:",
+  "interest2" : "Tasa de interés: TNA 37%", 
+  "before" : "¡Verifique antes de enviar!",
+  "how" : "¿Cuánto tiempo?",
+  "mon":"Monto" 
+},
+"Transfer":
+{
+    "Send-Money":"Enviar dinero",
+    "user": "Al usuario",
+    "how":"Monto",
+    "note":"Nota",  
+    "why" :"Razon",
+    "reason":" Seleccionar razon",
+    "Travel":"Viaje",
+    "Food":"Comida",
+    "Shopping" : "Centro comercial",
+    "Games":"Juegos",
+    "Sport":"Deportes",
+    "Tech":"Tegnologia",
+    "Rent":"Renta",
+    "Miscellaneous":"diversos",
+    "Amount":"Monto",
+    "Success":"Exito",
+   "Payment-Code":" Código de pago",
+   "CYP":"Cambio de contraseña",
+    "PS": "Escriba la contraseña actual",
+    "PS2":"Escriba la nueva contraseña",
+    "CH": "Cambiar", 
+    "Con": "Mis contactos",
+    "Agr" : "Vacio, agrega uno",
+    "Sip": "¡Contraseña cambiada con éxito!", 
+    "Chpass": "Repita la nueva contraseña", 
+    "chag": "La nueva contraseña debe ser diferente a la anterior",
+    "muc":"Las contraseñas no coinciden"
+},
+"Nwpass": {
+    "nw": "Nueva contraseña",
+    "1":"Recuperar contraseña",
+    "2" :"Introduce tu correo electrónico para buscar tu cuenta."
+}
+
+}

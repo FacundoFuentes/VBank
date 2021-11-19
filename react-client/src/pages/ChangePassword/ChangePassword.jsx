@@ -4,7 +4,6 @@ import { Button, Text, Input, Grid, Spacer} from '@nextui-org/react';
 import { useForm, Controller } from "react-hook-form";
 import axios from 'axios'
 import {toast } from 'react-toastify';
-import jwt from 'jsonwebtoken'
 import {useHistory} from 'react-router-dom'
 import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
 import { useTranslation } from "react-i18next";
@@ -114,7 +113,7 @@ width:300px
 
 
 export default function ChangePassword() {
-    const {control, handleSubmit, formState: { errors, isValid }, getValues} = useForm({mode:"all"});
+    const {control, handleSubmit, formState: { errors}, getValues} = useForm({mode:"all"});
     
     const prevPassword = getValues('prevPassword')
     const newPassword = getValues('newPassword')
@@ -128,7 +127,7 @@ export default function ChangePassword() {
 
       }
   
-      const [state, setState] = useState(defaultForm)
+      const [state, setState] = useState(defaultForm) 
       const [error,setError] = useState('')
       const [status, setStatus] =useState(0)
       const [btnLoading, setBtnLoading] = useState(false)

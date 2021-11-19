@@ -143,7 +143,7 @@ const [status, setStatus] =useState(0)
 /* const [input, setInput] = useState(null)
 console.log(input) */
 const [btnLoading, setBtnLoading] = useState(false)
-const [btnValidate, setBtnValidate] = useState(true)
+
 
 function handleInputChange(e){
 
@@ -222,7 +222,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
     myHistory.push("/home")
   }
 
-  const { t, i18n } = useTranslation("global");
+  const { t } = useTranslation("global");
     
   return (
     

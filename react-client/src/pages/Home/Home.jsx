@@ -23,6 +23,7 @@ import {
 import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
 
+import { useTranslation } from "react-i18next";
 
 const TextS = styled.h2`
   font-weight: bold;
@@ -197,11 +198,13 @@ export default function Home() {
   userTransaction = userTransaction?.map((e) => e).reverse();
   console.log(userTransaction?.map((e) => e).reverse());
 
+  const { t, i18n } = useTranslation("global");
+  
   return (
       <Container direction="column" display="flex" justify="space-between" style={{marginLeft:"25%"}}  >
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-            My Card
+          {t("Home.card")}
           </Text>
         </Grid>
 
@@ -286,7 +289,7 @@ export default function Home() {
         </BoderShadow>
          <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Latest movements
+          {t("Home.last-movements")}
           </Text>
         </Grid>
         <BoderShadow style={{ height: "350px" }}>
@@ -294,10 +297,10 @@ export default function Home() {
             <DateNameTotal>
               <LatestMovements gap={2} justify="space-around">
                 <Spacer x={4} />
-                <GridLatestMovents xs={2}>Date</GridLatestMovents>
+                <GridLatestMovents xs={2}>{t("Home.date")}</GridLatestMovents>
                 <Spacer x={-5} />
                 <GridLatestMovents justify="center" xs={4}>
-                  Name
+                 {t("Home.name")}
                 </GridLatestMovents>
                 <Spacer x={1} />
                 <GridLatestMovents xs={1}>Total</GridLatestMovents>
@@ -343,7 +346,7 @@ export default function Home() {
         </BoderShadow>
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Statistics
+           {t("Home.statistics ")}
           </Text>
         </Grid>
         <BoderShadow>

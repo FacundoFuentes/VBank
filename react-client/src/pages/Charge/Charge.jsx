@@ -17,6 +17,10 @@ import rapiPago from "../../img/rapi-pago.png";
 import pagoFacil from "../../img/pago-facil.png";
 import styled from "styled-components";
 
+
+import { useTranslation } from "react-i18next";
+
+
 const GridS = styled(Grid.Container)`
   border: solid 0.5px #03030349;
   border-radius: 10px;
@@ -86,7 +90,8 @@ export default function Charge() {
         });
     }
   };
-
+  const { t, i18n } = useTranslation("global");
+  
   return (
     <div>
       <Container
@@ -100,7 +105,7 @@ export default function Charge() {
           style={{ position: "relative", left: "-245px", marginBottom: "10px" }}
           h3
         >
-          Charge
+         {t("Side.charge")}
         </Text>
         <GridS
           gap={2}
@@ -150,7 +155,7 @@ export default function Charge() {
               onChange={handleChange}
               min="0"
               width="250px"
-              labelPlaceholder="Amount"
+              labelPlaceholder={t("Transfer.Amount")}
               type="number"
             ></Input>
           </Grid>
@@ -174,14 +179,14 @@ export default function Charge() {
           >
             <Modal.Header>
               <Text color="green" h2>
-                Success
+              {t("Transfer.Success")} 
               </Text>
             </Modal.Header>
             <Modal.Body display="flex" justify="center" alignItems="center">
               <Grid.Container alignItems="center">
                 <Grid >
                   <Text>{pago2 ? "Rapi Pago" : "Pago Facil"}</Text>
-                  <Text> Payment Code: {`${paymentCode}`}</Text>
+                  <Text> {t("Transfer.Payment-Code")} {`${paymentCode}`}</Text>
                 </Grid>
                 
                 <Spacer x={1} />

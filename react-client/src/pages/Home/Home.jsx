@@ -320,7 +320,7 @@ export default function Home() {
         </BoderShadow>
         <Grid width="100%"  justify="center">
           <Text width="300px" margin="20px" h2 weight={"bolder"}>
-           {t("Home.statistics ")}
+           {t("Home.sta")}
           </Text>
         </Grid>
         <BoderShadow>

@@ -12,6 +12,8 @@ import { useForm} from "react-hook-form";
 import AddContactButton from './AddContact/AddContactButton';
 import DeleteContactButton from './DeleteContact/DeleteContactButton';
 
+import { useTranslation } from "react-i18next";
+
 const StyledModal = styled(Modal)`
 .error{
     margin:0;
@@ -85,6 +87,7 @@ const ContactModal = ({handleInputChange}) => {
   
   }, [dispatch, visible]);
 
+  const { t } = useTranslation("global");
     return (
 
     <div>
@@ -99,7 +102,7 @@ const ContactModal = ({handleInputChange}) => {
         >
             <Modal.Header>
                 <Text id="modal-title" size={18}>
-                <h2>My Contacts</h2>
+                <h2>{t("Transfer.Con")}</h2>
                 </Text>
             </Modal.Header>
            
@@ -124,7 +127,7 @@ const ContactModal = ({handleInputChange}) => {
     </ContactRow>
 
 )):(
-  <p> Empty, Add One</p>
+  <p> {t("Transfer.Agr")}</p>
 )}
    
         </>
@@ -138,7 +141,7 @@ const ContactModal = ({handleInputChange}) => {
             </form>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
-                Close
+                {t("Nav.close-modal")}
                 </Button>
                 <AddContactButton/>
             </Modal.Footer>

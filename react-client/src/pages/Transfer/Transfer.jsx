@@ -222,7 +222,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
     myHistory.push("/home")
   }
 
-  const { t, i18n } = useTranslation("global");
+  const { t } = useTranslation("global");
     
   return (
     
@@ -262,7 +262,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
        <BranchContainer>
         <Text>{t("Transfer.why")}</Text>
           <Select ref={myHistory} onChange={handleBranch}>
-          <option  value="Branch">select {t("Transfer.reason")}</option>
+          <option  value="Branch">{t("Transfer.reason")}</option>
                     <option value="Travel">{t("Transfer.Travel")}</option>
                     <option value="Food">{t("Transfer.Food")}</option>
                     <option value="Shopping">{t("Transfer.Shopping")}</option>

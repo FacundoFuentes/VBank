@@ -181,7 +181,7 @@ const logOut = ()=> {
             <Row>
             <LinkIcons to="/home/charge"><IconCharge/>
             <Spacer x={1.2}/>
-            <TextIcons color="#f5f5f5;">{t("Side.change")}</TextIcons>
+            <TextIcons color="#f5f5f5;">{t("Side.charge")}</TextIcons>
             </LinkIcons>
             </Row>
           <Spacer y={2}/>

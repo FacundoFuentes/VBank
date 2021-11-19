@@ -20,7 +20,7 @@
     }, 
        "Side":{
         "home":"Principal",
-        "transfer":"transferir",
+        "transfer":"Transferir",
         "charge":"Carga",
         "fixed-Term":"Plazo fijo",
         "profile":"Perfil",
@@ -31,12 +31,12 @@
               "last-movements":"Últimos movimientos",
               "date": "Fecha",
               "name": "Nombre",
-              "statistics":"Estadísticas" 
+              "sta":"Estadísticas" 
 },
          "Prof":{
                  "profile":"Perfil",
-                 "birth":"Cumpleaños:",
-                 "firts" : "Primer nombre:",
+                 "birth":"Fecha de nacimiento:",
+                 "firts" : "Nombre:",
                  "lastn" :"Apellido:",
                  "phone":"Telefono:",
                  "address":"Direccion:", 
@@ -52,8 +52,10 @@
                  "err2-zip": "Caracteres numericos unicamente",
                  "err3-zip": "El código postal no puede ser mayor de 5 digitos",
                  "err4-zip": "El código postal no puede tener menos de 3 caracteres.",
-                 "back":"Atras"
-},
+                 "back":"Atras",
+                 "TP":"Usuario o CVU",
+                "TP2" :"Ej: Alquiler"
+                },
 
 "Sign":{
 
@@ -75,23 +77,25 @@
 "Fixed":{
   "term": "Plazo fijo",
   "calculate": "Calcular",
-  "interest":"Intereses",
+  "int":" Indice de interes:",
   "from" : "de 30 a 365 días: TNA 37%",
   "check":"Chequear",
   "send":"enviar!",
-  "how-much":"Cuanto",
+  "how-much":"Monto",
   "due-date:":"Fecha de vencimiento:",
   "interest2" : "Tasa de interés: TNA 37%", 
-  "before" : "¡Verifique antes de enviar!"
+  "before" : "¡Verifique antes de enviar!",
+  "how" : "¿Cuánto tiempo?",
+  "mon":"Monto" 
 },
 "Transfer":
 {
     "Send-Money":"Enviar dinero",
     "user": "Al usuario",
-    "how":"Cuanto?",
+    "how":"Monto",
     "note":"Nota",  
-    "why" :"¿por que?",
-    "reason":"Razon",
+    "why" :"Razon",
+    "reason":" Seleccionar razon",
     "Travel":"Viaje",
     "Food":"Comida",
     "Shopping" : "Centro comercial",
@@ -106,7 +110,9 @@
    "CYP":"Cambio de contraseña",
     "PS": "Escriba la contraseña actual",
     "PS2":"Escriba la nueva contraseña",
-    "CH": "Cambiar" 
+    "CH": "Cambiar", 
+    "Con": "Mis contactos",
+    "Agr" : "Vacio, agrega uno"
 }
            
 

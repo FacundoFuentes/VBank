@@ -269,27 +269,27 @@ return (
       
       
        <TitleContainer>
-          <Text h3 > {t("Fixed.tern")} </Text>
+          <Text h3 > {t("Fixed.term")} </Text>
         </TitleContainer>
          <BoderShadow>
          <MaxContainer>   
          <form >
          <ContainerS style={{overflow:"hidden"}} >
           <ToContainer>
-            <Text >How much?</Text>
+            <Text >{t("Fixed.mon")}</Text>
             <Input name="amount" type="number" min="1"  step="0.01" value={state.amount} contentClickable="true" onChange={(e)=>handleAmount(e)}  width="300px"/>
          
           </ToContainer>
        
        <MoneyContainer>
-           <Text>How long?</Text>
+           <Text>{t("Fixed.how")}</Text>
            <Input name="due" value={state.due} type="date"  width="300px" onChange={(e)=>handleChange(e)} />
        
        </MoneyContainer>
        
        <DetailContainer>
        <Card width="300px"  color="#f3f3f3" bordered borderColor="#D8DBE2" >
-           <Text  >{t("Fixed.interest")} rate: </Text>
+           <Text  >{t("Fixed.int")}</Text>
            <Text >{t("Fixed.from")} </Text>
           
         </Card>

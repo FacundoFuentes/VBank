@@ -18,7 +18,7 @@
         "Text":"Just an app and a card",
         "Text2":  "Simple. Transparent. And for free."
      }, 
-           "Side":{
+        "Side":{
                 "home":"Home",
                 "transfer":"Transfer",
                 "charge":"Charge",
@@ -26,14 +26,14 @@
                 "profile":"Profile",
                 "log-Out" :"Log Out"
   },            
-          "Home":{
+     "Home":{
               "card":"My Card",
               "last-movements":"Latest movements",
               "date": "Date", 
               "name": "Name",
-              "statistics":"Statistics" 
+              "sta":"Statistics" 
           },
-          "Prof":{
+ "Prof":{
               "profile":"Profile",
                "birth":"Birthdate:",
                 "firts" : "Firts Name:",  
@@ -52,10 +52,12 @@
                 "err2-zip": "Number characters only",
                 "err3-zip": "zipCode cannot be longer than 5 characters",
                 "err4-zip": "zipCode cannot be shorter than 3 characters",
-                "back":"Back"
+                "back":"Back",
+                "TP":"Username/ CVU",
+                "TP2" :"Example: Rent"
             },
 
-            "Sign":{
+"Sign":{
 
                 "err":"Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number",
                 "err2":"Please, enter a valid email",
@@ -71,18 +73,20 @@
                "create":"Create Account"
             },
     
-            "Fixed":{
+ "Fixed":{
               "term": "Fixed Term",
             "calculate":  "Calculate",
-            "interest":"Interest",
+            "int":"Interest rate:",
           "from" : "from 30 to 365 days: TNA 37%",
           "check":"Check",
           "send":"!Send",
           "how-much":"How much:",
           "due-date:" : "Due date:",
           "interest2" : "Interest Rate: TNA 37%",
-         "before" : "Check before send!"
-          },
+         "before" : "Check before send!",
+        "how" : "How long?",
+        "mon":"How much?" 
+        },
 "Transfer":
 {
     "Send-Money":"Send Money",
@@ -90,7 +94,7 @@
      "how":"How much?",
      "note":"Note", 
      "why" : "Why?",
-     "reason":"Reason",
+     "reason":" Select reason",
      "Travel":"Travel",
      "Food":"Food",
      "Shopping" : "Shopping",
@@ -105,8 +109,11 @@
      "CYP":"Change your password",
      "PS":"Type current password ",
      "PS2":"Type new password",
-    "CH": "Change"
-    }
+    "CH": "Change",
+    "Con": "My Contacts",
+     "Agr" : "Empty, Add One"
+
+}
            
 
     }

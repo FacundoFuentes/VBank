@@ -57,7 +57,7 @@
                 "TP2" :"Example: Rent"
             },
 
-"Sign":{
+"Sing":{
 
                 "err":"Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number",
                 "err2":"Please, enter a valid email",

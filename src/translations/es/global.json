@@ -57,7 +57,7 @@
                 "TP2" :"Ej: Alquiler"
                 },
 
-"Sign":{
+"Sing":{
 
     "err":"El nombre de usuario debe tener un mínimo de 6 y un máximo de 16 caracteres, al menos una letra mayúscula, una letra minúscula y un número",
     "err2":"Por favor introduzca una dirección de correo electrónico válida",

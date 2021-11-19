@@ -15,7 +15,6 @@ export default function Nav() {
        <LinkRouter to="/"><img width="80px" src={img} alt="" /></LinkRouter> 
         <div>
           <Row justify="center" align="center">
-          <Link>About</Link>
           <Spacer x={1}/> 
           <LoginModal/>
           </Row>

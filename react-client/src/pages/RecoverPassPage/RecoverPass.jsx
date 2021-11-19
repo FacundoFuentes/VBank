@@ -171,7 +171,7 @@ const RecoverPass =()=>{
        { error && (
         <p className="error">{error}</p>
       )}
-       { msg && (
+  {/*     { msg && (
        	<Modal
        	closeButton
             preventClose
@@ -183,7 +183,7 @@ const RecoverPass =()=>{
        	</Modal>
        
 
-      )}
+      )}*/}
         	<Modal
        	closeButton
             preventClose

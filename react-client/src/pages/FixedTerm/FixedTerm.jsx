@@ -7,7 +7,10 @@ import jwt from 'jsonwebtoken'
 import success from "../../img/success.gif"
 import {toast } from 'react-toastify';
 import {useHistory} from 'react-router-dom'
+import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
 
+
+   
 
   const ContainerS= styled.div`
   display: flex;
@@ -130,6 +133,11 @@ const GridContainer = styled.div`
   overflow-x:hidden;
   
 `;
+const IconBack = styled(ArrowReturnLeft)`
+  color: #f5f5f5;
+  width:30px;
+  height:30px;
+`;
 
 export default function FixedTerm() {
 
@@ -205,8 +213,6 @@ export default function FixedTerm() {
         .then(response=> {
           
           setInfo(response.data.fixedDeposits)
-          
-          
           
           }).catch(error=>{
             
@@ -331,9 +337,9 @@ export default function FixedTerm() {
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+{/*             <Button auto rounded="Primary" loading={btnLoading} color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
-            </Button>
+            </Button> */}
             </>
             :
             <>

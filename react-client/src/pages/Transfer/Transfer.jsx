@@ -309,9 +309,9 @@ const token = JSON.parse(localStorage.getItem("token")).data
             <Button auto flat rounded="Primary" color="error" onClick={closeHandler}>
             Close
             </Button>
-            <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
+    {/*         <Button auto rounded="Primary" color="#2CA1DE" onClick={(e)=>handleSubmit(e)}>
             Ok!
-            </Button>
+            </Button> */}
             </>
             :
             <>

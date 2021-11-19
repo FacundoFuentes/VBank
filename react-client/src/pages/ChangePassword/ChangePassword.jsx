@@ -5,6 +5,34 @@ import { useForm, Controller } from "react-hook-form";
 import axios from 'axios'
 import {toast } from 'react-toastify';
 import jwt from 'jsonwebtoken'
+import {useHistory} from 'react-router-dom'
+import {ArrowReturnLeft} from "@styled-icons/bootstrap/ArrowReturnLeft"
+
+const IconBack = styled(ArrowReturnLeft)`
+  color: #f5f5f5;
+  width:30px;
+  height:30px;
+  background-color: #95BEFE;
+`;
+const DivBack = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+`
+
+const ButtonBack= styled.div`
+   background-color: #95BEFE;
+   height:60px;
+   width:60px;
+   border:none;
+   display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius: 50%;
+    
+
+`
 
 const TitleContainer= styled.div` 
 position:relative;
@@ -28,10 +56,11 @@ margin-left: 20%;
 }
 `
 const MaxContainer=styled.div`
-height: 500px;
+height: auto;
 margin-top: 25px;
 @media screen and (max-width:1100px){
 margin-top: 0px;
+padding-bottom: 20px;
 
 }
 `
@@ -44,6 +73,7 @@ const ButtonContainer = styled.div`
 margin-left:155px;
 padding:5px;
 margin-top:15px;
+margin-bottom: 20px;
 `
 
 const BoderShadow = styled.div`
@@ -70,6 +100,14 @@ width:300px;
 color:#dc3545;
 
 `
+const DivCheck = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 10px;
+width:300px
+
+`
 
 
 export default function ChangePassword() {
@@ -78,6 +116,8 @@ export default function ChangePassword() {
     const prevPassword = getValues('prevPassword')
     const newPassword = getValues('newPassword')
     const samePassword = getValues('samePassword')
+    let myHistory = useHistory()
+
     
     const defaultForm = {
         prevPassword: '',
@@ -86,6 +126,17 @@ export default function ChangePassword() {
       }
   
       const [state, setState] = useState(defaultForm)
+      const [error,setError] = useState('')
+      const [status, setStatus] =useState(0)
+      const [btnLoading, setBtnLoading] = useState(false)
+
+      function HandleCloseSucces(e){
+        e.preventDefault()
+        setState(defaultForm)
+        setStatus(0)
+        myHistory.push("/home")
+      }
+
 
 
       const token = JSON.parse(localStorage.getItem("token")).data
@@ -100,13 +151,13 @@ export default function ChangePassword() {
         axios.post('http://localhost:3001/user/changePassword', miniState, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(data)
-   
    console.log(response.status)
-  
+   setStatus(response.status)
+   
    
    }).catch(error=>{
-     
-     
+    setStatus(error.response.data.status)
+    setError(error.response.data.data)
      if (error.response.data.data === "Unauthorized"){
        localStorage.removeItem('token')
        toast.error(`Session expired, you must sign in again`, {
@@ -197,18 +248,40 @@ export default function ChangePassword() {
       {errors?.samePassword?.type === "pattern" && <PText className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</PText>}
             </PassContainer>
 
+            {
+         status !== 200 ?
+         <>
+        
+        <DivCheck>
+        <Text color="#dc3545">{error}</Text>
+        </DivCheck>
 
         <ButtonContainer>
        <Button disabled={!prevPassword||!newPassword||!samePassword} rounded="Primary" color="#2CA1DE" size="small" type="submit"  >Change</Button>   
-
        </ButtonContainer> 
+        </>
+        :
+        <>
+        
+        <DivCheck>
+          <Text>Password changed successfully!</Text> 
+          </DivCheck>
+          
+          <DivBack>
+        <ButtonBack onClick={(e)=> HandleCloseSucces(e) }> <IconBack/> </ButtonBack>
+          </DivBack>
+        </>
 
+        }
+
+       
+
+       
+       
             </form>
 
             </MaxContainer>
           </BoderShadow>
-
-
           </Container>
         <Spacer y={3} />
       </div>

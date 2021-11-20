@@ -29,12 +29,14 @@ padding: 0 15px;
   box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
 
+    
 #title{
 margin-top: 20px;
 margin-bottom:25px;
 	h2{
 		font-size: 24px;
 		text-align:center;
+    
 	}
 }
 
@@ -63,6 +65,9 @@ form{
 		font-size: 15px;
 	}
 }
+.message{
+  text-align: center;
+}
 
 #btns{
 
@@ -73,6 +78,7 @@ form{
 	}
 }
 `;
+
 
 const VerifyAccount = () => {
   const {
@@ -137,8 +143,8 @@ const VerifyAccount = () => {
   return (
     <PageContainer>
       <Box>
+				<Button  size='small' icon={<Iconly name='Home' filled='white' />} auto  onClick={handleClick} style={{width:'50px', marginTop: '10px'}}></Button>
         <div id="title">
-				  <Button size='small' icon={<Iconly name='Home' filled='white' />} auto  onClick={handleClick}></Button>
           <h2> Verify Account</h2>
         </div>
 
@@ -164,7 +170,7 @@ const VerifyAccount = () => {
             <Button ghost size='small'  color={color} type="submit">
               Verify
             </Button>
-            <p>{error}</p>
+            <p className='message'>{error}</p>
           </div>
         </form>
       </Box>

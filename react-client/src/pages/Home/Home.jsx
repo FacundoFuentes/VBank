@@ -31,7 +31,6 @@ const GridS = styled.div`
 `;
 
 const Balance = styled.div`
-  font-family: "Roboto"
   border-radius: 20px;
   display: flex;
   width: 100%;
@@ -39,6 +38,8 @@ const Balance = styled.div`
   padding: 50px;
   justify-content: center;
   align-items: center;
+  background-color: RGB(149, 190 , 254);
+  color: white;
 
   -webkit-box-shadow: -10px 0px 13px -7px #00000052,
     10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
@@ -64,7 +65,6 @@ const ChartContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-
   border-radius: 20px;
   justify-content: center;
   width: 90%;
@@ -116,6 +116,11 @@ const BoderShadow = styled(GridS)`
     box-shadow: none;
     padding: 0;
   }
+`;
+const HeadLine = styled.h2`
+  font-family: 'Roboto';
+  margin: 0;
+  font-weight: 300;
 `;
 
 export default function Home() {
@@ -271,7 +276,8 @@ export default function Home() {
             {userAccountInfo && (
               <Balance style={{ marginRight: "20px" }}>
                 <img width={"50px"} src={gold} alt="" />
-                <Text h2>${`${userAccountInfo.balance}`}</Text>
+                <HeadLine>${`${userAccountInfo.balance}`}</HeadLine>
+                {/* <Text h2>${`${userAccountInfo.balance}`}</Text> */}
               </Balance>
             )}
           </Grid>

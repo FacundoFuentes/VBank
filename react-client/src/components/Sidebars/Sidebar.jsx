@@ -4,7 +4,7 @@ import {Link } from "react-router-dom"
 import styled from 'styled-components'
 import Logos from "../../img/Logos.png"
 import {Home} from "@styled-icons/boxicons-solid/Home"
-import {DollarCircle} from "@styled-icons/boxicons-solid/DollarCircle"
+import {ArrowSwap} from "@styled-icons/fluentui-system-filled/ArrowSwap"
 import {Menu} from "@styled-icons/boxicons-regular/Menu"
 import {UserCircle} from "@styled-icons/fa-solid/UserCircle"
 import {LogOut} from "@styled-icons/boxicons-regular/LogOut"
@@ -12,7 +12,7 @@ import { Spacer, Text , Grid, Col,Row} from "@nextui-org/react"
 import { logoutUser } from '../../redux/reducers/userSlice'
 import { BuildingRetailMoney } from "@styled-icons/fluentui-system-filled/BuildingRetailMoney"
 import {PiggyBankFill} from "@styled-icons/bootstrap/PiggyBankFill"
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive';
 
 
 const SideNav = styled.div`
@@ -61,7 +61,7 @@ const TextIcons = styled(Text)`
   };
   
 `;
-const IconCashCoin = styled(DollarCircle)`
+const IconCashCoin = styled(ArrowSwap)`
   color: #f5f5f5;
   width:35px;
   height:35px;

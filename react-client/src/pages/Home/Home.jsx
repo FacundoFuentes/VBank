@@ -231,7 +231,8 @@ export default function Home() {
   const isMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const isSmallMobile = useMediaQuery({ query: "(max-width: 650px)" });
   
-  let formatter = new StringMask('000.000');
+  let formatter = new StringMask('00.000'); // arreglar
+  let formatter2 = new StringMask('#.###,00', {reverse: true});
 
   return (
     <Container

@@ -10,7 +10,7 @@ import {UserCircle} from "@styled-icons/fa-solid/UserCircle"
 import {LogOut} from "@styled-icons/boxicons-regular/LogOut"
 import { Spacer, Text , Grid, Col,Row} from "@nextui-org/react"
 import { logoutUser } from '../../redux/reducers/userSlice'
-import { CoinStack } from "@styled-icons/boxicons-solid/CoinStack"
+import { CashCoin } from "@styled-icons/bootstrap/CashCoin"
 import {PiggyBankFill} from "@styled-icons/bootstrap/PiggyBankFill"
 import { useMediaQuery } from 'react-responsive';
 
@@ -66,7 +66,7 @@ const IconCashCoin = styled(ArrowSwap)`
   width:35px;
   height:35px;
 `;
-const IconCharge = styled(CoinStack)`
+const IconCharge = styled(CashCoin)`
   color: #f5f5f5;
   width:35px;
   height:35px;

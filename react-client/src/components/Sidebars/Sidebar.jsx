@@ -13,7 +13,7 @@ import { logoutUser } from '../../redux/reducers/userSlice'
 import { CashCoin } from "@styled-icons/bootstrap/CashCoin"
 import {PiggyBankFill} from "@styled-icons/bootstrap/PiggyBankFill"
 import { useMediaQuery } from 'react-responsive';
-
+import {CloseOutline} from "@styled-icons/evaicons-outline/CloseOutline"
 
 const SideNav = styled.div`
   display:flex;
@@ -44,6 +44,8 @@ const LogoMenu = styled.img`
   width:50px;
   height: 40px;
   `;
+
+
 
 const IconHome = styled(Home)`
   color: #f5f5f5;
@@ -116,21 +118,33 @@ const LinkIcons = styled(Link)`
 
 `;
 const IconMenu = styled(Menu)`
-  color: #f5f5f5;
+  color: #cdcdcd;
+  width:40px;
+  height:40px;
+
+`;
+const IconClose = styled(CloseOutline)`
+  color: #cdcdcd;
   width:40px;
   height:40px;
 `;
 
+
+
 const NavResponsive = styled(Grid.Container)`
   width:100vmax;
   padding:30px; 
-  background-color: #95BEFE;
+
   position:relative;
   margin:50px;
   justify-content:space-between;
   z-index:500;
   display:none;
   margin-bottom:100px;
+
+  #burger{
+
+  }
 
 `;
   
@@ -207,11 +221,17 @@ const logOut = ()=> {
             
                 
         <Grid >
-          <img src={Logos} alt="" style={{marginLeft:"20px"}} />
+          
         </Grid>
-        <Grid >
+        {navOpen ? ( <Grid id="burger">
+          <IconClose onClick={()=>{setNavOpen(!navOpen)}} style={{marginRight:"20px"}} />
+        </Grid>)
+        :
+          (<Grid id="burger">
           <IconMenu onClick={()=>{setNavOpen(!navOpen)}} style={{marginRight:"20px"}} />
         </Grid>
+            )}
+       
 
       </NavResponsive>
       }

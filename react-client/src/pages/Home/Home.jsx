@@ -29,6 +29,7 @@ import Shopping from "../../img/Shopping.png";
 import { useMediaQuery } from "react-responsive";
 import { CashCoin } from "@styled-icons/bootstrap/CashCoin";
 import { PiggyBank } from "@styled-icons/fa-solid/PiggyBank";
+
 import {Copy} from "@styled-icons/fa-solid/Copy"
 import StringMask from "string-mask";
 

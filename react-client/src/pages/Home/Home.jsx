@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png";
+import svg from "../../img/svg.png";
+
 import {
   Grid,
   Spacer,
@@ -20,19 +22,15 @@ import {
 } from "../../redux/reducers/userSlice";
 import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
+import piggy from "../../img/piggy.png";
+
 import Shopping from "../../img/Shopping.png";
 
 import { useMediaQuery } from "react-responsive";
-import { ArrowUp } from "@styled-icons/bootstrap/ArrowUp";
-import { ArrowDown } from "@styled-icons/bootstrap/ArrowDown";
+import { CashCoin } from "@styled-icons/bootstrap/CashCoin";
+import { PiggyBank } from "@styled-icons/fa-solid/PiggyBank";
+import {Copy} from "@styled-icons/fa-solid/Copy"
 import StringMask from "string-mask";
-
-const ArrowRed = styled(ArrowUp)`
-  color: red;
-`;
-const ArrowGreen = styled(ArrowDown)`
-  color: green;
-`;
 
 const Expeses = styled.div`
   display: flex;
@@ -84,19 +82,44 @@ const HeadLine = styled.h2`
 const Container1 = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40%;
+  justify-content: space-between;
+  width: 30%;
   height: 100%;
-  justify-content: space-around;
-  align-items: center;
-  background-color: RGB(238, 238 , 236);
   margin: 0;
-
-  .cardContainer{
+  .statsContainer {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
+    justify-content: start;
+    .title {
+      text-align: left;
+      margin-bottom: 3em;
+      margin-left: 6em;
+    }
     width: 100%;
+    margin-bottom: 5%;
+  }
+  .cardContainer {
+    margin-top: 20%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    width: 100%;
+    border-right: 1px solid gainsboro;
+    .cvu{
+      width: 100%;
+      cursor: pointer;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      font-family: "roboto";
+      font-weight: 600;
+      width: 100%;
+      
+      span {
+        margin-left: 10px;
+        
+      }
+    }
   }
 
   img {
@@ -111,63 +134,121 @@ const Container2 = styled.div`
 `;
 
 const BalanceContainer = styled.div`
-  margin-top: 10%;
-  border-radius: 20px;
-  overflow: hidden;
   position: relative;
   display: flex;
-  background-color:RGB(44, 161 , 222) ;
   flex-direction: column;
+  justify-content: center;
   height: 40%;
-
-  .balance {
-    height: 100%;
+  .img {
+    position: absolute;
+    top: 70%;
+  }
+  .title {
+    width: 100%;
+    text-align: left;
+    margin-left: 3%;
+  }
+  .actions {
+    height: 20%;
     display: flex;
     align-items: center;
+    background-color: #95befe;
     justify-content: center;
     color: white;
+    font-weight: 600;
+    .action {
+      display: inherit;
+      align-items: center;
+      margin: 3em;
+      span {
+        margin: 1em;
+      }
+    }
+  }
+  .balance {
+    padding-top: 50px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    background-color: #95befe;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
   }
 `;
 
 const Statics = styled.div`
-  width: 80%;
+  width: 100%;
+  height: 40%;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 20px;
   background-color: white;
+  .title {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const LastMovements = styled.div`
-  margin-top: 50px;
+  cursor: pointer;
   border-radius: 20px;
   height: 60%;
   display: flex;
+  justify-content: end;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   font-family: "Roboto";
-  overflow: scroll;
+  overflow: hidden;
+  margin: 3em 0;
 
-  .movement{
+  .title {
+    width: 100%;
+    text-align: left;
+    h4 {
+      margin-left: 4%;
+    }
+  }
+
+  .movement {
+    height: 15%;
     padding: 10px;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid gainsboro;
-    img{
-      width: 80px;
-      border-radius: 20px;
+    border-bottom: 1px solid RGB(237, 237, 237);
+    img {
+      width: 50px;
+      border-radius: 5px;
       object-fit: contain;
       object-position: center;
     }
-    .description{
-      text-align: center
+    .description {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      width: 70%;
+
+      text-align: left;
+      p {
+        margin: 0;
+        color: RGB(58, 93, 214);
+      }
     }
-    .amount{
-      span{
+    .amount {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .RECEIVER {
+        color: RGB(111, 208, 146);
+      }
+      span {
         font-weight: 600;
       }
       p {
+        margin: 0;
         color: gray;
       }
       width: 10%;
@@ -185,6 +266,8 @@ export default function Home() {
   let userTransaction = useSelector((state) => state.user.userBalance.info);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     let body = document.getElementsByTagName("body")[0];
@@ -257,16 +340,17 @@ export default function Home() {
   }
 
   data2 = data2?.filter((e) => e.value > 0);
-
-  userTransaction = userTransaction?.map((e) => e).reverse();
+  userTransaction = userTransaction
+    ?.slice(-5)
+    .map((e) => e)
+    .reverse();
   console.log(userTransaction?.map((e) => e).reverse());
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
   const isMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const isSmallMobile = useMediaQuery({ query: "(max-width: 650px)" });
 
-  let formatter = new StringMask("00.000"); // arreglar
-  let formatter2 = new StringMask("#.###,00", { reverse: true });
+  // let  = new StringMask("00.000"); // arreglar
 
   return (
     <Container
@@ -275,12 +359,11 @@ export default function Home() {
       justify="space-evenly"
       alignItems="center"
       wrap="nowrap"
-      
-      style={{ height: "100vh", width: "100%", margin: "0"}}
+      style={{ height: "100vh", width: "100%", margin: "0" }}
     >
       <Container1>
         <div className="cardContainer">
-          <Card height="45%" width="50%" clickable cover>
+          <Card height="55%" width="60%" clickable cover>
             <Card.Header
               style={{
                 position: "absolute",
@@ -290,7 +373,7 @@ export default function Home() {
             >
               {userInfo && userAccountInfo && (
                 <Col>
-                  <Text h4 color="white">
+                  <Text h4 color="white" margin="1em 0 0 0">
                     {`**** **** **** ${userAccountInfo.card.cardNumber}`}
                   </Text>
                   <Text
@@ -312,69 +395,96 @@ export default function Home() {
               alt="Card image background"
             />
           </Card>
+          <div className="cvu">
+            <Copy width="20px"/>
+            <span> CVU: 454655476745</span>
+          </div>
         </div>
-        <Statics>
-          {data2?.length > 0 ? (
-            <ChartContainer>
-              <Chart
-                height={!isSmallMobile ? "50px" : "500px"}
-                data={data2}
-                enableArcLinkLabels={true}
-                label={true}
-                interactive={true}
-              />
-            </ChartContainer>
-          ) : (
-            <ChartContainer>
-              <Text h2>
+        <div className="statsContainer">
+          <Statics>
+            {data2?.length > 0 ? (
+              <ChartContainer>
                 <Chart
                   height={!isSmallMobile ? "50px" : "500px"}
-                  enableArcLinkLabels={false}
-                  interactive={false}
-                  label={false}
-                  data={[
-                    {
-                      id: "No Movement ",
-                      laber: "No Movement ",
-                      value: 1,
-                    },
-                  ]}
+                  data={data2}
+                  enableArcLinkLabels={true}
+                  label={true}
+                  interactive={true}
                 />
-              </Text>
-            </ChartContainer>
-          )}
-        </Statics>
+              </ChartContainer>
+            ) : (
+              <ChartContainer>
+                <Text h2>
+                  <Chart
+                    height={!isSmallMobile ? "50px" : "500px"}
+                    enableArcLinkLabels={false}
+                    interactive={false}
+                    label={false}
+                    data={[
+                      {
+                        id: "No Movement ",
+                        laber: "No Movement ",
+                        value: 1,
+                      },
+                    ]}
+                  />
+                </Text>
+              </ChartContainer>
+            )}
+          </Statics>
+        </div>
       </Container1>
       <Container2>
         {userAccountInfo && (
           <BalanceContainer>
             <div className="balance">
               <img width={"50px"} src={gold} alt="" />
-              <HeadLine>
-                ${`${formatter.apply(userAccountInfo.balance)}`}
-              </HeadLine>
+              <HeadLine>${`${userAccountInfo.balance}`}</HeadLine>
             </div>
+            <div className="actions">
+              <div className="action">
+                <CashCoin fill="white" width="30px" />
+                <span>Charge</span>
+              </div>
+              |
+              <div className="action">
+                <PiggyBank fill="white" width="30px" />
+                <span>Inversions</span>
+              </div>
+            </div>
+            <img src={svg} alt="" className="img" />
           </BalanceContainer>
         )}
 
         <LastMovements>
-        {userTransaction?.map((e, i) => {
-          if (!e.transaction?.status || e.transaction?.status === "DONE") {
-            return (
+          <div className="title">
+            <h4>Latest transactions</h4>
+          </div>
+          {userTransaction?.map((e, i) => {
+            if (!e.transaction?.status || e.transaction?.status === "DONE") {
+              return (
                 <div className="movement">
-                  <img src={gold} alt="" className="movementIcon" />
+                  <img src={Shopping} alt="" className="movementIcon" />
                   <div className="description">
                     <span>{e.transaction.description}</span>
-                    <p>{e.transaction.branch}</p>
+                    <p>
+                      {e.transaction.branch
+                        ? e.transaction.branch
+                        : e.transaction.type}
+                    </p>
                   </div>
                   <div className="amount">
-                    <span>${e.transaction.amount}</span>
-                    <p>{e.transaction.date.slice(5,10)}</p>
+                    <span className={e.role}>
+                      {e.role === "RECEIVER"
+                        ? "+$" + e.transaction.amount
+                        : "-$" + e.transaction.amount}
+                    </span>
+                    <p>{e.transaction.date.slice(5, 10)}</p>
                   </div>
                 </div>
-            );
-          }
-        })}
+              );
+            }
+          })}
         </LastMovements>
       </Container2>
     </Container>

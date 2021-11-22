@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png";
 import svg from "../../img/svg.png";
@@ -32,6 +32,18 @@ import { PiggyBank } from "@styled-icons/fa-solid/PiggyBank";
 
 import {Copy} from "@styled-icons/fa-solid/Copy"
 import StringMask from "string-mask";
+
+const StyledContainer = styled(Container)`
+// background-color:red;
+
+@media only screen and (max-width: 760px){
+  // background-color:blue;
+  flex-direction:column-reverse;
+
+}
+
+
+`;
 
 const Expeses = styled.div`
   display: flex;
@@ -87,7 +99,12 @@ const Container1 = styled.div`
   width: 30%;
   height: 100%;
   margin: 0;
+  @media screen and (max-width: 750px){
+      width:100%;
+     
+    }
   .statsContainer {
+    
     display: flex;
     justify-content: start;
     .title {
@@ -121,6 +138,10 @@ const Container1 = styled.div`
         
       }
     }
+    @media screen and (max-width: 750px){
+      
+      display: none;
+    }
   }
 
   img {
@@ -132,6 +153,11 @@ const Container2 = styled.div`
   flex-direction: column;
   width: 40%;
   height: 100%;
+    @media only screen and (max-width: 760px){
+  width: 100%;
+  margin-top: 190px;
+}
+
 `;
 
 const BalanceContainer = styled.div`
@@ -139,7 +165,7 @@ const BalanceContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 40%;
+  height: 30%;
   .img {
     position: absolute;
     top: 70%;
@@ -161,6 +187,9 @@ const BalanceContainer = styled.div`
       display: inherit;
       align-items: center;
       margin: 3em;
+      a{
+        color:#fff;
+      }
       span {
         margin: 1em;
       }
@@ -177,7 +206,12 @@ const BalanceContainer = styled.div`
     justify-content: center;
     color: white;
     font-weight: 600;
+    padding-bottom 15px;
+    @media only screen and (max-width 750px){
+      background-color:red;
+    }
   }
+
 `;
 
 const Statics = styled.div`
@@ -354,13 +388,14 @@ export default function Home() {
   // let  = new StringMask("00.000"); // arreglar
 
   return (
-    <Container
+    <StyledContainer
       fluid
       display="flex"
       justify="space-evenly"
       alignItems="center"
       wrap="nowrap"
       style={{ height: "100vh", width: "100%", margin: "0" }}
+
     >
       <Container1>
         <div className="cardContainer">
@@ -445,12 +480,16 @@ export default function Home() {
             <div className="actions">
               <div className="action">
                 <CashCoin fill="white" width="30px" />
+                <Link to="/home/charge">
                 <span>Charge</span>
+                </Link>
               </div>
               |
               <div className="action">
                 <PiggyBank fill="white" width="30px" />
+                <Link to="/fixedTerm">
                 <span>Inversions</span>
+                </Link>
               </div>
             </div>
             <img src={svg} alt="" className="img" />
@@ -488,6 +527,6 @@ export default function Home() {
           })}
         </LastMovements>
       </Container2>
-    </Container>
+    </StyledContainer>
   );
 }

@@ -133,8 +133,7 @@ const IconClose = styled(CloseOutline)`
 
 const NavResponsive = styled(Grid.Container)`
   width:100vmax;
-  padding:30px; 
-
+  padding:15px 30px; 
   position:relative;
   margin:50px;
   justify-content:space-between;

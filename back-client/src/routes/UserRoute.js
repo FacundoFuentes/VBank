@@ -483,8 +483,8 @@ user.post('/password-reset', async (req, res) => { //Forgot password
       data: 'You already requested a password change, please check your e-mail'
     })
   
-    const passwordChangeLink = `http://localhost:3001/user/password-reset/${user._id}/${token.token}`
-    await emailUtils.passwordResetEmail(user, "VBank Password Reset", passwordChangeLink)
+    const passwordChangeLink = `http://localhost:3000/user/password-reset/${user._id}/${token.token}`
+    await emailUtils.passwordResetEmail(user.email, "VBank Password Reset", passwordChangeLink)
   
     return res.status(200).json({status: 'ok', data: 'Password Reset link sent to your email account'})
   } catch (error) {
@@ -506,7 +506,7 @@ user.post('/password-reset/:userId/:token', async (req, res) => {
     userId: user._id,
     token: token
   })
-  if(!token) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
+  if(!tokenFind) return res.status(404).json({status: 'failed', data: 'Invalid link or expired'})
 
   user.password = await bcrypt.hash(password, 10)
   await user.save()

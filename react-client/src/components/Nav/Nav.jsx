@@ -22,7 +22,7 @@ height: 60px;
 `
 
 export default function Nav() {
-  const { i18n } = useTranslation("global");
+  const { t, i18n } = useTranslation("global");
  
   return (  
     <Container>

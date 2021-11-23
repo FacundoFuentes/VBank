@@ -29,6 +29,7 @@ const SideNav = styled.div`
   padding:0px;
   transition: all 700ms;
   z-index:200;
+  box-shadow: -1px 2px 8px 3px rgba(0,0,0,0.75);
 
   @media screen and (max-width: 1080px){
     width:0px;

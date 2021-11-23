@@ -13,8 +13,10 @@ import { useTranslation } from "react-i18next";
 const Container = styled.div`
 padding: 150px;
 text-align:center;
+margin-left: 7%;
 @media (max-width: 640px) {
 margin: 0 ;
+
 }
 `
 const Card = styled.div`
@@ -44,6 +46,7 @@ background-color:#95BEFE;
 padding-left: 20px;
 border-top-left-radius: 20px;
 border-top-right-radius: 20px;
+
 @media (max-width: 640px) {
  padding: 20px 20px 5px 20px;
  border: none;
@@ -53,9 +56,11 @@ border-top-right-radius: 20px;
 const In = styled.div`
 padding-left: 20px; 
 padding-right: 5px;
+
 @media (max-width: 640px) {
  padding: 5px 20px 20px 20px;
  background: transparent;
+ 
 }
 `
 const Info = styled.div`
@@ -66,6 +71,7 @@ padding-bottom: 10px;
 padding-top: 13px;
 border-bottom: 1px solid rgb(139, 139, 139);
 font-weight: bold;
+
 &:hover{
   background-color: #e8eaeb53;
   border-radius: 2px;

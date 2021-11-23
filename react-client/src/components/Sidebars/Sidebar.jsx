@@ -121,12 +121,16 @@ const IconMenu = styled(Menu)`
   color: #cdcdcd;
   width:40px;
   height:40px;
+  cursor: pointer;
+  margin: 0;
 
 `;
 const IconClose = styled(CloseOutline)`
   color: #cdcdcd;
   width:40px;
   height:40px;
+    cursor: pointer;
+    margin:0;
 `;
 
 
@@ -135,13 +139,15 @@ const NavResponsive = styled(Grid.Container)`
   width:100vmax;
   padding:15px 30px; 
   position:relative;
-  margin:50px;
   justify-content:space-between;
   z-index:500;
   display:none;
   margin-bottom:100px;
+  background-color:#95befe;
+  padding-bottom: 30px;
 
   #burger{
+
 
   }
 

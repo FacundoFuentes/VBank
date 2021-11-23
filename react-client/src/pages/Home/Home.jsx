@@ -36,6 +36,7 @@ import StringMask from "string-mask";
 const StyledContainer = styled(Container)`
 // background-color:red;
 
+
 @media only screen and (max-width: 760px){
   // background-color:blue;
   flex-direction:column-reverse;
@@ -156,6 +157,7 @@ const Container2 = styled.div`
     @media only screen and (max-width: 760px){
   width: 100%;
   margin-top: 190px;
+  justify-content: flex-start;
 }
 
 `;
@@ -169,6 +171,11 @@ const BalanceContainer = styled.div`
   .img {
     position: absolute;
     top: 70%;
+    @media only screen and (max-width: 750px){
+     
+      top: 80%;
+ 
+    }
   }
   .title {
     width: 100%;
@@ -194,6 +201,14 @@ const BalanceContainer = styled.div`
         margin: 1em;
       }
     }
+        @media only screen and (max-width: 750px){
+          padding-top 15px;
+         padding-bottom: 20px;
+      display: flex;
+      justify-content: center;
+
+ 
+    }
   }
   .balance {
     padding-top: 50px;
@@ -207,8 +222,10 @@ const BalanceContainer = styled.div`
     color: white;
     font-weight: 600;
     padding-bottom 15px;
-    @media only screen and (max-width 750px){
-      background-color:red;
+    @media only screen and (max-width: 750px){
+      padding-top: 80px;
+      padding-bottom: 24px;
+
     }
   }
 
@@ -237,6 +254,10 @@ const LastMovements = styled.div`
   font-family: "Roboto";
   overflow: hidden;
   margin: 3em 0;
+  @media only screen and (max-width: 750px){
+    margin-bottom: 50px;
+    justify-content: start;    
+  }
 
   .title {
     width: 100%;
@@ -244,6 +265,10 @@ const LastMovements = styled.div`
     h4 {
       margin-left: 4%;
     }
+      @media only screen and (max-width: 750px){
+    margin-top: 50px;
+  
+  }
   }
 
   .movement {
@@ -288,6 +313,20 @@ const LastMovements = styled.div`
       }
       width: 10%;
       text-align: center;
+    }
+    @media only screen and (max-width: 750px){
+       img{
+        width: 35px;
+       }
+       font-size 15px;
+       .description{
+        width: 60%;
+       }
+       .amount{
+        width: 20%;
+       }
+
+ 
     }
   }
 `;
@@ -394,7 +433,7 @@ export default function Home() {
       justify="space-evenly"
       alignItems="center"
       wrap="nowrap"
-      style={{ height: "100vh", width: "100%", margin: "0" }}
+      style={{ height: "100vh", width: "100%", margin: "0", padding:"0" }}
 
     >
       <Container1>
@@ -441,7 +480,7 @@ export default function Home() {
             {data2?.length > 0 ? (
               <ChartContainer>
                 <Chart
-                  height={!isSmallMobile ? "50px" : "500px"}
+                  height={!isSmallMobile ? "50px" : "100%"}
                   data={data2}
                   enableArcLinkLabels={true}
                   label={true}
@@ -452,7 +491,7 @@ export default function Home() {
               <ChartContainer>
                 <Text h2>
                   <Chart
-                    height={!isSmallMobile ? "50px" : "500px"}
+                    height={!isSmallMobile ? "50px" : "100%"}
                     enableArcLinkLabels={false}
                     interactive={false}
                     label={false}

@@ -8,8 +8,8 @@ import Nav from "../../components/Nav/Nav"
 import axios from "axios"
 
 import { useTranslation } from "react-i18next";
-import {toast} from 'react-toastify'
-import success from "../../img/success.gif"
+import {toast} from 'react-toastify';
+import success from "../../img/success.gif";
 
 const PageContainer= styled.div`
 width: 100%;

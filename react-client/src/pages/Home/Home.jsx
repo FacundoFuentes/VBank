@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
@@ -14,6 +14,7 @@ import {
   Card,
   Col,
   Container,
+  Tooltip
 } from "@nextui-org/react";
 import {
   getUserAccountInfo,
@@ -45,9 +46,10 @@ const StyledContainer = styled(Container)`
 // background-color:red;
 
 
+
 @media only screen and (max-width: 760px){
   // background-color:blue;
-  flex-direction:column-reverse;
+  flex-direction:column;
 
 }
 
@@ -125,22 +127,24 @@ const Container1 = styled.div`
     margin-bottom: 5%;
   }
   .cardContainer {
-    margin-top: 20%;
+    margin-top: 11.5%;
+     display: flex;
+     flex-direction: column;
     align-items: center;
-    display: flex;
-    flex-direction: column;
+    padding-left:75px;
+   
+    
     height: 40%;
     width: 100%;
-    border-right: 1px solid gainsboro;
+  
     .cvu{
       width: 100%;
       cursor: pointer;
-      margin: 20px 0;
+      margin: 10px 0;
       display: flex;
       justify-content: center;
       font-family: "roboto";
       font-weight: 600;
-      width: 100%;
       
       span {
         margin-left: 10px;
@@ -166,6 +170,7 @@ const Container2 = styled.div`
   width: 100%;
   margin-top: 190px;
   justify-content: flex-start;
+  margin-bottom: 30px;
 }
 
 `;
@@ -181,7 +186,7 @@ const BalanceContainer = styled.div`
     top: 70%;
     @media only screen and (max-width: 750px){
      
-      top: 100%;
+      top: 125%;
  
     }
   }
@@ -231,8 +236,8 @@ const BalanceContainer = styled.div`
     font-weight: 600;
     padding-bottom 15px;
     @media only screen and (max-width: 750px){
-      padding-top: 150px;
-      padding-bottom: 24px;
+      padding-top: 250px;
+     padding-bottom: 24px;
 
     }
   }
@@ -263,8 +268,9 @@ const LastMovements = styled.div`
   overflow: hidden;
   margin: 3em 0;
   @media only screen and (max-width: 750px){
-    margin-bottom: 50px;
-    justify-content: start;    
+    margin: 0;
+    height: 100%;
+        justify-content: start;    
   }
 
   .title {
@@ -274,7 +280,7 @@ const LastMovements = styled.div`
       margin-left: 4%;
     }
       @media only screen and (max-width: 750px){
-    margin-top: 90px;
+    margin-top: 140px;
   
   }
   }
@@ -348,6 +354,16 @@ export default function Home() {
   let userTransaction = useSelector((state) => state.user.userBalance.info);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [copySuccess, setCopySuccess] = useState("Copy CVU!");
+  let handleCopy =(e)=>{
+    console.log( "el target es "+userAccountInfo.cvu)
+    if(userAccountInfo){
+      navigator.clipboard.writeText(userAccountInfo.cvu)
+      document.execCommand('copy')
+    }
+    
+    setCopySuccess("Copied!")
+  }
 
   const [transactions, setTransactions] = useState([]);
 
@@ -361,6 +377,12 @@ export default function Home() {
   useEffect(() => {
     if (!loggedInUser) history.push("/");
   }, [loggedInUser, history]);
+
+  useEffect(() => {
+    if (copySuccess === "Copied!"){
+      setInterval(function(){ setCopySuccess("copy CVU!"); }, 3000);
+    }
+  }, [copySuccess]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -444,79 +466,7 @@ export default function Home() {
       style={{ height: "100vh", width: "100%", margin: "0", padding:"0" }}
 
     >
-      <Container1>
-        <div className="cardContainer">
-          <Card height="55%" width="60%" clickable cover>
-            <Card.Header
-              style={{
-                position: "absolute",
-                zIndex: 1,
-                top: isMobile ? 90 : isTabletOrMobile ? 110 : 115,
-              }}
-            >
-              {userInfo && userAccountInfo && (
-                <Col>
-                  <Text h4 color="white" margin="1em 0 0 0">
-                    {`**** **** **** ${userAccountInfo.card.cardNumber}`}
-                  </Text>
-                  <Text
-                    size={12}
-                    weight="bold"
-                    transform="uppercase"
-                    color="#ffffffAA"
-                  >
-                    {`${userInfo.firstname} ${userInfo.lastname}`}
-                  </Text>
-                </Col>
-              )}
-            </Card.Header>
-            <Card.Image
-              autoResize={false}
-              src={img}
-              height="100%"
-              width="100%"
-              alt="Card image background"
-            />
-          </Card>
-          <div className="cvu">
-            <Copy width="20px"/>
-            <span> CVU: 454655476745</span>
-          </div>
-        </div>
-        <div className="statsContainer">
-          <Statics>
-            {data2?.length > 0 ? (
-              <ChartContainer>
-                <Chart
-                  height={!isSmallMobile ? "100%" : "100%"}
-                  data={data2}
-                  enableArcLinkLabels={true}
-                  label={true}
-                  interactive={true}
-                />
-              </ChartContainer>
-            ) : (
-              <ChartContainer>
-                <Text h2>
-                  <Chart
-                    height={!isSmallMobile ? "100%" : "100%"}
-                    enableArcLinkLabels={false}
-                    interactive={false}
-                    label={false}
-                    data={[
-                      {
-                        id: "No Movement ",
-                        laber: "No Movement ",
-                        value: 1,
-                      },
-                    ]}
-                  />
-                </Text>
-              </ChartContainer>
-            )}
-          </Statics>
-        </div>
-      </Container1>
+    
       <Container2>
         {userAccountInfo && (
           <BalanceContainer>
@@ -585,6 +535,79 @@ export default function Home() {
           })}
         </LastMovements>
       </Container2>
+      <Container1>
+        <div className="cardContainer">
+    
+    <Tooltip width="100%" placement="bottom" color="background" content={copySuccess} onClick={handleCopy}>
+          <Card  width="74%" clickable cover>
+            <Card.Header
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                top: isMobile ? 90 : isTabletOrMobile ? 110 : 115,
+              }}
+            >
+              {userInfo && userAccountInfo && (
+                <Col>
+                  <Text h4 color="white" margin="0.5em 0 0 0">
+                    {`**** **** **** ${userAccountInfo.card.cardNumber}`}
+                  </Text>
+                  <Text
+                    size={12}
+                    weight="bold"
+                    transform="uppercase"
+                    color="#ffffffAA"
+                  >
+                    {`${userInfo.firstname} ${userInfo.lastname}`}
+                  </Text>
+                </Col>
+              )}
+            </Card.Header>
+
+            <Card.Image
+              autoResize={false}
+              src={img}
+              height="100%"
+              width="100%"
+              alt="Card image background"
+            />
+          </Card>
+          </Tooltip>
+        </div>
+        <div className="statsContainer">
+          <Statics>
+            {data2?.length > 0 ? (
+              <ChartContainer>
+                <Chart
+                  height={!isSmallMobile ? "100%" : "100%"}
+                  data={data2}
+                  enableArcLinkLabels={true}
+                  label={true}
+                  interactive={true}
+                />
+              </ChartContainer>
+            ) : (
+              <ChartContainer>
+                <Text h2>
+                  <Chart
+                    height={!isSmallMobile ? "100%" : "100%"}
+                    enableArcLinkLabels={false}
+                    interactive={false}
+                    label={false}
+                    data={[
+                      {
+                        id: "No Movement ",
+                        laber: "No Movement ",
+                        value: 1,
+                      },
+                    ]}
+                  />
+                </Text>
+              </ChartContainer>
+            )}
+          </Statics>
+        </div>
+      </Container1>
     </StyledContainer>
   );
 }

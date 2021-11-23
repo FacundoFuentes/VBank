@@ -123,6 +123,10 @@ const IconMenu = styled(Menu)`
   height:40px;
   cursor: pointer;
   margin: 0;
+        @media only screen and (max-width: 760px){
+color: #f5f5f5;
+
+}
 
 `;
 const IconClose = styled(CloseOutline)`
@@ -131,6 +135,10 @@ const IconClose = styled(CloseOutline)`
   height:40px;
     cursor: pointer;
     margin:0;
+      @media only screen and (max-width: 760px){
+color: #f5f5f5;
+
+}
 `;
 
 
@@ -143,13 +151,16 @@ const NavResponsive = styled(Grid.Container)`
   z-index:500;
   display:none;
   margin-bottom:100px;
-  background-color:#95befe;
   padding-bottom: 30px;
 
   #burger{
 
 
   }
+  @media only screen and (max-width: 760px){
+background-color:#95befe;
+
+}
 
 `;
   
@@ -212,7 +223,7 @@ const logOut = ()=> {
             <Row wrap="nowrap">
                <LinkIcons to="/"><IconLogOut  onClick={logOut}/> 
                <Spacer x={1.4}/>
-               <TextIcons  color="#f5f5f5;"> Log Out</TextIcons></LinkIcons>
+               <TextIcons  onClick={logOut} color="#f5f5f5;"> Log Out</TextIcons></LinkIcons>
             </Row>
 
           </Col>

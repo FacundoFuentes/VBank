@@ -150,10 +150,10 @@ const RecoverPass =()=>{
 		<Nav/>
 		<Box>
 		<div id="title">
-		<h2> {t("Nwpass.1")}</h2>
+		<h2> Recover Password</h2>
 		</div>
 		<span>
-		{t("Nwpass.2")}
+		Enter your email, to receive a recovery link:
 		</span>
 		 <form onSubmit={handleSubmit(onSubmit)}>
 		<div  className="field">
@@ -168,9 +168,9 @@ const RecoverPass =()=>{
         labelPlaceholder="Email"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.email?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+      {errors?.email?.type === "required" && <p className="error">This field is required</p>}
       {errors?.email?.type === "pattern" && (
-        <p className="error">{t("Sign.err2")}</p>
+        <p className="error">Please, enter a valid email</p>
       )}
        { error && (
         <p className="error">{error}</p>
@@ -200,11 +200,9 @@ const RecoverPass =()=>{
             </div>
 		<div id="btns">
 
-			<Button auto flat color="error" onClick={handleClick}>
-			{t("Home.CANCEL")}
-                </Button>
+		
                 <Button auto type="submit">
-				{t("Home.Send")}
+							Send
 
                 </Button>
 		</div>

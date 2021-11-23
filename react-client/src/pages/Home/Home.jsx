@@ -25,6 +25,8 @@ import gold from "../../img/oro.png";
 import piggy from "../../img/piggy.png";
 
 import Shopping from "../../img/Shopping.png";
+import Games from "../../img/games.jpg";
+
 
 import { useMediaQuery } from "react-responsive";
 import { CashCoin } from "@styled-icons/bootstrap/CashCoin";
@@ -543,7 +545,11 @@ export default function Home() {
             if (!e.transaction?.status || e.transaction?.status === "DONE") {
               return (
                 <div className="movement">
-                  <img src={Shopping} alt="" className="movementIcon" />
+                {e.transaction.branch === "Games" ? <img src={Games} alt="" className="movementIcon" /> :
+                <img src={Shopping} alt="" className="movementIcon" />
+              }
+              
+                  
                   <div className="description">
                     <span>{e.transaction.description}</span>
                     <p>

@@ -120,7 +120,7 @@ export default function Charge() {
         justify="center"
         style={{ height: "100vh", width: "80vw" , padding:"auto", margin:"auto" }}
       >
-       <Grid.Container display="flex"  direction="column"  width="100px" style={{marginLeft:"25%", marginTop:"20%", padding:"auto"}}>
+       <Grid.Container display="flex"  direction="column"  width="100px" style={{marginLeft:"35%", marginTop:"20%", padding:"auto"}}>
          
        {!isTabletOrMobile && 
         <Grid>

@@ -538,7 +538,7 @@ export default function Home() {
       <Container1>
         <div className="cardContainer">
     
-    <Tooltip width="100%" placement="bottom" color="background" content={copySuccess} onClick={handleCopy}>
+    <Tooltip width="100%" placement="bottom" color="#2ca1de" content={copySuccess} onClick={handleCopy}>
           <Card  width="74%" clickable cover>
             <Card.Header
               style={{

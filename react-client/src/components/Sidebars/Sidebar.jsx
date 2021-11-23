@@ -29,6 +29,7 @@ const SideNav = styled.div`
   padding:0px;
   transition: all 700ms;
   z-index:200;
+  box-shadow: -1px 2px 8px 3px rgba(0,0,0,0.75);
 
   @media screen and (max-width: 1080px){
     width:0px;
@@ -124,7 +125,7 @@ const IconMenu = styled(Menu)`
   cursor: pointer;
   margin: 0;
         @media only screen and (max-width: 760px){
-color: #f5f5f5;
+color: #cdcdcd;
 
 }
 
@@ -136,7 +137,7 @@ const IconClose = styled(CloseOutline)`
     cursor: pointer;
     margin:0;
       @media only screen and (max-width: 760px){
-color: #f5f5f5;
+color: #cdcdcd;
 
 }
 `;
@@ -158,9 +159,9 @@ const NavResponsive = styled(Grid.Container)`
 
   }
   @media only screen and (max-width: 760px){
-background-color:#95befe;
-
+    position: absolute;
 }
+
 
 `;
   

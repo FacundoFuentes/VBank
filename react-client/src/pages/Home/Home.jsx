@@ -25,7 +25,13 @@ import gold from "../../img/oro.png";
 import piggy from "../../img/piggy.png";
 
 import Shopping from "../../img/Shopping.png";
-import Games from "../../img/games.jpg";
+import Games from "../../img/games.png";
+import Travel from "../../img/Travel.png";
+import Food from "../../img/Food.png";
+import Sports from "../../img/Sport.png";
+import Tech from "../../img/Tech.png";
+import Rent from "../../img/Rent.png";
+import Miscellaneous from "../../img/Miscellaneous.png";
 
 
 import { useMediaQuery } from "react-responsive";
@@ -175,7 +181,7 @@ const BalanceContainer = styled.div`
     top: 70%;
     @media only screen and (max-width: 750px){
      
-      top: 80%;
+      top: 100%;
  
     }
   }
@@ -225,7 +231,7 @@ const BalanceContainer = styled.div`
     font-weight: 600;
     padding-bottom 15px;
     @media only screen and (max-width: 750px){
-      padding-top: 80px;
+      padding-top: 150px;
       padding-bottom: 24px;
 
     }
@@ -268,7 +274,7 @@ const LastMovements = styled.div`
       margin-left: 4%;
     }
       @media only screen and (max-width: 750px){
-    margin-top: 50px;
+    margin-top: 90px;
   
   }
   }
@@ -482,7 +488,7 @@ export default function Home() {
             {data2?.length > 0 ? (
               <ChartContainer>
                 <Chart
-                  height={!isSmallMobile ? "50px" : "100%"}
+                  height={!isSmallMobile ? "100%" : "100%"}
                   data={data2}
                   enableArcLinkLabels={true}
                   label={true}
@@ -493,7 +499,7 @@ export default function Home() {
               <ChartContainer>
                 <Text h2>
                   <Chart
-                    height={!isSmallMobile ? "50px" : "100%"}
+                    height={!isSmallMobile ? "100%" : "100%"}
                     enableArcLinkLabels={false}
                     interactive={false}
                     label={false}
@@ -546,9 +552,16 @@ export default function Home() {
               return (
                 <div className="movement">
                 {e.transaction.branch === "Games" ? <img src={Games} alt="" className="movementIcon" /> :
+
+              e.transaction.branch === "Travel" ? <img src={Travel} alt="" className="movementIcon" /> :
+               e.transaction.branch === "Food" ? <img src={Food} alt="" className="movementIcon" /> :
+               e.transaction.branch === "Sport" ? <img src={Sports} alt="" className="movementIcon" /> :
+                e.transaction.branch === "Tech" ? <img src={Tech} alt="" className="movementIcon" /> :
+                 e.transaction.branch === "Rent" ? <img src={Rent} alt="" className="movementIcon" /> :
+                 e.transaction.branch === "Miscellaneous" ? <img src={Miscellaneous} alt="" className="movementIcon" /> :
                 <img src={Shopping} alt="" className="movementIcon" />
               }
-              
+
                   
                   <div className="description">
                     <span>{e.transaction.description}</span>

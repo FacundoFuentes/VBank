@@ -106,26 +106,27 @@ try{
         bordered
         fullWidth
         size="large"
-        labelPlaceholder= {t("Prof.TP")}
+        labelPlaceholder= "Username/CVU"
          color="#f5f5f5" {...field} />}
       />
-      {errors.data?.type === 'required' && <p className="error">{t("Prof.err")}</p>}
-      {errors.data?.type === 'maxLength' && <p className="error">{t("Lan.16")}</p>}
+      {errors.data?.type === 'required' && <p className="error"> This field is required</p>}
+      {errors.data?.type === 'maxLength' && <p className="error">It should only have 16 characters</p>}
  
             <Controller
         className="fields"
         name="description"
         control={control}
         defaultValue=""
-        rules={{maxLength: 16}}
+        rules={{ required: true, maxLength: 16}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
         size="large"
-        labelPlaceholder={t("Prof.TP2")}
+        labelPlaceholder="Rent"
          color="#f5f5f5" {...field} />}
       />
-      {errors.description?.type === 'maxLength' && <p className="error">{t("Lan.16")}</p>}
+      {errors.description?.type === 'maxLength' && <p className="error">It should only have 16 characters</p>}
+      {errors.description?.type === 'required' && <p className="error">This field is required</p>}
 
       {error && <p className="error">{error.error}</p>}
      
@@ -136,10 +137,10 @@ try{
             </Modal.Body>
             <Modal.Footer>
                 <Button auto flat color="error" onClick={closeHandler}>
-                {t("Prof.back")}
+                Back
                 </Button>
                 <Button  type="submit">
-                {t("Prof.add")}
+                Add
                 </Button>
             </Modal.Footer>
             </form>

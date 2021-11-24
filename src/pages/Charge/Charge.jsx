@@ -80,7 +80,7 @@ export default function Charge() {
     setBtnLoading(true);
     if ((input.charge > 0 && pago1) || pago2) {
       axios
-        .patch("https://value-bank.herokuapp.com//user/charge", input, {
+        .patch("https://value-bank.herokuapp.com/user/charge", input, {
           headers: { Authorization: "Bearer " + token },
         })
         .then((response) => {

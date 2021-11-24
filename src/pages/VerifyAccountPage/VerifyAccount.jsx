@@ -97,7 +97,7 @@ const VerifyAccount = () => {
   const onSubmit = async (code) => {
     try {
 
-      const response = await axios.patch(`https://value-bank.herokuapp.com//user/emailVerification/${username}`,{
+      const response = await axios.patch(`https://value-bank.herokuapp.com/user/emailVerification/${username}`,{
         code
       } )
 

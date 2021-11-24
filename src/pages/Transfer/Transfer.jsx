@@ -187,7 +187,7 @@ const token = JSON.parse(localStorage.getItem("token")).data
  function handleSubmit(e){
   e.preventDefault()
   
-  axios.post('https://value-bank.herokuapp.com//transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
+  axios.post('https://value-bank.herokuapp.com/transactions/new', state, {headers:{'Authorization':'Bearer ' + token}})
   .then(response=> {
    console.log(response)
    setStatus(response.status)

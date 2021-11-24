@@ -107,7 +107,7 @@ const NewPassword =()=>{
 	 
 	 	const {password}= data;
 	 	console.log(password)
-     axios.post(`http://localhost:3001/user/password-reset/${userId}/${token}`, {password})
+     axios.post(`https://value-bank.herokuapp.com//user/password-reset/${userId}/${token}`, {password})
 	 	
   .then(response=> {
    console.log(response)
@@ -128,7 +128,7 @@ const NewPassword =()=>{
         autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
-        onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+        onClose: () => ( window.location.href = 'https://valuebank.tk/'  ), 
         pauseOnHover: false,
         draggable: true,
         progress: undefined,

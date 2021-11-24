@@ -399,7 +399,7 @@ export default function Home() {
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
-            onClose: () => (window.location.href = "http://localhost:3000/"),
+            onClose: () => (window.location.href = "https://valuebank.tk/"),
             pauseOnHover: false,
             draggable: true,
             progress: undefined,

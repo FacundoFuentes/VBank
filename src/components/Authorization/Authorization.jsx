@@ -23,7 +23,7 @@ function Authorization() {
         console.log(username)
         // fetch
         try{
-            const link = `http://localhost:3001/user/emailVerification/${username}`
+            const link = `https://value-bank.herokuapp.com//user/emailVerification/${username}`
             const response = await axios({
                     method: 'patch',
                     url: link,

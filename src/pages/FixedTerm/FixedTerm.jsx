@@ -201,7 +201,7 @@ export default function FixedTerm() {
       
       
       useEffect(()=>{
-        axios.get("http://localhost:3001/fixedDeposit" , {headers:{'Authorization':'Bearer ' + token}} )
+        axios.get("https://value-bank.herokuapp.com//fixedDeposit" , {headers:{'Authorization':'Bearer ' + token}} )
         .then(response=> {
           
           setInfo(response.data.fixedDeposits)
@@ -219,7 +219,7 @@ export default function FixedTerm() {
        function handleSubmit(e){
         e.preventDefault()
         setBtnLoading(true)
-        axios.post('http://localhost:3001/fixedDeposit/new', state, {headers:{'Authorization':'Bearer ' + token}})
+        axios.post('https://value-bank.herokuapp.com//fixedDeposit/new', state, {headers:{'Authorization':'Bearer ' + token}})
         .then(response=> {
           console.log(response)
           setStatus(response.status)
@@ -238,7 +238,7 @@ export default function FixedTerm() {
                autoClose: 500,
                hideProgressBar: false,
                closeOnClick: true,
-               onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+               onClose: () => ( window.location.href = 'https://valuebank.tk/'  ), 
                pauseOnHover: false,
                draggable: true,
                progress: undefined,

@@ -80,7 +80,7 @@ export default function Charge() {
     setBtnLoading(true);
     if ((input.charge > 0 && pago1) || pago2) {
       axios
-        .patch("http://localhost:3001/user/charge", input, {
+        .patch("https://value-bank.herokuapp.com//user/charge", input, {
           headers: { Authorization: "Bearer " + token },
         })
         .then((response) => {
@@ -102,7 +102,7 @@ export default function Charge() {
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
-              onClose: () => (window.location.href = "http://localhost:3000/"),
+              onClose: () => (window.location.href = "https://valuebank.tk/"),
               pauseOnHover: false,
               draggable: true,
               progress: undefined,

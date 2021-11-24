@@ -9,7 +9,7 @@ export const getContacts = createAsyncThunk(
     const token = JSON.parse(localStorage.getItem("token")).data
    
     try {
-      const response = await axios.get("http://localhost:3001/user/contacts", {
+      const response = await axios.get("https://value-bank.herokuapp.com//user/contacts", {
         headers: { Authorization: "Bearer " + token },
       });
       console.log(response.data.contacts)
@@ -31,7 +31,7 @@ export const addContact = createAsyncThunk(
     }
     try {
       if (token){
-         await axios.post("http://localhost:3001/user/newcontact",payload,{
+         await axios.post("https://value-bank.herokuapp.com//user/newcontact",payload,{
           headers: { Authorization: "Bearer " + token },
         })  
         const { dispatch } = thunkAPI;
@@ -56,7 +56,7 @@ export const deleteContact = createAsyncThunk(
      try {
        if (payload){
          const {_Id} = payload;
-         await axios.delete(`http://localhost:3001/user/deletecontact/${_Id}`, {
+         await axios.delete(`https://value-bank.herokuapp.com//user/deletecontact/${_Id}`, {
            headers: { 
             'Content-Type': 'application/json;charset=UTF-8',
              Authorization: "Bearer " + token,

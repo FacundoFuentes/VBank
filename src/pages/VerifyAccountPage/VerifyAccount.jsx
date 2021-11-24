@@ -97,7 +97,7 @@ const VerifyAccount = () => {
   const onSubmit = async (code) => {
     try {
 
-      const response = await axios.patch(`http://localhost:3001/user/emailVerification/${username}`,{
+      const response = await axios.patch(`https://value-bank.herokuapp.com//user/emailVerification/${username}`,{
         code
       } )
 
@@ -122,7 +122,7 @@ const VerifyAccount = () => {
         autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
-        onClose: () => ( window.location.href = 'http://localhost:3000/'  ), 
+        onClose: () => ( window.location.href = 'https://valuebank.tk/'  ), 
         pauseOnHover: false,
         draggable: true,
         progress: undefined,

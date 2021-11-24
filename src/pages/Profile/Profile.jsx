@@ -13,8 +13,10 @@ import { useTranslation } from "react-i18next";
 const Container = styled.div`
 padding: 150px;
 text-align:center;
+margin-left: 7%;
 @media (max-width: 640px) {
 margin: 0 ;
+
 }
 `
 const Card = styled.div`
@@ -44,6 +46,7 @@ background-color:#95BEFE;
 padding-left: 20px;
 border-top-left-radius: 20px;
 border-top-right-radius: 20px;
+
 @media (max-width: 640px) {
  padding: 20px 20px 5px 20px;
  border: none;
@@ -53,9 +56,11 @@ border-top-right-radius: 20px;
 const In = styled.div`
 padding-left: 20px; 
 padding-right: 5px;
+
 @media (max-width: 640px) {
  padding: 5px 20px 20px 20px;
  background: transparent;
+ 
 }
 `
 const Info = styled.div`
@@ -66,6 +71,7 @@ padding-bottom: 10px;
 padding-top: 13px;
 border-bottom: 1px solid rgb(139, 139, 139);
 font-weight: bold;
+
 &:hover{
   background-color: #e8eaeb53;
   border-radius: 2px;
@@ -143,7 +149,7 @@ console.log(token)
 const onSubmit = (data,e) => {
   e.preventDefault();
   console.log(data);
-  axios.post("https://value-bank.herokuapp.com/user/updateInfo", data,{headers:{'Authorization':'Bearer ' + token}})
+  axios.post("http://localhost:3001/user/updateInfo", data,{headers:{'Authorization':'Bearer ' + token}})
   .then(res => {
     console.log(res);
     dispatch(getUserInfo())
@@ -170,10 +176,10 @@ const onSubmit = (data,e) => {
     <>
       <Container>
         <Card>
-          <H2> {t("Prof.profile")}</H2>
+          <H2> My Profile</H2>
           <In>
             <Info>
-              <span>{t("Prof.birth")}</span>
+              <span>Birth date:</span>
               {userInfo &&
                 <User> {`${userInfo.birthDate.slice(0, 10)}`} </User>}
             </Info>
@@ -183,12 +189,12 @@ const onSubmit = (data,e) => {
                 <User> {`${userInfo.dni}`} </User>}
             </Info>
             <Info>
-              <span>{t("Prof.firts")}</span>
+              <span>First Name:</span>
               {userInfo &&
                 <User>  {`${userInfo.firstname}`} </User>}
             </Info>
             <Info>
-              <span>{t("Prof.lastn")}</span>
+              <span>Last Name:</span>
               {userInfo &&
                 <User> {`${userInfo.lastname}`} </User>}
             </Info>
@@ -198,19 +204,19 @@ const onSubmit = (data,e) => {
                 <User>{`${userInfo.email}`} </User>}
             </Info>
             <Info>
-              <span>{t("Prof.phone")}</span>
+              <span>Phone:</span>
               {userInfo &&
                 <User>{`${userInfo.phoneNumber}`} </User>}
             </Info>
               <Info>
-                <span>{t("Prof.address")}</span>
+                <span>Address:</span>
                {userInfo &&  userInfo.adress === undefined ?       
                  <User> </User> :
                 userInfo && 
                  <User>{`${userInfo.adress}`} </User> }
               {userInfo &&  userInfo.adress === undefined ?
-             <Edit auto shadow onClick={handler1}>{t("Prof.add")}</Edit> :
-             <Edit auto shadow onClick={handler1}>{t("Prof.edit")}</Edit> }
+             <Edit auto shadow onClick={handler1}>Add</Edit> :
+             <Edit auto shadow onClick={handler1}>Edit</Edit> }
              <Modal
                   closeButton
                   aria-labelledby="modal-title"
@@ -218,9 +224,9 @@ const onSubmit = (data,e) => {
                   onClose={closeHandler1}>
                   <Modal.Header>
                     <Text id="modal-title" size={18}>
-                    {t("Prof.change")}
+                    Change
                       <Text b size={18}>
-                      {t("Prof.address")}
+                     Address
                       </Text>
                     </Text>
                   </Modal.Header>
@@ -234,37 +240,37 @@ const onSubmit = (data,e) => {
                       rules={{ pattern: /^[0-9a-zA-Z \_]+$/i, required: true, maxLength: 35 }}
                       render={({ field }) => <Input className="input"       
                         underlined
-                        labelPlaceholder={t("Prof.address")}
+                        labelPlaceholder="Address"
                         tipe="text"
                         color="#696262" {...field} />}
                     />
-                    {errors?.adress?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+                    {errors?.adress?.type === "required" && <p className="error">This field is required</p>}
                     {errors?.adress?.type === "maxLength" && (
-                      <p className="error">{t("Prof.err2")}</p>
+                      <p className="error">it should only have 35 characters</p>
                     )}
                     {errors?.adress?.type === "pattern" && (
-                      <p className="error">{t("Prof.err")}</p>
+                      <p className="error">Please, enter a valid address</p>
                     )}
                   </Modal.Body>
                   <Modal.Footer>
                     <Button
                      type="submit"
                      auto onClick={closeHandler1}>
-                      {t("Prof.save")}
+                      Save
                     </Button>
                   </Modal.Footer>
                   </form>
                 </Modal>
               </Info>
               <Info>
-                <span> {t("Prof.zip")}</span>
+                <span> Zip code:</span>
                 {userInfo &&  userInfo.zipCode === undefined ?       
                  <User> </User> :
                  userInfo &&
                 <User>{`${userInfo.zipCode}`} </User>}
                {userInfo &&  userInfo.zipCode === undefined ? 
-                <Edit auto shadow onClick={handler2}>{t("Prof.add")} </Edit> :
-                <Edit auto shadow onClick={handler2}>{t("Prof.edit")}</Edit>}
+                <Edit auto shadow onClick={handler2}>Add</Edit> :
+                <Edit auto shadow onClick={handler2}>Edit</Edit>}
                 <Modal
                   closeButton
                   aria-labelledby="modal"
@@ -272,10 +278,8 @@ const onSubmit = (data,e) => {
                   onClose={closeHandler2}>
                   <Modal.Header>
                     <Text id="modal" size={18}>
-                    {t("Prof.change")}
-                      <Text b size={18}>
-                      {t("Prof.zip")}
-                      </Text>
+                   Change Zip Code
+                      
                     </Text>
                   </Modal.Header>
                   <form onSubmit = {handleSubmit(onSubmit)} >
@@ -289,32 +293,32 @@ const onSubmit = (data,e) => {
                       render={({ field }) => <Input className="input"
                         underlined
                         type="number"
-                        labelPlaceholder={t("Prof.zip")}
+                        labelPlaceholder="Zip Code"
                         color="#c5c5c5" {...field} />}
                     />
-                    {errors.zipCode?.type === 'required' && <p className="error">{t("Prof.err-zip")}</p>}
-                    {errors.zipCode?.type === 'pattern' && <p className="error">{t("Prof.err2-zip")} </p>}
-                    {errors.zipCode?.type === 'maxLength' && <p className="error">{t("Prof.err3-zip")}</p>}
-                    {errors.zipCode?.type === 'minLength' && <p className="error">{t("Prof.err4-zip")}</p>}
+                    {errors.zipCode?.type === 'required' && <p className="error">This field is required</p>}
+                    {errors.zipCode?.type === 'pattern' && <p className="error">Please, enter a valid zipCode </p>}
+                    {errors.zipCode?.type === 'maxLength' && <p className="error">It should only have 5 characters</p>}
+                    {errors.zipCode?.type === 'minLength' && <p className="error">It should only have a min of 4 characters</p>}
                   </Modal.Body>
                   <Modal.Footer>
                     <Button
                       type="submit"
                       auto onClick={closeHandler2}>
-                      {t("Prof.save")}
+                      Save
                     </Button>
                   </Modal.Footer>
                   </form>
                 </Modal>
               </Info>
               <Info>
-              <span>{t("Nav.Pass")}</span>
+              <span>Password</span>
               <Link to='/home/changePassword'>
-              <Edit >{t("Transfer.CH")}</Edit>
+              <Edit >Change</Edit>
             </Link>
             </Info>
             <Link to='/home'>
-              <Button>{t("Prof.back")}</Button>
+              <Button>Back</Button>
             </Link>
           </In>
         </Card>

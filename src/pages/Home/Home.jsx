@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState} from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Chart from "../../components/Chart/Chart";
 import img from "../../img/card-home.png";
+import svg from "../../img/svg.png";
+
 import {
   Grid,
   Spacer,
@@ -12,6 +14,7 @@ import {
   Card,
   Col,
   Container,
+  Tooltip
 } from "@nextui-org/react";
 import {
   getUserAccountInfo,
@@ -20,35 +23,37 @@ import {
 } from "../../redux/reducers/userSlice";
 import { toast } from "react-toastify";
 import gold from "../../img/oro.png";
+import piggy from "../../img/piggy.png";
+
+import Shopping from "../../img/Shopping.png";
+import Games from "../../img/games.png";
+import Travel from "../../img/Travel.png";
+import Food from "../../img/Food.png";
+import Sports from "../../img/Sport.png";
+import Tech from "../../img/Tech.png";
+import Rent from "../../img/Rent.png";
+import Miscellaneous from "../../img/Miscellaneous.png";
+
+
 import { useMediaQuery } from "react-responsive";
+import { CashCoin } from "@styled-icons/bootstrap/CashCoin";
+import { PiggyBank } from "@styled-icons/fa-solid/PiggyBank";
 
-const GridS = styled.div`
-  margin: 5px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  width: 70%;
-  height: 100%;
-`;
+import {Copy} from "@styled-icons/fa-solid/Copy"
+import StringMask from "string-mask";
 
-const Balance = styled.div`
-  border-radius: 20px;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  padding: 50px;
-  justify-content: center;
-  align-items: center;
+const StyledContainer = styled(Container)`
+// background-color:red;
 
-  -webkit-box-shadow: -10px 0px 13px -7px #00000052,
-    10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
-    5px 5px 15px 5px rgba(0, 0, 0, 0);
-  @media screen and (max-width: 650px) {
-    width: 90%;
-    border: none;
-    box-shadow: none;
-    padding: 0;
-  }
+
+
+@media only screen and (max-width: 760px){
+  // background-color:blue;
+  flex-direction:column;
+
+}
+
+
 `;
 
 const Expeses = styled.div`
@@ -63,7 +68,6 @@ const ChartContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-
   border-radius: 20px;
   justify-content: center;
   width: 90%;
@@ -92,28 +96,252 @@ const GridContainer = styled.div`
   overflow: auto;
   overflow-x: hidden;
 `;
-const BoderShadow = styled(GridS)`
-  border: solid 0.5px #03030349;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 70%;
-  -webkit-box-shadow: -10px 0px 13px -7px #00000052,
-    10px 0px 13px -7px #00000052, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-  box-shadow: -10px 0px 13px -7px #00000052, 10px 0px 13px -7px #00000052,
-    5px 5px 15px 5px rgba(0, 0, 0, 0);
 
-  @media screen and (max-width: 1080px) {
-    width: 90%;
-    padding: 0;
+const HeadLine = styled.h2`
+  font-family: "Roboto";
+  margin: 0;
+  font-weight: 300;
+`;
+
+const Container1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30%;
+  height: 100%;
+  margin: 0;
+  @media screen and (max-width: 750px){
+      width:100%;
+     
+    }
+  .statsContainer {
+    
+    display: flex;
+    justify-content: start;
+    .title {
+      text-align: left;
+      margin-bottom: 3em;
+      margin-left: 6em;
+    }
+    width: 100%;
+    margin-bottom: 5%;
   }
-  @media screen and (max-width: 650px) {
-    width: 90%;
-    border: none;
-    box-shadow: none;
-    padding: 0;
+  .cardContainer {
+    margin-top: 11.5%;
+     display: flex;
+     flex-direction: column;
+    align-items: center;
+    padding-left:75px;
+   
+    
+    height: 40%;
+    width: 100%;
+  
+    .cvu{
+      width: 100%;
+      cursor: pointer;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+      font-family: "roboto";
+      font-weight: 600;
+      
+      span {
+        margin-left: 10px;
+        
+      }
+    }
+    @media screen and (max-width: 750px){
+      
+      display: none;
+    }
+  }
+
+  img {
+    height: 100px;
+  }
+`;
+const Container2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: 100%;
+    @media only screen and (max-width: 760px){
+  width: 100%;
+  margin-top: 190px;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+`;
+
+const BalanceContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 30%;
+  .img {
+    position: absolute;
+    top: 70%;
+    @media only screen and (max-width: 750px){
+     
+      top: 125%;
+ 
+    }
+  }
+  .title {
+    width: 100%;
+    text-align: left;
+    margin-left: 3%;
+  }
+  .actions {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    background-color: #95befe;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    .action {
+      display: inherit;
+      align-items: center;
+      margin: 3em;
+      a{
+        color:#fff;
+      }
+      span {
+        margin: 1em;
+      }
+    }
+        @media only screen and (max-width: 750px){
+          padding-top 15px;
+         padding-bottom: 20px;
+      display: flex;
+      justify-content: center;
+
+ 
+    }
+  }
+  .balance {
+    padding-top: 50px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    background-color: #95befe;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    padding-bottom 15px;
+    @media only screen and (max-width: 750px){
+      padding-top: 250px;
+     padding-bottom: 24px;
+
+    }
+  }
+
+`;
+
+const Statics = styled.div`
+  width: 100%;
+  height: 40%;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: white;
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+`;
+
+const LastMovements = styled.div`
+  cursor: pointer;
+  border-radius: 20px;
+  height: 60%;
+  display: flex;
+  justify-content: end;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto";
+  overflow: hidden;
+  margin: 3em 0;
+  @media only screen and (max-width: 750px){
+    margin: 0;
+    height: 100%;
+        justify-content: start;    
+  }
+
+  .title {
+    width: 100%;
+    text-align: left;
+    h4 {
+      margin-left: 4%;
+    }
+      @media only screen and (max-width: 750px){
+    margin-top: 140px;
+  
+  }
+  }
+
+  .movement {
+    height: 15%;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid RGB(237, 237, 237);
+    img {
+      width: 50px;
+      border-radius: 5px;
+      object-fit: contain;
+      object-position: center;
+    }
+    .description {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      width: 70%;
+
+      text-align: left;
+      p {
+        margin: 0;
+        color: RGB(58, 93, 214);
+      }
+    }
+    .amount {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .RECEIVER {
+        color: RGB(111, 208, 146);
+      }
+      span {
+        font-weight: 600;
+      }
+      p {
+        margin: 0;
+        color: gray;
+      }
+      width: 10%;
+      text-align: center;
+    }
+    @media only screen and (max-width: 750px){
+       img{
+        width: 35px;
+       }
+       font-size 15px;
+       .description{
+        width: 60%;
+       }
+       .amount{
+        width: 20%;
+       }
+
+ 
+    }
   }
 `;
 
@@ -126,6 +354,18 @@ export default function Home() {
   let userTransaction = useSelector((state) => state.user.userBalance.info);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [copySuccess, setCopySuccess] = useState("Copy CVU!");
+  let handleCopy =(e)=>{
+    console.log( "el target es "+userAccountInfo.cvu)
+    if(userAccountInfo){
+      navigator.clipboard.writeText(userAccountInfo.cvu)
+      document.execCommand('copy')
+    }
+    
+    setCopySuccess("Copied!")
+  }
+
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     let body = document.getElementsByTagName("body")[0];
@@ -137,6 +377,12 @@ export default function Home() {
   useEffect(() => {
     if (!loggedInUser) history.push("/");
   }, [loggedInUser, history]);
+
+  useEffect(() => {
+    if (copySuccess === "Copied!"){
+      setInterval(function(){ setCopySuccess("copy CVU!"); }, 3000);
+    }
+  }, [copySuccess]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -198,184 +444,170 @@ export default function Home() {
   }
 
   data2 = data2?.filter((e) => e.value > 0);
-
-  userTransaction = userTransaction?.map((e) => e).reverse();
+  userTransaction = userTransaction
+    ?.slice(-5)
+    .map((e) => e)
+    .reverse();
   console.log(userTransaction?.map((e) => e).reverse());
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
   const isMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const isSmallMobile = useMediaQuery({ query: "(max-width: 650px)" });
 
+  // let  = new StringMask("00.000"); // arreglar
+
   return (
-    <Container
-      direction="column"
+    <StyledContainer
+      fluid
       display="flex"
       justify="space-evenly"
-      style={{
-        marginLeft: isSmallMobile ? "-10px" : !isTabletOrMobile ? "22%" : "60px",
-        overflowX: "hidden",
-        
-      }}
+      alignItems="center"
+      wrap="nowrap"
+      style={{ height: "100vh", width: "100%", margin: "0", padding:"0" }}
+
     >
-      <Grid.Container width="100px" style={{width:"300px"}}>
-      <Grid width="50px" justify="center">
-        <Text width="50px" margin="20px" h2 weight={"bolder"}
-        >
-          My Card
-        </Text>
-      </Grid>
-      </Grid.Container>
-      <BoderShadow style={{ height: "auto", padding: "20px" }}>
-        <Spacer y={0} />
-
-        <Grid.Container wrap="nowrap" display="flex" justify="space-around">
-          {!isSmallMobile && (
-            <Grid>
-              <Card height="100%" width="75%" cover>
-                <Card.Header
-                  style={{
-                    position: "absolute",
-                    zIndex: 1,
-                    top: isMobile ? 90 : isTabletOrMobile ? 110 : 115,
-                  }}
-                >
-                  {userInfo && userAccountInfo && (
-                    <Col>
-                      <Text h4 color="white">
-                        {`**** **** **** ${userAccountInfo.card.cardNumber}`}
-                      </Text>
-                      <Text
-                        size={12}
-                        weight="bold"
-                        transform="uppercase"
-                        color="#ffffffAA"
-                      >
-                        {`${userInfo.firstname} ${userInfo.lastname}`}
-                      </Text>
-                    </Col>
-                  )}
-                </Card.Header>
-                <Card.Image
-                  autoResize={false}
-                  src={img}
-                  height="100%"
-                  width="100%"
-                  alt="Card image background"
-                />
-              </Card>
-            </Grid>
-          )}
-
-          <Grid>
-            {userAccountInfo && (
-              <Balance style={{ marginRight: "20px" }}>
-                <img width={"50px"} src={gold} alt="" />
-                <Text h2>${`${userAccountInfo.balance}`}</Text>
-              </Balance>
-            )}
-          </Grid>
-        </Grid.Container>
-      </BoderShadow>
-      <Grid.Container  style={{width:"400px"}}>
-      <Grid width="300px" justify="center">
-        <Text width="300px" margin="20px" h2 weight={"bolder"}>
-          Latest movements
-        </Text>
-      </Grid>
-      </Grid.Container>
-      <BoderShadow style={{ height: "350px" }}>
-        <Expeses>
-          <DateNameTotal>
-            <LatestMovements gap={2} justify="space-around">
-              <Spacer x={0} />
-              <GridLatestMovents xs={2}>Date</GridLatestMovents>
-              <Spacer x={-5} />
-              {!isSmallMobile && 
-              <GridLatestMovents justify="center" xs={4}>
-              Name
-            </GridLatestMovents> }
-              
-              <Spacer x={1} />
-              <GridLatestMovents xs={1}>Total</GridLatestMovents>
-              <Spacer x={2} />
-            </LatestMovements>
-          </DateNameTotal>
-          <Divider x={0} y={1} />
-          <GridContainer>
-            {userTransaction?.map((e, i) => {
-              if (!e.transaction?.status || e.transaction?.status === "DONE") {
-                return (
-                  <LatestMovements
-                    key={i}
-                    gap={2}
-                    justify="space-around"
-                    style={{ marginBottom: "10px"}}
-                  >
-                    <Spacer x={-1} />
-                    <GridLatestMovents xs={2}>
-                      {` ${e.transaction.date.slice(0, 10)} `}{" "}
-                    </GridLatestMovents>
-                    <Spacer x={-4} />
-                    {!isSmallMobile  && 
-                    <GridLatestMovents justify="center" xs={4}>
-                    {` ${e.transaction.description} `}{" "}
-                  </GridLatestMovents>
-                    }
-                    
-                    <Spacer x={1} />
-                    <GridLatestMovents xs={1}>
-                      {e.role === "RECEIVER"
-                        ? `+$${e.transaction.amount}`
-                        : `-$${e.transaction.amount}`}{" "}
-                    </GridLatestMovents>
-                    <Spacer x={2} />
-                    <Divider x={0} y={0} />
-                  </LatestMovements>
-                );
-              }
-            })}
-          </GridContainer>
-        </Expeses>
-      </BoderShadow>
-      <Grid.Container width="100px" style={{width:"300px"}}>
-      <Grid width="100%" justify="flex-start">
-        <Text width="100px" margin="20px" h2 weight={"bolder"}>
-          Statistics
-        </Text>
-      </Grid>
-      </Grid.Container>
-      <BoderShadow>
-        {data2?.length > 0 ? (
-          <ChartContainer>
-            <Chart
-              height={!isSmallMobile ? "50px" : "500px"}
-              data={data2}
-              enableArcLinkLabels={true}
-              label={true}
-              interactive={true}
-            />
-          </ChartContainer>
-        ) : (
-          <ChartContainer>
-            <Text h2 >
-              <Chart
-                height={!isSmallMobile ? "50px" : "500px"}
-                enableArcLinkLabels={false}
-                interactive={false}
-                label={false}
-                data={[
-                  {
-                    id: "No Movement ",
-                    laber: "No Movement ",
-                    value: 1,
-                  },
-                ]}
-              />
-            </Text>
-          </ChartContainer>
+    
+      <Container2>
+        {userAccountInfo && (
+          <BalanceContainer>
+            <div className="balance">
+              <img width={"50px"} src={gold} alt="" />
+              <HeadLine>${`${userAccountInfo.balance}`}</HeadLine>
+            </div>
+            <div className="actions">
+              <div className="action">
+                <CashCoin fill="white" width="30px" />
+                <Link to="/home/charge">
+                <span>Charge</span>
+                </Link>
+              </div>
+              |
+              <div className="action">
+                <PiggyBank fill="white" width="30px" />
+                <Link to="/fixedTerm">
+                <span>Inversions</span>
+                </Link>
+              </div>
+            </div>
+            <img src={svg} alt="" className="img" />
+          </BalanceContainer>
         )}
-      </BoderShadow>
-      <Spacer y={3} />
-    </Container>
+
+        <LastMovements>
+          <div className="title">
+            <h4>Latest transactions</h4>
+          </div>
+          {userTransaction?.map((e, i) => {
+            if (!e.transaction?.status || e.transaction?.status === "DONE") {
+              return (
+                <div className="movement">
+                {e.transaction.branch === "Games" ? <img src={Games} alt="" className="movementIcon" /> :
+
+              e.transaction.branch === "Travel" ? <img src={Travel} alt="" className="movementIcon" /> :
+               e.transaction.branch === "Food" ? <img src={Food} alt="" className="movementIcon" /> :
+               e.transaction.branch === "Sport" ? <img src={Sports} alt="" className="movementIcon" /> :
+                e.transaction.branch === "Tech" ? <img src={Tech} alt="" className="movementIcon" /> :
+                 e.transaction.branch === "Rent" ? <img src={Rent} alt="" className="movementIcon" /> :
+                 e.transaction.branch === "Miscellaneous" ? <img src={Miscellaneous} alt="" className="movementIcon" /> :
+                <img src={Shopping} alt="" className="movementIcon" />
+              }
+
+                  
+                  <div className="description">
+                    <span>{e.transaction.description}</span>
+                    <p>
+                      {e.transaction.branch
+                        ? e.transaction.branch
+                        : e.transaction.type}
+                    </p>
+                  </div>
+                  <div className="amount">
+                    <span className={e.role}>
+                      {e.role === "RECEIVER"
+                        ? "+$" + e.transaction.amount
+                        : "-$" + e.transaction.amount}
+                    </span>
+                    <p>{e.transaction.date.slice(5, 10)}</p>
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </LastMovements>
+      </Container2>
+      <Container1>
+        <div className="cardContainer">
+    
+    <Tooltip width="100%" placement="bottom" color="#2ca1de" content={copySuccess} onClick={handleCopy}>
+          <Card  width="74%" clickable cover>
+            <Card.Header
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                top: isMobile ? 90 : isTabletOrMobile ? 110 : 115,
+              }}
+            >
+              {userInfo && userAccountInfo && (
+                <Col>
+                  <Text h4 color="white" margin="0.5em 0 0 0">
+                    {`**** **** **** ${userAccountInfo.card.cardNumber}`}
+                  </Text>
+                  <Text
+                    size={12}
+                    weight="bold"
+                    transform="uppercase"
+                    color="#ffffffAA"
+                  >
+                    {`${userInfo.firstname} ${userInfo.lastname}`}
+                  </Text>
+                </Col>
+              )}
+            </Card.Header>
+
+            <Card.Image
+              autoResize={false}
+              src={img}
+              height="100%"
+              width="100%"
+              alt="Card image background"
+            />
+          </Card>
+          </Tooltip>
+        </div>
+        <div className="statsContainer">
+          <Statics>
+            {data2?.length > 0 ? (
+              <ChartContainer>
+                <Chart
+                  height={!isSmallMobile ? "100%" : "100%"}
+                  data={data2}
+                  enableArcLinkLabels={true}
+                  label={true}
+                  interactive={true}
+                />
+              </ChartContainer>
+            ) : (
+              <ChartContainer>
+                <Text h2>
+                  <Chart
+                    height={!isSmallMobile ? "100%" : "100%"}
+                    enableArcLinkLabels={false}
+                    interactive={false}
+                    label={false}
+                    data={[
+                      {
+                        id: "No Movement ",
+                        laber: "No Movement ",
+                        value: 1,
+                      },
+                    ]}
+                  />
+                </Text>
+              </ChartContainer>
+            )}
+          </Statics>
+        </div>
+      </Container1>
+    </StyledContainer>
   );
 }

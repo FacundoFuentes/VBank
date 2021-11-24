@@ -1,12 +1,15 @@
 import React, {useState}from "react";
 import { useForm, Controller } from "react-hook-form";
+
+import {useDispatch} from "react-redux"
 import { Modal, Button, Input} from '@nextui-org/react';
 import { useHistory} from 'react-router';
 import styled from "styled-components";
 import Nav from "../../components/Nav/Nav"
 import axios from "axios"
-
+import { useTranslation } from "react-i18next";
 import successEmail from "../../img/successEmail.gif"
+
 
 const PageContainer= styled.div`
 width: 100%;
@@ -106,7 +109,7 @@ const RecoverPass =()=>{
 
 	 const onSubmit = async(data) => {
 	 	console.log(data)
-     axios.post('https://value-bank.herokuapp.com/user/password-reset', data)
+     axios.post('http://localhost:3001/user/password-reset', data)
   .then(response=> {
    console.log(response)
    if(response.data.status === "ok") {
@@ -139,6 +142,9 @@ const RecoverPass =()=>{
   const handleClick=()=>{
   		history.push("/")
   }
+
+  const { t } = useTranslation("global");
+
 	return(
 		<PageContainer>
 		<Nav/>
@@ -147,10 +153,8 @@ const RecoverPass =()=>{
 		<h2> Recover Password</h2>
 		</div>
 		<span>
-			Introduce tu correo electrónico para buscar tu cuenta.
+		Enter your email, to receive a recovery link:
 		</span>
-		
-		
 		 <form onSubmit={handleSubmit(onSubmit)}>
 		<div  className="field">
           <Controller
@@ -195,22 +199,15 @@ const RecoverPass =()=>{
        	</Modal>
             </div>
 		<div id="btns">
-                <Button color="#2ca1de"auto type="submit">
-                     Send
+
+		
+                <Button auto type="submit">
+							Send
+
                 </Button>
 		</div>
 		</form>
-		
-
-
-
-
-		
-
-
-
 		</Box>
-
 		</PageContainer>
 		)
 }

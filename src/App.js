@@ -1,4 +1,5 @@
 import React from "react";
+import GlobalFonts from './fonts/fonts'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from "./pages/Home/Home";
@@ -20,6 +21,7 @@ import NewPassword from "./pages/NewPasswordPage/NewPassword"
 function App() {
   return (
         <Router>
+          <GlobalFonts/>
           <ToastContainer/>
         <Switch>
         <Route exact path="/" component={LandingPage} />
@@ -35,7 +37,7 @@ function App() {
          <Route exact path="/user/verify/:username" render={()=> (<> <VerifyAccount/> </>)}/> 
           <Route exact path="/user/password-reset/:userId/:token" render={()=> (<> <NewPassword/> </>)}/> 
        </Switch>
-    </Router>    
+    </Router>     
 
   );
 }

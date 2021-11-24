@@ -6,18 +6,17 @@ import { useHistory, useParams } from 'react-router';
 import styled from "styled-components";
 import Nav from "../../components/Nav/Nav"
 import axios from "axios"
-import {toast} from 'react-toastify'
-import success from "../../img/success.gif"
+
+import { useTranslation } from "react-i18next";
+import {toast} from 'react-toastify';
+import success from "../../img/success.gif";
 
 const PageContainer= styled.div`
 width: 100%;
-
 height 100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
-
-
 `;
 
 
@@ -108,7 +107,7 @@ const NewPassword =()=>{
 	 
 	 	const {password}= data;
 	 	console.log(password)
-     axios.post(`https://value-bank.herokuapp.com/user/password-reset/${userId}/${token}`, {password})
+     axios.post(`http://localhost:3001/user/password-reset/${userId}/${token}`, {password})
 	 	
   .then(response=> {
    console.log(response)
@@ -141,12 +140,14 @@ const NewPassword =()=>{
   const handleClick=()=>{
   		history.push("/")
   }
+
+  const { t } = useTranslation("global");
 	return(
 		<PageContainer>
 		<Nav/>
 		<Box>
 		<div id="title">
-		<h2> New Password</h2>
+		<h2> {t("Nwpass.nw")}</h2>
 		</div>
 	
 		
@@ -163,9 +164,9 @@ const NewPassword =()=>{
         labelPlaceholder="New Password"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.password?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.password?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.password?.type === "pattern" && (
-        <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
+        <p className="error">{t("Sign.err3")}</p>
       )}
             </div>
 
@@ -186,12 +187,12 @@ const NewPassword =()=>{
         labelPlaceholder="Confirm Password"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.samePassword?.type === "required" && <p className="error">This field is required</p>}
+      {errors?.samePassword?.type === "required" && <p className="error">{t("Prof.err")}</p>}
       {errors?.samePassword?.type === "pattern" && (
-        <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>
+        <p className="error"> {t("Sign.err3")}</p>
       )}
        {errors?.samePassword?.type === "validate" && (
-        <p className="error">Password don´t match</p>
+        <p className="error">{t("Sign.FT")}</p>
       )}
 
        { error && (
@@ -209,8 +210,13 @@ const NewPassword =()=>{
        	</Modal>
             </div>       
 		<div id="btns">
-                <Button color="#2ca1de"auto type="submit">
-                     Send
+
+			<Button auto flat color="error" onClick={handleClick}>
+         {t("Home.CANCEL")}
+                </Button>
+                <Button auto type="submit">
+                {t("Home.Send")}
+
                 </Button>
 		</div>
 		</form>

@@ -12,7 +12,6 @@ import Nav from '../../components/Nav/Nav';
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useTranslation } from "react-i18next";
 
 
 const Page = styled.div`
@@ -245,7 +244,7 @@ const SignupPage = () => {
   }
   const [formStep, setFormStep] = useState(0)
   const FormTitles = ["Sign Up", "Personal Info", "Contact"];
-  
+
   const handleInput=(e) => {
     if (e.currentTarget === e.target) {
         document.getElementById('date').type= 'date';
@@ -254,7 +253,7 @@ const SignupPage = () => {
         document.getElementById('date').type= 'text';
       }
   }
-  const { t, i18n } = useTranslation("global");
+
 /*   style={{ width: formStep === 0 ? "33.3%" : formStep == 1 ? "66.6%" : "100%" }} */
   return (
     <>
@@ -301,11 +300,11 @@ const SignupPage = () => {
        rules={{required:true, pattern:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/}}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder={t("Nav.Username")}
+        labelPlaceholder="Username"
          color="#f5f5f5" {...field} />}
       />
-       {errors?.username?.type === "required" && <p className="error">{t("Prof.err")}</p>}
-       {errors?.username?.type === "pattern" && <p className="error">{t("Sing.err")}</p>}
+       {errors?.username?.type === "required" && <p className="error">This field is required</p>}
+       {errors?.username?.type === "pattern" && <p className="error">Username should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter and one number</p>}
       
 
             </div>
@@ -321,9 +320,9 @@ const SignupPage = () => {
         labelPlaceholder="Email"
          color="#f5f5f5" {...field} />}
       />
-      {errors?.email?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+      {errors?.email?.type === "required" && <p className="error">This field is required</p>}
       {errors?.email?.type === "pattern" && (
-        <p className="error">{t("Sing.err2")}</p>
+        <p className="error">Please, enter a valid email</p>
       )}
             </div>
             <div  className="fields">
@@ -335,14 +334,15 @@ const SignupPage = () => {
         rules={{required:true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.\-_#+])[A-Za-z\d@$!%*?&.-_#+]{6,16}$/}}
         render={({ field }) => <Input.Password
            underlined 
-           labelPlaceholder={t("Nav.Pass")}
+           labelPlaceholder="Password"
+           
              type="password" 
              className="input"
          color="#f5f5f5" {...field} />}
       />
-     {errors?.password?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+     {errors?.password?.type === "required" && <p className="error">This field is required</p>}
 
-     {errors?.password?.type === "pattern" && <p className="error">{t("Sing.err3")}</p>}
+     {errors?.password?.type === "pattern" && <p className="error">Password should have minimum 6 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character</p>}
    
             </div>
 
@@ -360,15 +360,15 @@ const SignupPage = () => {
         rules={ { pattern: /[A-Za-z]{2,254}/i, required:true, maxLength:32}}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder={t("Prof.firts")}
+        labelPlaceholder="First Name"
          color="#f5f5f5" {...field} />}
       />
-       {errors?.firstName?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+       {errors?.firstName?.type === "required" && <p className="error">This field is required</p>}
       {errors?.firstName?.type === "maxLength" && (
-        <p className="error"> {t("Sing.err-first")}</p>
+        <p className="error">First name cannot exceed 32 characters</p>
       )}
       {errors?.firstName?.type === "pattern" && (
-        <p className="error">{t("Sing.err-first2")}</p>
+        <p className="error">Alphabetical characters only</p>
       )}
       
             </div>
@@ -379,18 +379,18 @@ const SignupPage = () => {
         name="lastName"
         control={control}
         defaultValue=""
-        rules={{ pattern: /[A-Za-z]{2,254}/i, required: true, maxLength:32 }}
+        rules={{ pattern: /^[A-Za-z]+$/i, required: true, maxLength:32 }}
         render={({ field }) => <Input className="input"
         underlined 
-        labelPlaceholder={t("Prof.lastn")}
+        labelPlaceholder="Last Name"
          color="#f5f5f5" {...field} />}
       />
-       {errors?.lastName?.type === "required" && <p className="error">{t("Prof.err")}</p>}
+       {errors?.lastName?.type === "required" && <p className="error">This field is required</p>}
       {errors?.lastName?.type === "maxLength" && (
-        <p className="error">{t("Sing.err-first3")}</p>
+        <p className="error">First name cannot exceed 32 characters</p>
       )}
       {errors?.lastName?.type === "pattern" && (
-        <p className="error">{t("Sing.err-first2")}</p>
+        <p className="error">Alphabetical characters only</p>
       )}
 
             </div>
@@ -408,9 +408,9 @@ const SignupPage = () => {
         labelPlaceholder="DNI"
          color="#f5f5f5" {...field} />}
       />
-      {errors.dni?.type === 'required' && <p className="error">{t("Sing.err-dni")}</p>}
-      {errors.dni?.type === 'pattern' && <p className="error">{t("Sing.err-dni2")} </p>}
-      {errors.dni?.type === 'maxLength' && <p className="error">{t("Sing.err-dni3")} </p>}
+      {errors.dni?.type === 'required' && <p className="error">DNI is required</p>}
+      {errors.dni?.type === 'pattern' && <p className="error">Number characters only </p>}
+      {errors.dni?.type === 'maxLength' && <p className="error"> DNI cannot be longer than 8 caracters or shorter than 7</p>}
 
             </div>
             <div  className="fields">
@@ -425,10 +425,10 @@ const SignupPage = () => {
         type="text"
         id="date"
         underlined 
-        labelPlaceholder={t("Prof.birth")}
+        labelPlaceholder="Birth Date"
          color="#f5f5f5" {...field} />}
       />
-      {errors.birthDate?.type === 'required' && <p className="error"> {t("Prof.err")}</p>}
+      {errors.birthDate?.type === 'required' && <p className="error"> This is required</p>}
 
             </div>
               </section>
@@ -450,14 +450,14 @@ const SignupPage = () => {
                     <Input
                       className="input"
                       underlined
-                      labelPlaceholder={t("Prof.phone")}
+                      labelPlaceholder="Phone Number"
                       color="#f5f5f5"
                       {...field}
                     />
                   )}
                 />
                 {errors.dni?.type === "required" && (
-                  <p className="error">{t("Prof.err")}</p>
+                  <p className="error">phone is required</p>
                 )}
               {error && <p className="error">{error}</p>}
               </div> 
@@ -473,7 +473,7 @@ onClick={() => {
 setFormStep((currPage) => currPage - 1);
 }}
 >
-{t("Sing.prev")}
+Prev
 </Button>
 <Button
 size="mini"
@@ -483,14 +483,14 @@ setFormStep((currPage) => currPage + 1);
 
 }}
 >
-{t("Sing.next")}
+Next
 
 </Button>
 </div>
 
 
 {formStep === 2  && isValid ? <>   <Button  type="submit" color="primary" auto>
-{t("Sing.create")}
+          Create Account
 </Button></> : null}
           
 

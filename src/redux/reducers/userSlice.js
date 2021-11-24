@@ -32,7 +32,7 @@ export const registerUser= createAsyncThunk("user/register", async (userInfo,thu
     }
     try { 
 
-        const response = await axios.post('https://value-bank.herokuapp.com/user/register', userInfo)
+        const response = await axios.post('http://localhost:3001/user/register', userInfo)
         return response.data;
         
     } catch (error) {
@@ -46,7 +46,7 @@ export const getUserInfo = createAsyncThunk("user/Info", async (payload, thunkAP
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("https://value-bank.herokuapp.com/user/userinfo", {username:username},{
+    const response = await axios.post("http://localhost:3001/user/userinfo", {username:username},{
       headers: { Authorization: "Bearer " + token },
     })
     return response.data
@@ -61,7 +61,7 @@ export const getUserAccountInfo = createAsyncThunk("user/AccountInfo", async (pa
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("https://value-bank.herokuapp.com/user/useraccountinfo", {username:username},{
+    const response = await axios.post("http://localhost:3001/user/useraccountinfo", {username:username},{
       headers: { Authorization: "Bearer " + token },
     })
     return response.data
@@ -83,7 +83,7 @@ export const getBalance = createAsyncThunk("user/balance", async (payload,thunkA
   let {username} = jwt.decode(token)
 
   try {
-    const response = await axios.post("https://value-bank.herokuapp.com/transactions", {username:username},{
+    const response = await axios.post("http://localhost:3001/transactions", {username:username},{
       headers: { Authorization: "Bearer " + token },
     })
     return response.data
@@ -100,7 +100,7 @@ export const signinUser= createAsyncThunk("user/login", async (userInfo,thunkAPI
         return
     }
     try { // hago la llamada a la API to /register
-        const response = await axios.post("https://value-bank.herokuapp.com/user/login", userInfo)
+        const response = await axios.post("http://localhost:3001/user/login", userInfo)
         //aca uso el local storage para mantener al usuario 
         // como el response es un objeto, lo tengo que stringifiar
         localStorage.setItem('token', JSON.stringify(response.data))

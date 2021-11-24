@@ -80,7 +80,7 @@ export default function Charge() {
     setBtnLoading(true);
     if ((input.charge > 0 && pago1) || pago2) {
       axios
-        .patch("https://value-bank.herokuapp.com/user/charge", input, {
+        .patch("http://localhost:3001/user/charge", input, {
           headers: { Authorization: "Bearer " + token },
         })
         .then((response) => {
@@ -120,7 +120,7 @@ export default function Charge() {
         justify="center"
         style={{ height: "100vh", width: "80vw" , padding:"auto", margin:"auto" }}
       >
-       <Grid.Container display="flex"  direction="column"  width="100px" style={{marginLeft:"25%", marginTop:"20%", padding:"auto"}}>
+       <Grid.Container display="flex"  direction="column"  width="100px" style={{marginLeft:"35%", marginTop:"20%", padding:"auto"}}>
          
        {!isTabletOrMobile && 
         <Grid>

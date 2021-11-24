@@ -101,7 +101,7 @@ try{
         name="data"
         control={control}
         defaultValue=""
-        rules={{required:true, maxLength: 22}}
+        rules={{required:true, maxLength: 30}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
@@ -110,7 +110,7 @@ try{
          color="#f5f5f5" {...field} />}
       />
       {errors.data?.type === 'required' && <p className="error"> This field is required</p>}
-      {errors.data?.type === 'maxLength' && <p className="error">It should only have 16 characters</p>}
+      {errors.data?.type === 'maxLength' && <p className="error">It should only have 30 characters</p>}
  
             <Controller
         className="fields"

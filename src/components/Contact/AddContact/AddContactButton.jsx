@@ -101,7 +101,7 @@ try{
         name="data"
         control={control}
         defaultValue=""
-        rules={{required:true, maxLength: 16}}
+        rules={{required:true, maxLength: 22}}
         render={({ field }) => <Input clearable
         bordered
         fullWidth
